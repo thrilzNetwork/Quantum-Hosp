@@ -77,8 +77,8 @@ export default function Hero() {
 
         <div className="bg-pink-lightest rounded-2xl overflow-hidden relative aspect-square lg:aspect-auto">
           <img 
-            src="https://static.vecteezy.com/system/resources/thumbnails/011/002/798/small_2x/hotel-reception-bell-photo.JPG" 
-            alt="High scale hotel front desk bell" 
+            src="https://images.unsplash.com/photo-1582719508461-905c673771fd?auto=format&fit=crop&q=80&w=1200&h=1200" 
+            alt="Luxury hotel front desk bell" 
             className="w-full h-full object-cover"
             referrerPolicy="no-referrer"
           />

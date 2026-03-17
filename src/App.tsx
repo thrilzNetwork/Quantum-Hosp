@@ -7,11 +7,10 @@ import FounderSection from './components/FounderSection';
 import FreeResource from './components/FreeResource';
 import ConsultingSection from './components/ConsultingSection';
 import Footer from './components/Footer';
-import MobileBottomNav from './components/MobileBottomNav';
 
 export default function App() {
   return (
-    <div className="min-h-screen flex flex-col pb-16 lg:pb-0">
+    <div className="min-h-screen flex flex-col">
       <Header />
       <main className="flex-1">
         <Hero />
@@ -23,7 +22,6 @@ export default function App() {
         <ConsultingSection />
       </main>
       <Footer />
-      <MobileBottomNav />
     </div>
   );
 }
