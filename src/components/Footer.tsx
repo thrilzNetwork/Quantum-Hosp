@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import { Twitter, Linkedin, Facebook, Youtube, Instagram } from 'lucide-react';
 import ContactModal from './ContactModal';
+import { scrollToElement } from '../hooks/useScrollTo';
+import type { FooterLinkSection } from '../types';
 
-const footerLinks = [
+const footerLinks: FooterLinkSection[] = [
   {
     title: 'Tools',
     links: [
@@ -15,8 +17,8 @@ const footerLinks = [
   {
     title: 'Resources',
     links: [
+      { name: 'Store', href: '#store' },
       { name: 'Somehow I Managed', href: '#resources' },
-      { name: 'Tutorials', href: 'tutorial' },
       { name: 'Blog', href: '#' },
       { name: 'Support Center', href: '#' },
     ],
@@ -32,6 +34,14 @@ const footerLinks = [
   },
 ];
 
+const socialIcons = [
+  { Icon: Twitter, label: 'Twitter' },
+  { Icon: Linkedin, label: 'LinkedIn' },
+  { Icon: Facebook, label: 'Facebook' },
+  { Icon: Youtube, label: 'YouTube' },
+  { Icon: Instagram, label: 'Instagram' },
+];
+
 export default function Footer() {
   const [isContactOpen, setIsContactOpen] = useState(false);
 
@@ -41,23 +51,10 @@ export default function Footer() {
       setIsContactOpen(true);
     } else if (href === 'tutorial') {
       e.preventDefault();
-      // Tutorials logic could go here or just scroll to top
       window.scrollTo({ top: 0, behavior: 'smooth' });
     } else if (href.startsWith('#')) {
       e.preventDefault();
-      const element = document.querySelector(href);
-      if (element) {
-        const offset = 80;
-        const bodyRect = document.body.getBoundingClientRect().top;
-        const elementRect = element.getBoundingClientRect().top;
-        const elementPosition = elementRect - bodyRect;
-        const offsetPosition = elementPosition - offset;
-
-        window.scrollTo({
-          top: offsetPosition,
-          behavior: 'smooth'
-        });
-      }
+      scrollToElement(href);
     }
   };
 
@@ -66,36 +63,41 @@ export default function Footer() {
       <div className="container">
         <div className="flex flex-col xl:flex-row justify-between gap-12 mb-16 md:mb-24">
           <div className="xl:w-1/4 space-y-8 text-center xl:text-left">
-            <a 
-              href="/" 
+            <a
+              href="/"
               onClick={(e) => { e.preventDefault(); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
               className="text-white font-bold text-2xl tracking-tighter block"
             >
               QUANTUM
             </a>
-            
+
             <p className="text-body-s opacity-60 max-w-xs mx-auto xl:mx-0">
               AI-powered operational tools built by hospitality operators for hospitality operators.
             </p>
-            
+
             <div className="flex justify-center xl:justify-start gap-3">
-              {[Twitter, Linkedin, Facebook, Youtube, Instagram].map((Icon, i) => (
-                <a key={i} href="#" className="w-11 h-11 rounded-full bg-white/10 flex items-center justify-center hover:bg-white/20 transition-colors">
-                  <Icon size={20} />
+              {socialIcons.map(({ Icon, label }) => (
+                <a
+                  key={label}
+                  href="#"
+                  className="w-11 h-11 rounded-full bg-white/10 flex items-center justify-center hover:bg-white/20 transition-colors"
+                  aria-label={label}
+                >
+                  <Icon size={20} aria-hidden="true" />
                 </a>
               ))}
             </div>
           </div>
 
-          <div className="flex-1 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-10 md:gap-8">
+          <nav className="flex-1 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-10 md:gap-8" aria-label="Footer navigation">
             {footerLinks.map((section) => (
               <div key={section.title} className="space-y-6 text-center sm:text-left">
                 <h4 className="text-caps-s text-white/60">{section.title}</h4>
                 <ul className="space-y-4">
                   {section.links.map((link) => (
                     <li key={link.name}>
-                      <a 
-                        href={link.href} 
+                      <a
+                        href={link.href}
                         onClick={(e) => handleLinkClick(e, link.href)}
                         className="text-[0.9375rem] md:text-[0.875rem] hover:text-white/60 transition-colors block py-1"
                       >
@@ -106,12 +108,12 @@ export default function Footer() {
                 </ul>
               </div>
             ))}
-          </div>
+          </nav>
         </div>
 
         <div className="pt-8 border-t border-white/10 flex flex-col md:flex-row justify-between items-center gap-6">
           <div className="text-[0.75rem] text-white/60">
-            © 2026 Quantum Hospitality Solutions. All rights reserved.
+            &copy; 2026 Quantum Hospitality Solutions. All rights reserved.
           </div>
           <div className="flex flex-wrap justify-center gap-x-6 gap-y-2 text-[0.75rem] text-white/60">
             <a href="#" className="underline hover:text-white transition-colors">Privacy Policy</a>
