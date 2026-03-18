@@ -43,14 +43,6 @@ export default function ImpactSection() {
       color: 'bg-blue'
     },
     {
-      name: 'SyncCheck',
-      tag: 'Finance',
-      description: 'POS / PMS discrepancy detection tool. Upload reports and instantly identify mismatches between systems.',
-      impact: 'Faster financial reconciliation and error detection.',
-      color: 'bg-charcoal',
-      textColor: 'text-white'
-    },
-    {
       name: 'SEO Engine',
       tag: 'Marketing',
       description: 'Hospitality SEO optimization tools. Improve hotel website visibility through automated analysis and optimization recommendations.',

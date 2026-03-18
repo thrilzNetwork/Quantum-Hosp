@@ -37,16 +37,6 @@ export default function OperationsSection() {
       color: 'bg-black-2',
       textColor: 'text-white',
       span: 'md:col-span-3'
-    },
-    {
-      id: 'budgetcontrol',
-      name: 'BudgetControl',
-      tag: 'Department Budget & Invoice Tracker',
-      description: 'Simple financial control system for hotel departments.',
-      features: ['Budget allocation', 'Invoice logging', 'Vendor tracking', 'Real-time balance'],
-      useCase: 'Give department heads control over spending without complex accounting systems.',
-      color: 'bg-blue',
-      span: 'md:col-span-3'
     }
   ];
 
