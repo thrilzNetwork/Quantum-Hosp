@@ -1,6 +1,6 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { supabase } from '../../lib/supabase';
-import { Plus, Pencil, Trash2, Search, X, Loader2 } from 'lucide-react';
+import { Plus, Pencil, Trash2, Search, X, Loader2, Upload, Image as ImageIcon } from 'lucide-react';
 
 type Category = 'pin' | 'tool' | 'book';
 type PinSubcategory = 'position' | 'achievement' | 'fun' | 'brand' | null;
@@ -56,6 +56,8 @@ export default function ProductsManager() {
   const [form, setForm] = useState<ProductForm>(emptyForm);
   const [saving, setSaving] = useState(false);
   const [deleteConfirm, setDeleteConfirm] = useState<string | null>(null);
+  const [uploading, setUploading] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     fetchProducts();
@@ -91,6 +93,26 @@ export default function ProductsManager() {
     });
     setEditingId(product.id);
     setModalOpen(true);
+  };
+
+  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    setUploading(true);
+    const ext = file.name.split('.').pop();
+    const path = `products/${Date.now()}-${Math.random().toString(36).slice(2)}.${ext}`;
+
+    const { error } = await supabase.storage.from('product-images').upload(path, file);
+    if (error) {
+      alert('Upload failed: ' + error.message);
+      setUploading(false);
+      return;
+    }
+
+    const { data: urlData } = supabase.storage.from('product-images').getPublicUrl(path);
+    setForm({ ...form, image: urlData.publicUrl });
+    setUploading(false);
   };
 
   const handleSave = async (e: React.FormEvent) => {
@@ -150,6 +172,8 @@ export default function ProductsManager() {
     return matchesSearch && matchesCategory;
   });
 
+  const activeCount = products.filter((p) => p.active).length;
+
   if (loading) {
     return (
       <div className="flex items-center justify-center h-64">
@@ -162,7 +186,10 @@ export default function ProductsManager() {
     <div className="space-y-6">
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-        <h1 className="text-2xl font-bold text-gray-900">Products</h1>
+        <div>
+          <h1 className="text-2xl font-bold text-gray-900">Products</h1>
+          <p className="text-sm text-gray-500">{products.length} total &middot; {activeCount} active</p>
+        </div>
         <button
           type="button"
           onClick={openCreate}
@@ -205,43 +232,48 @@ export default function ProductsManager() {
           <table className="w-full text-sm">
             <thead>
               <tr className="bg-gray-50 text-left text-gray-500 uppercase text-xs tracking-wider">
-                <th className="px-5 py-3">Name</th>
+                <th className="px-5 py-3">Product</th>
                 <th className="px-5 py-3">Category</th>
                 <th className="px-5 py-3 text-right">Price</th>
                 <th className="px-5 py-3 text-center">Active</th>
-                <th className="px-5 py-3 text-center">Download</th>
                 <th className="px-5 py-3 text-right">Actions</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-100">
               {filtered.length === 0 ? (
                 <tr>
-                  <td colSpan={6} className="px-5 py-8 text-center text-gray-500">
+                  <td colSpan={5} className="px-5 py-8 text-center text-gray-500">
                     No products found.
                   </td>
                 </tr>
               ) : (
-                filtered.map((product, idx) => (
-                  <tr
-                    key={product.id}
-                    className={`hover:bg-gray-50 transition-colors ${
-                      idx % 2 === 1 ? 'bg-gray-50/50' : ''
-                    }`}
-                  >
+                filtered.map((product) => (
+                  <tr key={product.id} className="hover:bg-gray-50 transition-colors">
                     <td className="px-5 py-3">
                       <div className="flex items-center gap-3">
-                        {product.image && (
+                        {product.image ? (
                           <img
                             src={product.image}
                             alt={product.name}
-                            className="w-9 h-9 rounded-lg object-cover bg-gray-100"
+                            className="w-10 h-10 rounded-lg object-cover bg-gray-100"
                           />
+                        ) : (
+                          <div className="w-10 h-10 rounded-lg bg-gray-100 flex items-center justify-center">
+                            <ImageIcon size={16} className="text-gray-400" />
+                          </div>
                         )}
                         <div>
                           <p className="font-medium text-gray-900">{product.name}</p>
-                          {product.badge && (
-                            <span className="text-xs text-pink-500">{product.badge}</span>
-                          )}
+                          <div className="flex items-center gap-2">
+                            {product.badge && (
+                              <span className="text-xs bg-pink-50 text-pink-500 px-1.5 py-0.5 rounded font-medium">
+                                {product.badge}
+                              </span>
+                            )}
+                            {product.downloadable && (
+                              <span className="text-xs text-gray-400">Digital</span>
+                            )}
+                          </div>
                         </div>
                       </div>
                     </td>
@@ -251,7 +283,7 @@ export default function ProductsManager() {
                         <span className="text-gray-400"> / {product.pin_subcategory}</span>
                       )}
                     </td>
-                    <td className="px-5 py-3 text-right font-medium text-gray-900">
+                    <td className="px-5 py-3 text-right font-semibold text-gray-900">
                       ${Number(product.price).toFixed(2)}
                     </td>
                     <td className="px-5 py-3 text-center">
@@ -263,24 +295,20 @@ export default function ProductsManager() {
                         }`}
                       >
                         <span
-                          className={`absolute top-0.5 w-4 h-4 rounded-full bg-white transition-transform ${
+                          className={`absolute top-0.5 w-4 h-4 rounded-full bg-white shadow transition-transform ${
                             product.active ? 'left-5' : 'left-0.5'
                           }`}
                         />
                       </button>
                     </td>
-                    <td className="px-5 py-3 text-center text-gray-600">
-                      {product.downloadable ? 'Yes' : 'No'}
-                    </td>
                     <td className="px-5 py-3 text-right">
-                      <div className="flex items-center justify-end gap-2">
+                      <div className="flex items-center justify-end gap-1">
                         <button
                           type="button"
                           onClick={() => openEdit(product)}
                           className="p-1.5 text-gray-400 hover:text-pink-500 transition-colors"
-                          title="Edit"
                         >
-                          <Pencil size={16} />
+                          <Pencil size={15} />
                         </button>
                         {deleteConfirm === product.id ? (
                           <div className="flex items-center gap-1">
@@ -289,7 +317,7 @@ export default function ProductsManager() {
                               onClick={() => handleDelete(product.id)}
                               className="text-xs px-2 py-1 bg-red-500 text-white rounded hover:bg-red-600"
                             >
-                              Confirm
+                              Delete
                             </button>
                             <button
                               type="button"
@@ -304,9 +332,8 @@ export default function ProductsManager() {
                             type="button"
                             onClick={() => setDeleteConfirm(product.id)}
                             className="p-1.5 text-gray-400 hover:text-red-500 transition-colors"
-                            title="Delete"
                           >
-                            <Trash2 size={16} />
+                            <Trash2 size={15} />
                           </button>
                         )}
                       </div>
@@ -327,16 +354,67 @@ export default function ProductsManager() {
               <h2 className="text-lg font-semibold text-gray-900">
                 {editingId ? 'Edit Product' : 'New Product'}
               </h2>
-              <button
-                type="button"
-                onClick={() => setModalOpen(false)}
-                className="text-gray-400 hover:text-gray-600"
-              >
+              <button type="button" onClick={() => setModalOpen(false)} className="text-gray-400 hover:text-gray-600">
                 <X size={20} />
               </button>
             </div>
 
             <form onSubmit={handleSave} className="p-6 space-y-4">
+              {/* Image Upload */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Product Image</label>
+                {form.image ? (
+                  <div className="relative group">
+                    <img src={form.image} alt="Preview" className="w-full h-48 object-cover rounded-lg bg-gray-100" />
+                    <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity rounded-lg flex items-center justify-center gap-2">
+                      <button
+                        type="button"
+                        onClick={() => fileInputRef.current?.click()}
+                        className="text-xs bg-white text-gray-800 px-3 py-1.5 rounded-lg font-medium"
+                      >
+                        Replace
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => setForm({ ...form, image: '' })}
+                        className="text-xs bg-red-500 text-white px-3 py-1.5 rounded-lg font-medium"
+                      >
+                        Remove
+                      </button>
+                    </div>
+                  </div>
+                ) : (
+                  <button
+                    type="button"
+                    onClick={() => fileInputRef.current?.click()}
+                    disabled={uploading}
+                    className="w-full h-32 border-2 border-dashed border-gray-300 rounded-lg flex flex-col items-center justify-center gap-2 text-gray-400 hover:border-pink-400 hover:text-pink-500 transition-colors"
+                  >
+                    {uploading ? (
+                      <Loader2 size={24} className="animate-spin" />
+                    ) : (
+                      <Upload size={24} />
+                    )}
+                    <span className="text-sm">{uploading ? 'Uploading...' : 'Click to upload image'}</span>
+                  </button>
+                )}
+                <input
+                  ref={fileInputRef}
+                  type="file"
+                  accept="image/*"
+                  onChange={handleImageUpload}
+                  className="hidden"
+                />
+                <div className="mt-2">
+                  <input
+                    value={form.image}
+                    onChange={(e) => setForm({ ...form, image: e.target.value })}
+                    placeholder="Or paste image URL..."
+                    className="w-full border border-gray-300 rounded-lg px-3 py-1.5 text-xs text-gray-500 focus:outline-none focus:ring-2 focus:ring-pink-500"
+                  />
+                </div>
+              </div>
+
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">Name *</label>
                 <input
@@ -381,15 +459,6 @@ export default function ProductsManager() {
                 </div>
               </div>
 
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Image URL</label>
-                <input
-                  value={form.image}
-                  onChange={(e) => setForm({ ...form, image: e.target.value })}
-                  className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-pink-500"
-                />
-              </div>
-
               <div className="grid grid-cols-2 gap-4">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">Category *</label>
@@ -400,8 +469,7 @@ export default function ProductsManager() {
                       setForm({
                         ...form,
                         category: e.target.value as Category,
-                        pin_subcategory:
-                          e.target.value === 'pin' ? form.pin_subcategory : null,
+                        pin_subcategory: e.target.value === 'pin' ? form.pin_subcategory : null,
                       })
                     }
                     className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-pink-500"
@@ -413,12 +481,9 @@ export default function ProductsManager() {
                     ))}
                   </select>
                 </div>
-
                 {form.category === 'pin' && (
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
-                      Pin Subcategory
-                    </label>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">Subcategory</label>
                     <select
                       value={form.pin_subcategory ?? ''}
                       onChange={(e) =>
