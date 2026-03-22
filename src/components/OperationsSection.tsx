@@ -1,90 +1,81 @@
-import { useState } from 'react';
-import { motion } from 'motion/react';
-import { ChevronRight, CheckCircle2, Zap, ShoppingBag } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { motion, AnimatePresence } from 'motion/react';
+import { ChevronRight, X, CheckCircle2, Zap, ShoppingCart, Info } from 'lucide-react';
+import { collection, onSnapshot, query, orderBy } from 'firebase/firestore';
+import { db, handleFirestoreError, OperationType } from '../firebase';
 import Modal from './Modal';
+import { Tool, Product } from '../types';
 import { useCart } from '../context/CartContext';
-import { tools as storeTools } from '../data/products';
-import type { Tool } from '../types';
-
-const tools: Tool[] = [
-  {
-    id: 'attenda',
-    name: 'Attenda',
-    tag: 'In-Room Ordering System',
-    description: 'Allow guests to order food, amenities, and services directly from their phone using a QR code.',
-    features: ['QR ordering', 'Staff dashboard', 'Menu management', 'Room charge ready'],
-    useCase: 'Increase F&B revenue and reduce front desk calls.',
-    color: 'bg-pink-light',
-    span: 'md:col-span-4'
-  },
-  {
-    id: 'reviewflow',
-    name: 'ReviewFlow',
-    tag: 'Guest Feedback & Review Generator',
-    description: 'Turn guest feedback into public reviews and internal alerts.',
-    features: ['Smart feedback emails', 'Sentiment routing', 'Google / TripAdvisor redirection', 'Complaint alerts'],
-    useCase: 'Increase social reputation and catch problems before they escalate.',
-    color: 'bg-yellow',
-    span: 'md:col-span-2'
-  },
-  {
-    id: 'eventflow',
-    name: 'EventFlow',
-    tag: 'Group & Event Operations Portal',
-    description: 'Organize group stays and events with a dedicated digital hub.',
-    features: ['Custom event landing pages', 'Guest access links', 'Event schedule display', 'Guest service requests'],
-    useCase: 'Eliminate confusion between sales, operations, and group organizers.',
-    color: 'bg-black-2',
-    textColor: 'text-white',
-    span: 'md:col-span-3'
-  }
-];
+import { Link } from 'react-router-dom';
 
 export default function OperationsSection() {
   const [selectedTool, setSelectedTool] = useState<Tool | null>(null);
+  const [tools, setTools] = useState<Tool[]>([]);
+  const [products, setProducts] = useState<Product[]>([]);
+  const [loading, setLoading] = useState(true);
   const { addItem } = useCart();
 
-  const handleAddToCart = (toolName: string) => {
-    const product = storeTools.find(
-      (t) => t.name.toLowerCase() === toolName.toLowerCase()
-    );
-    if (product) addItem(product);
+  useEffect(() => {
+    const qTools = query(collection(db, 'tools'), orderBy('name'));
+    const unsubTools = onSnapshot(qTools, (snapshot) => {
+      setTools(snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as Tool)));
+      setLoading(false);
+    }, (error) => {
+      handleFirestoreError(error, OperationType.LIST, 'tools');
+    });
+
+    const qProducts = query(collection(db, 'products'));
+    const unsubProducts = onSnapshot(qProducts, (snapshot) => {
+      setProducts(snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as Product)));
+    });
+
+    return () => {
+      unsubTools();
+      unsubProducts();
+    };
+  }, []);
+
+  const handleBuyNow = (e: React.MouseEvent, productId?: string) => {
+    e.stopPropagation();
+    if (!productId) return;
+    const product = products.find(p => p.id === productId);
+    if (product) {
+      addItem(product);
+    }
   };
 
   return (
     <section id="tools" className="py-32 bg-black text-white border-b border-white/10">
       <div className="container">
         <h2 className="text-h3 mb-16">Featured Tools</h2>
-
+        
         <div className="grid gap-6 md:grid-cols-6">
           {tools.map((tool) => (
-            <motion.button
+            <motion.div 
               key={tool.id}
-              type="button"
               initial={{ opacity: 0, scale: 0.95 }}
               whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true }}
               onClick={() => setSelectedTool(tool)}
-              className={`${tool.span} group cursor-pointer relative flex flex-col justify-between overflow-hidden rounded-2xl ${tool.color} ${tool.textColor || 'text-black'} p-6 md:p-12 min-h-[400px] md:min-h-[450px] text-left`}
-              aria-label={`View details for ${tool.name}: ${tool.tag}`}
+              className={`${tool.span} group cursor-pointer relative flex flex-col justify-between overflow-hidden rounded-2xl ${tool.color} ${tool.textColor || 'text-black'} p-6 md:p-12 min-h-[400px] md:min-h-[450px]`}
             >
               <div className="relative z-10">
                 <div className="flex items-center gap-x-3 mb-6">
                   <span className="text-caps-s font-bold">{tool.name}</span>
-                  <span className="w-1 h-1 rounded-full bg-current opacity-30" aria-hidden="true"></span>
+                  <span className="w-1 h-1 rounded-full bg-current opacity-30"></span>
                   <span className="text-[0.6875rem] opacity-70">{tool.tag}</span>
                 </div>
                 <h3 className="text-h4 mb-4">{tool.name}</h3>
                 <p className="text-body-m opacity-80 max-w-lg mb-8">
                   {tool.description}
                 </p>
-
+                
                 <div className="space-y-4 mb-8">
                   <div className="text-caps-s opacity-60">Features:</div>
                   <ul className="grid grid-cols-2 gap-2">
-                    {tool.features.map(feature => (
+                    {tool.features?.map(feature => (
                       <li key={feature} className="flex items-center gap-2 text-sm">
-                        <div className="w-1 h-1 rounded-full bg-current" aria-hidden="true"></div>
+                        <div className="w-1 h-1 rounded-full bg-current"></div>
                         {feature}
                       </li>
                     ))}
@@ -97,20 +88,38 @@ export default function OperationsSection() {
                 </div>
               </div>
 
-              <div className="mt-8 flex items-center gap-x-2 text-caps-s font-bold relative z-10">
-                <span>Deploy instantly</span>
-                <ChevronRight size={14} className="group-hover:translate-x-1 transition-transform" aria-hidden="true" />
+              <div className="mt-8 flex flex-col sm:flex-row items-center gap-3 relative z-10">
+                <button 
+                  onClick={(e) => handleBuyNow(e, tool.productId)}
+                  className="w-full sm:w-auto flex items-center justify-center gap-2 px-6 py-3 bg-black text-white rounded-xl text-xs font-bold hover:scale-105 transition-transform"
+                >
+                  <ShoppingCart size={14} /> Buy Now
+                </button>
+                {tool.productId ? (
+                  <Link 
+                    to={`/product/${tool.productId}`}
+                    onClick={(e) => e.stopPropagation()}
+                    className="w-full sm:w-auto flex items-center justify-center gap-2 px-6 py-3 bg-white/20 backdrop-blur-sm rounded-xl text-xs font-bold hover:bg-white/30 transition-all"
+                  >
+                    <Info size={14} /> Learn More
+                  </Link>
+                ) : (
+                  <div className="flex items-center gap-x-2 text-caps-s font-bold">
+                    <span>Deploy instantly</span>
+                    <ChevronRight size={14} className="group-hover:translate-x-1 transition-transform" />
+                  </div>
+                )}
               </div>
 
-              {/* Decorative background */}
-              <div className="absolute -bottom-20 -right-20 w-64 h-64 opacity-10 pointer-events-none blur-3xl bg-current rounded-full" aria-hidden="true"></div>
-            </motion.button>
+              {/* Decorative background seed */}
+              <div className="absolute -bottom-20 -right-20 w-64 h-64 opacity-10 pointer-events-none blur-3xl bg-current rounded-full"></div>
+            </motion.div>
           ))}
         </div>
       </div>
 
-      <Modal
-        isOpen={!!selectedTool}
+      <Modal 
+        isOpen={!!selectedTool} 
         onClose={() => setSelectedTool(null)}
         title={selectedTool?.name}
       >
@@ -125,9 +134,9 @@ export default function OperationsSection() {
             <div className="space-y-4">
               <h5 className="text-sm font-bold uppercase tracking-widest opacity-40">Key Features</h5>
               <div className="grid gap-3">
-                {selectedTool.features.map((feature) => (
+                {selectedTool.features?.map((feature: string) => (
                   <div key={feature} className="flex items-center gap-3 p-4 rounded-xl bg-black/5">
-                    <CheckCircle2 size={18} className="text-emerald-500" aria-hidden="true" />
+                    <CheckCircle2 size={18} className="text-emerald-500" />
                     <span className="text-sm font-medium">{feature}</span>
                   </div>
                 ))}
@@ -136,17 +145,26 @@ export default function OperationsSection() {
 
             <div className="p-6 rounded-2xl bg-black text-white space-y-4">
               <div className="flex items-center gap-2 text-pink">
-                <Zap size={18} fill="currentColor" aria-hidden="true" />
+                <Zap size={18} fill="currentColor" />
                 <span className="text-xs font-bold uppercase tracking-widest">Instant Deployment</span>
               </div>
               <p className="text-sm opacity-70">This tool can be activated for your hotel in less than 5 minutes. No integration required.</p>
-              <button
-                onClick={() => handleAddToCart(selectedTool.name)}
-                className="w-full bg-pink text-black py-4 rounded-xl font-bold hover:bg-pink-light transition-colors flex items-center justify-center gap-2"
-              >
-                <ShoppingBag size={18} aria-hidden="true" />
-                Add {selectedTool.name} to Cart
-              </button>
+              <div className="flex flex-col sm:flex-row gap-3">
+                <button 
+                  onClick={(e) => handleBuyNow(e, selectedTool.productId)}
+                  className="flex-1 bg-pink text-black py-4 rounded-xl font-bold hover:bg-pink-light transition-colors flex items-center justify-center gap-2"
+                >
+                  <ShoppingCart size={18} /> Buy Now
+                </button>
+                {selectedTool.productId && (
+                  <Link 
+                    to={`/product/${selectedTool.productId}`}
+                    className="flex-1 bg-white/10 text-white py-4 rounded-xl font-bold hover:bg-white/20 transition-colors flex items-center justify-center gap-2"
+                  >
+                    <Info size={18} /> Learn More
+                  </Link>
+                )}
+              </div>
             </div>
           </div>
         )}

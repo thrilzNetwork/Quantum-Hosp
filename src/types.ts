@@ -8,6 +8,7 @@ export interface Tool {
   color: string;
   textColor?: string;
   span: string;
+  productId?: string;
 }
 
 export interface OtherTool {
@@ -44,6 +45,45 @@ export interface LoginFormData {
 export type ProductCategory = 'pin' | 'tool' | 'book';
 export type PinSubcategory = 'position' | 'achievement' | 'fun' | 'brand';
 
+export interface Tutorial {
+  id: string;
+  title: string;
+  description: string;
+  videoUrl?: string;
+  content?: string;
+}
+
+export interface BlogPost {
+  id: string;
+  title: string;
+  excerpt: string;
+  content: string;
+  author: string;
+  date: string;
+  image: string;
+  category: string;
+  slug?: string;
+  metaDescription?: string;
+  tags?: string[];
+}
+
+export interface Sale {
+  id: string;
+  productId: string;
+  productName: string;
+  amount: number;
+  customerEmail: string;
+  date: string;
+}
+
+export interface User {
+  uid: string;
+  email: string;
+  role: 'admin' | 'user';
+  purchasedProducts?: string[];
+  info?: string;
+}
+
 export interface Product {
   id: string;
   name: string;
@@ -54,9 +94,57 @@ export interface Product {
   pinSubcategory?: PinSubcategory;
   badge?: string;
   downloadable?: boolean;
+  // New fields for product pages
+  isComingSoon?: boolean;
+  releaseDate?: string;
+  heroBenefits?: string[];
+  screenshots?: string[];
+  features?: string[];
+  onboardingSteps?: string[];
+  sops?: { name: string; url: string }[];
+  whatToExpect?: string;
+  supportEmail?: string;
 }
 
 export interface CartItem {
   product: Product;
   quantity: number;
+}
+
+export interface PromoSlide {
+  id: string;
+  title: string;
+  subtitle: string;
+  image: string;
+  link: string;
+  buttonText: string;
+  order: number;
+  isActive: boolean;
+}
+
+export interface SiteSettings {
+  id: string;
+  siteName: string;
+  siteDescription: string;
+  heroTitle: string;
+  heroSubtitle: string;
+  heroImage: string;
+  contactEmail: string;
+  googleCalendarBookingLink?: string;
+  stripePublicKey?: string;
+  stripeSecretKey?: string;
+  mcpConfig?: string;
+  apiKeys?: { [key: string]: string };
+  footerText?: string;
+  socialLinks?: {
+    twitter?: string;
+    linkedin?: string;
+    facebook?: string;
+    instagram?: string;
+    youtube?: string;
+  };
+  founderName?: string;
+  founderRole?: string;
+  founderBio?: string;
+  founderImage?: string;
 }

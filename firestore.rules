@@ -1,0 +1,257 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // ===============================================================
+    // Assumed Data Model
+    // ===============================================================
+    //
+    // Collection: products
+    // Document ID: productId
+    // Fields:
+    //   - name: string (required)
+    //   - description: string (required)
+    //   - price: number (required)
+    //   - image: string (required)
+    //   - category: string (required, enum: pin, tool, book)
+    //   - pinSubcategory: string (optional, enum: position, achievement, fun, brand)
+    //   - badge: string (optional)
+    //   - downloadable: bool (optional)
+    //   - isComingSoon: bool (optional)
+    //   - releaseDate: string (optional)
+    //   - heroBenefits: list (optional)
+    //   - screenshots: list (optional)
+    //   - features: list (optional)
+    //   - onboardingSteps: list (optional)
+    //   - sops: list (optional)
+    //   - whatToExpect: string (optional)
+    //   - supportEmail: string (optional)
+    //
+    // Collection: users
+    // Document ID: userId (matches auth.uid)
+    // Fields:
+    //   - uid: string (required)
+    //   - email: string (required)
+    //   - role: string (required, enum: admin, user)
+    //   - purchasedProducts: list (optional)
+    //   - info: string (optional)
+    //
+    // Collection: tutorials
+    // Document ID: tutorialId
+    // Fields:
+    //   - title: string (required)
+    //   - description: string (required)
+    //   - videoUrl: string (optional)
+    //   - content: string (optional)
+    //
+    // Collection: tools
+    // Document ID: toolId
+    // Fields:
+    //   - name: string (required)
+    //   - tag: string (required)
+    //   - description: string (required)
+    //   - features: list (optional)
+    //   - useCase: string (optional)
+    //   - color: string (required)
+    //   - textColor: string (optional)
+    //   - span: string (required)
+    //   - order: number (optional)
+    //
+    // ===============================================================
+
+    // ===============================================================
+    // Helper Functions
+    // ===============================================================
+
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    function isOwner(userId) {
+      return isAuthenticated() && request.auth.uid == userId;
+    }
+
+    function isAdmin() {
+      return isAuthenticated() &&
+        ((exists(/databases/$(database)/documents/users/$(request.auth.uid)) && 
+          get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin') ||
+          (request.auth.token.email == "thrilznetwork@gmail.com" && request.auth.token.email_verified == true));
+    }
+
+    function hasRequiredFields(fields) {
+      return request.resource.data.keys().hasAll(fields);
+    }
+
+    function hasOnlyAllowedFields(fields) {
+      return request.resource.data.keys().hasOnly(fields);
+    }
+
+    function isValidEmail(email) {
+      return email is string && email.matches("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$");
+    }
+
+    // ===============================================================
+    // Domain Validators
+    // ===============================================================
+
+    function isValidProduct(data) {
+      return hasRequiredFields(['name', 'description', 'price', 'image', 'category']) &&
+             hasOnlyAllowedFields(['name', 'description', 'price', 'image', 'category', 'pinSubcategory', 'badge', 'downloadable', 'isComingSoon', 'releaseDate', 'heroBenefits', 'screenshots', 'features', 'onboardingSteps', 'sops', 'whatToExpect', 'supportEmail']) &&
+             data.name is string && data.name.size() > 0 && data.name.size() < 100 &&
+             data.description is string && data.description.size() > 0 && data.description.size() < 1000 &&
+             data.price is number && data.price >= 0 &&
+             data.image is string && data.image.size() > 0 && data.image.size() < 500 &&
+             data.category in ['pin', 'tool', 'book'] &&
+             (!('pinSubcategory' in data) || data.pinSubcategory in ['position', 'achievement', 'fun', 'brand']) &&
+             (!('badge' in data) || (data.badge is string && data.badge.size() < 50)) &&
+             (!('downloadable' in data) || data.downloadable is bool) &&
+             (!('isComingSoon' in data) || data.isComingSoon is bool) &&
+             (!('releaseDate' in data) || (data.releaseDate is string && data.releaseDate.size() < 100)) &&
+             (!('heroBenefits' in data) || (data.heroBenefits is list && data.heroBenefits.size() < 20)) &&
+             (!('screenshots' in data) || (data.screenshots is list && data.screenshots.size() < 20)) &&
+             (!('features' in data) || (data.features is list && data.features.size() < 20)) &&
+             (!('onboardingSteps' in data) || (data.onboardingSteps is list && data.onboardingSteps.size() < 20)) &&
+             (!('sops' in data) || (data.sops is list && data.sops.size() < 20)) &&
+             (!('whatToExpect' in data) || (data.whatToExpect is string && data.whatToExpect.size() < 2000)) &&
+             (!('supportEmail' in data) || (data.supportEmail is string && data.supportEmail.size() < 100));
+    }
+
+    function isValidUser(data) {
+      return hasRequiredFields(['uid', 'email', 'role']) &&
+             hasOnlyAllowedFields(['uid', 'email', 'role', 'purchasedProducts', 'info']) &&
+             data.uid is string && data.uid == request.auth.uid &&
+             data.email is string && data.email.size() < 100 && isValidEmail(data.email) &&
+             data.role in ['admin', 'user'] &&
+             (!('purchasedProducts' in data) || (data.purchasedProducts is list && data.purchasedProducts.size() < 100)) &&
+             (!('info' in data) || (data.info is string && data.info.size() < 1000));
+    }
+
+    function isValidTutorial(data) {
+      return hasRequiredFields(['title', 'description']) &&
+             hasOnlyAllowedFields(['title', 'description', 'videoUrl', 'content']) &&
+             data.title is string && data.title.size() > 0 && data.title.size() < 200 &&
+             data.description is string && data.description.size() > 0 && data.description.size() < 2000 &&
+             (!('videoUrl' in data) || (data.videoUrl is string && data.videoUrl.size() < 500)) &&
+             (!('content' in data) || (data.content is string && data.content.size() < 10000));
+    }
+
+    function isValidTool(data) {
+      return hasRequiredFields(['name', 'tag', 'description', 'color', 'span']) &&
+             hasOnlyAllowedFields(['name', 'tag', 'description', 'features', 'useCase', 'color', 'textColor', 'span', 'order', 'productId']) &&
+             data.name is string && data.name.size() > 0 && data.name.size() < 100 &&
+             data.tag is string && data.tag.size() < 100 &&
+             data.description is string && data.description.size() < 1000 &&
+             data.color is string && data.color.size() < 50 &&
+             data.span is string && data.span.size() < 50 &&
+             (!('features' in data) || (data.features is list && data.features.size() < 20)) &&
+             (!('useCase' in data) || (data.useCase is string && data.useCase.size() < 500)) &&
+             (!('textColor' in data) || (data.textColor is string && data.textColor.size() < 50)) &&
+             (!('order' in data) || data.order is number) &&
+             (!('productId' in data) || (data.productId is string && data.productId.size() < 100));
+    }
+
+    function isValidBlogPost(data) {
+      return hasRequiredFields(['title', 'excerpt', 'content', 'author', 'date', 'image', 'category']) &&
+             hasOnlyAllowedFields(['title', 'excerpt', 'content', 'author', 'date', 'image', 'category', 'slug', 'metaDescription', 'tags']) &&
+             data.title is string && data.title.size() > 0 && data.title.size() < 200 &&
+             data.excerpt is string && data.excerpt.size() < 1000 &&
+             data.content is string && data.content.size() < 50000 &&
+             data.author is string && data.author.size() < 100 &&
+             data.date is string &&
+             data.image is string &&
+             data.category is string &&
+             (!('slug' in data) || (data.slug is string && data.slug.size() < 200)) &&
+             (!('metaDescription' in data) || (data.metaDescription is string && data.metaDescription.size() < 500)) &&
+             (!('tags' in data) || (data.tags is list && data.tags.size() < 20));
+    }
+
+    function isValidSale(data) {
+      return hasRequiredFields(['productId', 'productName', 'amount', 'customerEmail', 'date']) &&
+             hasOnlyAllowedFields(['productId', 'productName', 'amount', 'customerEmail', 'date']) &&
+             data.productId is string &&
+             data.productName is string &&
+             data.amount is number &&
+             data.customerEmail is string && isValidEmail(data.customerEmail) &&
+             data.date is string;
+    }
+
+    function isValidPromoSlide(data) {
+      return hasRequiredFields(['title', 'subtitle', 'image', 'link', 'buttonText', 'order', 'isActive']) &&
+             hasOnlyAllowedFields(['title', 'subtitle', 'image', 'link', 'buttonText', 'order', 'isActive']) &&
+             data.title is string && data.title.size() > 0 && data.title.size() < 200 &&
+             data.subtitle is string && data.subtitle.size() < 500 &&
+             data.image is string && data.image.size() < 500 &&
+             data.link is string && data.link.size() < 500 &&
+             data.buttonText is string && data.buttonText.size() < 100 &&
+             data.order is number &&
+             data.isActive is bool;
+    }
+
+    function isValidSiteSettings(data) {
+      return hasRequiredFields(['siteName', 'siteDescription', 'heroTitle', 'heroSubtitle', 'heroImage', 'contactEmail']) &&
+             hasOnlyAllowedFields(['siteName', 'siteDescription', 'heroTitle', 'heroSubtitle', 'heroImage', 'contactEmail', 'stripePublicKey', 'stripeSecretKey', 'mcpConfig', 'apiKeys', 'footerText', 'socialLinks']) &&
+             data.siteName is string && data.siteName.size() < 100 &&
+             data.siteDescription is string && data.siteDescription.size() < 1000 &&
+             data.heroTitle is string && data.heroTitle.size() < 500 &&
+             data.heroSubtitle is string && data.heroSubtitle.size() < 1000 &&
+             data.heroImage is string && data.heroImage.size() < 500 &&
+             data.contactEmail is string && isValidEmail(data.contactEmail) &&
+             (!('stripePublicKey' in data) || (data.stripePublicKey is string && data.stripePublicKey.size() < 200)) &&
+             (!('stripeSecretKey' in data) || (data.stripeSecretKey is string && data.stripeSecretKey.size() < 200)) &&
+             (!('mcpConfig' in data) || (data.mcpConfig is string && data.mcpConfig.size() < 5000)) &&
+             (!('apiKeys' in data) || data.apiKeys is map) &&
+             (!('footerText' in data) || (data.footerText is string && data.footerText.size() < 500)) &&
+             (!('socialLinks' in data) || data.socialLinks is map);
+    }
+
+    // ===============================================================
+    // Rules
+    // ===============================================================
+
+    match /products/{productId} {
+      allow read: if true; // Publicly readable
+      allow write: if isAdmin() && isValidProduct(request.resource.data);
+    }
+
+    match /users/{userId} {
+      allow read: if isOwner(userId) || isAdmin();
+      allow create: if isAuthenticated() && isValidUser(request.resource.data) && (request.resource.data.role == 'user' || isAdmin());
+      allow update: if isAuthenticated() && isValidUser(request.resource.data) && ((isOwner(userId) && request.resource.data.role == resource.data.role) || isAdmin());
+    }
+
+    match /tutorials/{tutorialId} {
+      allow read: if isAuthenticated();
+      allow write: if isAdmin() && isValidTutorial(request.resource.data);
+    }
+
+    match /tools/{toolId} {
+      allow read: if true; // Publicly readable
+      allow write: if isAdmin() && isValidTool(request.resource.data);
+    }
+
+    match /blog/{postId} {
+      allow read: if true;
+      allow write: if isAdmin() && isValidBlogPost(request.resource.data);
+    }
+
+    match /sales/{saleId} {
+      allow read: if isAdmin();
+      allow create: if isAuthenticated(); // Allow users to record a sale
+      allow update, delete: if isAdmin();
+    }
+
+    match /promo_slides/{slideId} {
+      allow read: if true;
+      allow write: if isAdmin() && isValidPromoSlide(request.resource.data);
+    }
+
+    match /settings/{settingId} {
+      allow read: if true;
+      allow write: if isAdmin() && isValidSiteSettings(request.resource.data);
+    }
+
+    match /test/connection {
+      allow read: if true;
+    }
+  }
+}

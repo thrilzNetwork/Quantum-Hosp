@@ -20,7 +20,7 @@ const steps = [
 
 export default function HowItWorks() {
   return (
-    <section id="how-it-works" className="py-20 md:py-32 bg-white">
+    <section id="how-it-works" className="py-20 md:py-32 bg-black text-white border-b border-white/10">
       <div className="container">
         <div className="max-w-xl mb-12 md:mb-20">
           <h2 className="text-[2.5rem] md:text-h3 leading-tight mb-6">How it works</h2>
@@ -39,7 +39,7 @@ export default function HowItWorks() {
               transition={{ delay: i * 0.1 }}
               className="space-y-6"
             >
-              <div className="text-[4rem] font-black text-pink-light leading-none">{step.num}</div>
+              <div className="text-[4rem] font-black text-pink/20 leading-none">{step.num}</div>
               <h3 className="text-h6">{step.title}</h3>
               <p className="text-body-m opacity-70">{step.description}</p>
             </motion.div>

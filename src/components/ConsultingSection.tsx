@@ -1,10 +1,10 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { motion } from 'motion/react';
 import { ChevronRight, Calendar } from 'lucide-react';
-import ContactModal from './ContactModal';
+import BookingModal from './BookingModal';
 
 export default function ConsultingSection() {
-  const [isContactOpen, setIsContactOpen] = useState(false);
+  const [isBookingOpen, setIsBookingOpen] = useState(false);
 
   return (
     <section id="consulting" className="relative py-32 text-center text-white overflow-hidden">
@@ -27,15 +27,15 @@ export default function ConsultingSection() {
           className="max-w-3xl mx-auto"
         >
           <h2 className="text-[2.5rem] md:text-[5rem] font-black uppercase leading-[1.1] md:leading-none tracking-tighter mb-8">
-            Need help <br /> with automation?
+            Expert <br /> Consultation
           </h2>
           
           <p className="text-xl opacity-70 mb-12">
-            We can help design systems tailored to your operation. Book a consultation to see how we can implement these tools in your property.
+            Book a one-on-one session with our automation experts to audit your current operations and design a custom roadmap for your property.
           </p>
 
           <button 
-            onClick={() => setIsContactOpen(true)}
+            onClick={() => setIsBookingOpen(true)}
             className="btn bg-pink text-black px-10 py-5 rounded-full text-caps-s font-bold hover:bg-pink-light transition-colors group inline-flex items-center"
           >
             <Calendar size={20} className="mr-2" />
@@ -45,7 +45,7 @@ export default function ConsultingSection() {
         </motion.div>
       </div>
 
-      <ContactModal isOpen={isContactOpen} onClose={() => setIsContactOpen(false)} />
+      <BookingModal isOpen={isBookingOpen} onClose={() => setIsBookingOpen(false)} />
     </section>
   );
 }

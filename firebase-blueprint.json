@@ -1,0 +1,172 @@
+{
+  "entities": {
+    "Product": {
+      "title": "Product",
+      "description": "A product available in the store",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string", "description": "Product name" },
+        "description": { "type": "string", "description": "Product description" },
+        "price": { "type": "number", "description": "Product price" },
+        "image": { "type": "string", "description": "Product image URL" },
+        "category": { "type": "string", "enum": ["pin", "tool", "book"], "description": "Product category" },
+        "pinSubcategory": { "type": "string", "enum": ["position", "achievement", "fun", "brand"], "description": "Pin subcategory" },
+        "badge": { "type": "string", "description": "Optional badge text" },
+        "downloadable": { "type": "boolean", "description": "Whether the product is a digital download" },
+        "isComingSoon": { "type": "boolean", "description": "Whether the product is coming soon" },
+        "releaseDate": { "type": "string", "description": "Release date for coming soon products" },
+        "heroBenefits": { "type": "array", "items": { "type": "string" }, "description": "List of benefits for the hero section" },
+        "screenshots": { "type": "array", "items": { "type": "string" }, "description": "List of screenshot URLs" },
+        "features": { "type": "array", "items": { "type": "string" }, "description": "List of key features" },
+        "onboardingSteps": { "type": "array", "items": { "type": "string" }, "description": "List of onboarding steps" },
+        "sops": { "type": "array", "items": { "type": "object", "properties": { "name": { "type": "string" }, "url": { "type": "string" } } }, "description": "List of SOPs/templates" },
+        "whatToExpect": { "type": "string", "description": "What to expect description for coming soon" },
+        "supportEmail": { "type": "string", "description": "Support email address" }
+      },
+      "required": ["name", "description", "price", "image", "category"]
+    },
+    "User": {
+      "title": "User",
+      "description": "A user of the platform",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string", "description": "Firebase Auth UID" },
+        "email": { "type": "string", "description": "User email" },
+        "role": { "type": "string", "enum": ["admin", "user"], "description": "User role" },
+        "purchasedProducts": { "type": "array", "items": { "type": "string" }, "description": "IDs of purchased products" },
+        "info": { "type": "string", "description": "User profile info" }
+      },
+      "required": ["uid", "email", "role"]
+    },
+    "Tutorial": {
+      "title": "Tutorial",
+      "description": "A tutorial for users",
+      "type": "object",
+      "properties": {
+        "title": { "type": "string", "description": "Tutorial title" },
+        "description": { "type": "string", "description": "Tutorial description" },
+        "videoUrl": { "type": "string", "description": "Video URL" },
+        "content": { "type": "string", "description": "Markdown content" }
+      },
+      "required": ["title", "description"]
+    },
+    "Tool": {
+      "title": "Tool",
+      "description": "A tool featured in the Operations section",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string" },
+        "tag": { "type": "string" },
+        "description": { "type": "string" },
+        "features": { "type": "array", "items": { "type": "string" } },
+        "useCase": { "type": "string" },
+        "color": { "type": "string" },
+        "textColor": { "type": "string" },
+        "span": { "type": "string" },
+        "order": { "type": "number" },
+        "productId": { "type": "string", "description": "Optional link to a product" }
+      },
+      "required": ["name", "tag", "description", "color", "span"]
+    },
+    "BlogPost": {
+      "title": "BlogPost",
+      "description": "A blog post for the site",
+      "type": "object",
+      "properties": {
+        "title": { "type": "string" },
+        "excerpt": { "type": "string" },
+        "content": { "type": "string" },
+        "author": { "type": "string" },
+        "date": { "type": "string" },
+        "image": { "type": "string" },
+        "category": { "type": "string" },
+        "slug": { "type": "string", "description": "URL slug for SEO" },
+        "metaDescription": { "type": "string", "description": "SEO meta description" },
+        "tags": { "type": "array", "items": { "type": "string" } }
+      },
+      "required": ["title", "excerpt", "content", "author", "date", "image", "category"]
+    },
+    "Sale": {
+      "title": "Sale",
+      "description": "A record of a product sale",
+      "type": "object",
+      "properties": {
+        "productId": { "type": "string" },
+        "productName": { "type": "string" },
+        "amount": { "type": "number" },
+        "customerEmail": { "type": "string" },
+        "date": { "type": "string" }
+      },
+      "required": ["productId", "productName", "amount", "customerEmail", "date"]
+    },
+    "PromoSlide": {
+      "title": "PromoSlide",
+      "description": "A promotional slide for the hero section",
+      "type": "object",
+      "properties": {
+        "title": { "type": "string" },
+        "subtitle": { "type": "string" },
+        "image": { "type": "string" },
+        "link": { "type": "string" },
+        "buttonText": { "type": "string" },
+        "order": { "type": "number" },
+        "isActive": { "type": "boolean" }
+      },
+      "required": ["title", "subtitle", "image", "link", "buttonText", "order", "isActive"]
+    },
+    "SiteSettings": {
+      "title": "SiteSettings",
+      "description": "Global website settings and configurations",
+      "type": "object",
+      "properties": {
+        "siteName": { "type": "string" },
+        "siteDescription": { "type": "string" },
+        "heroTitle": { "type": "string" },
+        "heroSubtitle": { "type": "string" },
+        "heroImage": { "type": "string" },
+        "contactEmail": { "type": "string" },
+        "stripePublicKey": { "type": "string" },
+        "stripeSecretKey": { "type": "string" },
+        "mcpConfig": { "type": "string" },
+        "apiKeys": { "type": "object" },
+        "footerText": { "type": "string" },
+        "socialLinks": { "type": "object" }
+      },
+      "required": ["siteName", "siteDescription", "heroTitle", "heroSubtitle", "heroImage", "contactEmail"]
+    }
+  },
+  "firestore": {
+    "/products/{productId}": {
+      "schema": "Product",
+      "description": "Collection of store products"
+    },
+    "/users/{userId}": {
+      "schema": "User",
+      "description": "Collection of user profiles"
+    },
+    "/tutorials/{tutorialId}": {
+      "schema": "Tutorial",
+      "description": "Collection of tutorials"
+    },
+    "/tools/{toolId}": {
+      "schema": "Tool",
+      "description": "Collection of operational tools"
+    },
+    "/blog/{postId}": {
+      "schema": "BlogPost",
+      "description": "Collection of blog posts"
+    },
+    "/sales/{saleId}": {
+      "schema": "Sale",
+      "description": "Collection of product sales"
+    },
+    "/promo_slides/{slideId}": {
+      "schema": "PromoSlide",
+      "description": "Collection of promotional slides"
+    },
+    "/settings/{settingId}": {
+      "schema": "SiteSettings",
+      "description": "Collection of site settings (usually site_config)"
+    }
+  }
+}
