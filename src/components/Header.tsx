@@ -232,13 +232,6 @@ export default function Header() {
               </button>
             )}
 
-            <Link 
-              to="/tools" 
-              className="btn bg-pink text-black px-4 md:px-6 py-2 md:py-2.5 rounded-full text-[0.7rem] md:text-caps-s font-bold hover:bg-pink-light transition-colors group"
-            >
-              <span>Browse</span>
-              <ChevronRight size={16} className="ml-1 md:ml-2 group-hover:translate-x-1 transition-transform" />
-            </Link>
             <button 
               className="lg:hidden p-2 min-w-[44px] min-h-[44px] flex items-center justify-center"
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
