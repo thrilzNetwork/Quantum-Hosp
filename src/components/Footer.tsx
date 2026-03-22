@@ -78,9 +78,9 @@ export default function Footer() {
   };
 
   return (
-    <footer className="bg-black text-white pt-20 md:pt-24 pb-12 md:pb-16">
+    <footer className="bg-black text-white pt-16 md:pt-24 pb-10 md:pb-16">
       <div className="container">
-        <div className="flex flex-col xl:flex-row justify-between gap-12 mb-16 md:mb-24">
+        <div className="flex flex-col xl:flex-row justify-between gap-12 mb-12 md:mb-24">
           <div className="xl:w-1/4 space-y-8 text-center xl:text-left">
             <a 
               href="/" 

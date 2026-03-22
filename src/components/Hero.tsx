@@ -63,9 +63,9 @@ export default function Hero() {
   };
 
   return (
-    <section className="bg-black py-6">
-      <div className="container grid lg:grid-cols-2 gap-6">
-        <div className="bg-black text-white rounded-2xl p-10 md:p-16 lg:p-20 flex flex-col justify-center relative overflow-hidden">
+    <section className="bg-black py-4 md:py-8">
+      <div className="container grid lg:grid-cols-2 gap-4 md:gap-6">
+        <div className="bg-black text-white rounded-2xl p-8 md:p-16 lg:p-20 flex flex-col justify-center relative overflow-hidden">
           {/* Decorative element */}
           <div className="absolute top-1/2 -left-10 w-9 h-9 text-supporting-grey -translate-y-1/2">
              <svg viewBox="0 0 23 25" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -83,7 +83,7 @@ export default function Hero() {
               <span className="text-caps-s uppercase">Quantum Hospitality Solutions</span>
             </div>
             
-            <h1 className="text-[2.5rem] md:text-h3-caps leading-[0.9]">
+            <h1 className="text-[2rem] sm:text-[2.5rem] md:text-h3-caps leading-[1.1] md:leading-[0.9]">
               {settings?.heroTitle ? (
                 <span dangerouslySetInnerHTML={{ __html: settings.heroTitle }} />
               ) : (

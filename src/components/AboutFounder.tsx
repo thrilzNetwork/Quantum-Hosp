@@ -18,14 +18,14 @@ export default function AboutFounder() {
   }, []);
 
   return (
-    <section id="about" className="py-24 bg-black text-white border-b border-white/10">
+    <section id="about" className="py-16 md:py-24 bg-black text-white border-b border-white/10">
       <div className="container">
-        <div className="grid md:grid-cols-2 gap-16 items-center">
+        <div className="grid md:grid-cols-2 gap-10 md:gap-16 items-center">
           <motion.div
             initial={{ opacity: 0, x: -20 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
-            className="relative"
+            className="relative mb-12 md:mb-0"
           >
             <div className="aspect-[4/5] rounded-3xl overflow-hidden shadow-2xl">
               <img 

@@ -20,10 +20,10 @@ const steps = [
 
 export default function HowItWorks() {
   return (
-    <section id="how-it-works" className="py-20 md:py-32 bg-black text-white border-b border-white/10">
+    <section id="how-it-works" className="py-16 md:py-32 bg-black text-white border-b border-white/10">
       <div className="container">
-        <div className="max-w-xl mb-12 md:mb-20">
-          <h2 className="text-[2.5rem] md:text-h3 leading-tight mb-6">How it works</h2>
+        <div className="max-w-xl mb-10 md:mb-20">
+          <h2 className="text-[2rem] md:text-h3 leading-tight mb-4 md:mb-6">How it works</h2>
           <p className="text-body-m opacity-70">
             No complicated integrations. No long implementation cycles. Just simple, effective tools ready to work for you.
           </p>

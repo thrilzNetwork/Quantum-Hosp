@@ -45,11 +45,11 @@ export default function OperationsSection() {
   };
 
   return (
-    <section id="tools" className="py-32 bg-black text-white border-b border-white/10">
+    <section id="tools" className="py-16 md:py-32 bg-black text-white border-b border-white/10">
       <div className="container">
-        <h2 className="text-h3 mb-16">Featured Tools</h2>
+        <h2 className="text-[2rem] md:text-h3 mb-8 md:mb-16">Featured Tools</h2>
         
-        <div className="grid gap-6 md:grid-cols-6">
+        <div className="grid gap-4 md:gap-6 md:grid-cols-6">
           {tools.map((tool) => (
             <motion.div 
               key={tool.id}
@@ -57,7 +57,7 @@ export default function OperationsSection() {
               whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true }}
               onClick={() => setSelectedTool(tool)}
-              className={`${tool.span} group cursor-pointer relative flex flex-col justify-between overflow-hidden rounded-2xl ${tool.color} ${tool.textColor || 'text-black'} p-6 md:p-12 min-h-[400px] md:min-h-[450px]`}
+              className={`${tool.span} group cursor-pointer relative flex flex-col justify-between overflow-hidden rounded-2xl ${tool.color} ${tool.textColor || 'text-black'} p-6 md:p-12 min-h-[350px] md:min-h-[450px]`}
             >
               <div className="relative z-10">
                 <div className="flex items-center gap-x-3 mb-6">

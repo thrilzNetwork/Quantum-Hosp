@@ -7,7 +7,7 @@ export default function ConsultingSection() {
   const [isBookingOpen, setIsBookingOpen] = useState(false);
 
   return (
-    <section id="consulting" className="relative py-32 text-center text-white overflow-hidden">
+    <section id="consulting" className="relative py-16 md:py-32 text-center text-white overflow-hidden">
       <div 
         className="absolute inset-0 bg-black z-0"
         style={{ clipPath: 'inset(0% 0% 0% 0% round 0px)' }}
@@ -26,7 +26,7 @@ export default function ConsultingSection() {
           transition={{ duration: 0.6, ease: 'easeOut' }}
           className="max-w-3xl mx-auto"
         >
-          <h2 className="text-[2.5rem] md:text-[5rem] font-black uppercase leading-[1.1] md:leading-none tracking-tighter mb-8">
+          <h2 className="text-[2rem] sm:text-[3rem] md:text-[5rem] font-black uppercase leading-[1.1] md:leading-none tracking-tighter mb-8">
             Expert <br /> Consultation
           </h2>
           

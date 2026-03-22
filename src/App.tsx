@@ -83,7 +83,6 @@ export default function App() {
                   <HowItWorks />
                   <OperationsSection />
                   <StoreSection />
-                  <ImpactSection />
                   <AboutFounder />
                   <BlogSection />
                   <FreeResource />

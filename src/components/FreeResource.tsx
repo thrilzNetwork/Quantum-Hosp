@@ -20,9 +20,9 @@ export default function FreeResource() {
   };
 
   return (
-    <section id="resources" className="py-20 md:py-32 bg-black">
+    <section id="resources" className="py-16 md:py-32 bg-black">
       <div className="container">
-        <div className="bg-zinc-900 rounded-3xl p-6 md:p-16 lg:p-24 flex flex-col lg:flex-row gap-12 md:gap-16 items-center border border-white/5 shadow-2xl">
+        <div className="bg-zinc-900 rounded-3xl p-8 md:p-16 lg:p-24 flex flex-col lg:flex-row gap-10 md:gap-16 items-center border border-white/5 shadow-2xl">
           <div className="flex-1 space-y-6 md:space-y-8 text-center lg:text-left">
             <div className="space-y-4">
               <span className="text-caps-s text-pink">Free Resource</span>

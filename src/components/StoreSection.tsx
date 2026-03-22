@@ -52,10 +52,10 @@ export default function StoreSection() {
   };
 
   return (
-    <section id="store" className="bg-black py-24">
+    <section id="store" className="bg-black py-16 md:py-24">
       <div className="container">
-        <div className="max-w-3xl mb-16">
-          <h2 className="text-h2-caps mb-6 text-white">The Quantum Store</h2>
+        <div className="max-w-3xl mb-10 md:mb-16">
+          <h2 className="text-[2rem] md:text-h2-caps mb-4 md:mb-6 text-white">The Quantum Store</h2>
           <p className="text-body-l opacity-60 text-white">
             High-quality enamel pins for hospitality professionals, digital tools for your hotel, and resources to level up your operations.
           </p>

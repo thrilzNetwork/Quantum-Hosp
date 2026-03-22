@@ -19,12 +19,12 @@ export default function BlogSection() {
   if (posts.length === 0) return null;
 
   return (
-    <section id="blog" className="py-24 bg-black text-white border-b border-white/10">
+    <section id="blog" className="py-16 md:py-24 bg-black text-white border-b border-white/10">
       <div className="container">
-        <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
+        <div className="flex flex-col md:flex-row md:items-end justify-between mb-10 md:mb-12 gap-6">
           <div>
             <p className="text-[10px] font-bold text-supporting-grey uppercase tracking-widest mb-2">Insights & Updates</p>
-            <h2 className="text-h2-caps text-white">The Quantum Blog</h2>
+            <h2 className="text-[2rem] md:text-h2-caps text-white">The Quantum Blog</h2>
           </div>
           <button className="text-sm font-bold flex items-center gap-2 hover:gap-3 transition-all text-white hover:text-pink">
             View All Posts <ArrowRight size={16} />
