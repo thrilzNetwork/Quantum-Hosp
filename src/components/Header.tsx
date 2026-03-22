@@ -10,6 +10,8 @@ import ContactModal from './ContactModal';
 import LoginModal from './LoginModal';
 import { SiteSettings } from '../types';
 
+import { useAuthUI } from '../context/AuthUIContext';
+
 export default function Header() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -24,7 +26,7 @@ export default function Header() {
     return unsubSettings;
   }, []);
   const [isContactOpen, setIsContactOpen] = useState(false);
-  const [isLoginOpen, setIsLoginOpen] = useState(false);
+  const { isLoginOpen, setIsLoginOpen } = useAuthUI();
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [user, setUser] = useState<any>(null);
   const [isAdmin, setIsAdmin] = useState(false);
@@ -141,7 +143,6 @@ export default function Header() {
             <span>Search Tools</span>
           </button>
           <button onClick={() => setIsContactOpen(true)} className="hover:opacity-65 transition-opacity">Contact</button>
-          <button onClick={() => setIsLoginOpen(true)} className="hover:opacity-65 transition-opacity">Log in</button>
         </div>
       </nav>
 
@@ -281,13 +282,7 @@ export default function Header() {
                     </a>
                   )
                 ))}
-                <div className="mt-8 grid grid-cols-2 gap-4">
-                  <button 
-                    onClick={() => { setIsLoginOpen(true); setIsMobileMenuOpen(false); }}
-                    className="btn border border-white/10 py-4 rounded-xl text-sm font-bold text-white"
-                  >
-                    Log in
-                  </button>
+                <div className="mt-8 grid grid-cols-1 gap-4">
                   <button 
                     onClick={() => { setIsContactOpen(true); setIsMobileMenuOpen(false); }}
                     className="btn bg-pink text-black py-4 rounded-xl text-sm font-bold"

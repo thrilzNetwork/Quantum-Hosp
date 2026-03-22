@@ -26,6 +26,8 @@ import MainLayout from './components/MainLayout';
 import { db } from './firebase';
 import { doc, getDocFromCache, getDocFromServer, onSnapshot } from 'firebase/firestore';
 
+import { AuthUIProvider } from './context/AuthUIContext';
+
 export default function App() {
   useEffect(() => {
     const testConnection = async () => {
@@ -73,39 +75,41 @@ export default function App() {
 
   return (
     <ErrorBoundary>
-      <CartProvider>
-        <Router>
-          <Routes>
-            <Route element={<MainLayout />}>
-              <Route path="/" element={
-                <>
-                  <Hero />
-                  <HowItWorks />
-                  <OperationsSection />
-                  <StoreSection />
-                  <AboutFounder />
-                  <BlogSection />
-                  <FreeResource />
-                  <ConsultingSection />
-                </>
-              } />
-              <Route path="/user" element={
-                <ProtectedRoute>
-                  <UserPage />
+      <AuthUIProvider>
+        <CartProvider>
+          <Router>
+            <Routes>
+              <Route element={<MainLayout />}>
+                <Route path="/" element={
+                  <>
+                    <Hero />
+                    <HowItWorks />
+                    <OperationsSection />
+                    <StoreSection />
+                    <AboutFounder />
+                    <BlogSection />
+                    <FreeResource />
+                    <ConsultingSection />
+                  </>
+                } />
+                <Route path="/user" element={
+                  <ProtectedRoute>
+                    <UserPage />
+                  </ProtectedRoute>
+                } />
+                <Route path="/tools" element={<ToolsPage />} />
+                <Route path="/blog" element={<BlogPage />} />
+                <Route path="/product/:id" element={<ProductPage />} />
+              </Route>
+              <Route path="/admin" element={
+                <ProtectedRoute requireAdmin>
+                  <AdminPage />
                 </ProtectedRoute>
               } />
-              <Route path="/tools" element={<ToolsPage />} />
-              <Route path="/blog" element={<BlogPage />} />
-              <Route path="/product/:id" element={<ProductPage />} />
-            </Route>
-            <Route path="/admin" element={
-              <ProtectedRoute requireAdmin>
-                <AdminPage />
-              </ProtectedRoute>
-            } />
-          </Routes>
-        </Router>
-      </CartProvider>
+            </Routes>
+          </Router>
+        </CartProvider>
+      </AuthUIProvider>
     </ErrorBoundary>
   );
 }

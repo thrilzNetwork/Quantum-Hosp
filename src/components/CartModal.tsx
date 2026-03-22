@@ -3,8 +3,21 @@ import { motion, AnimatePresence } from 'motion/react';
 import { X, ShoppingBag, Trash2, Plus, Minus, ChevronRight } from 'lucide-react';
 import { useCart } from '../context/CartContext';
 
+import { useAuthUI } from '../context/AuthUIContext';
+import { auth } from '../firebase';
+
 export default function CartModal() {
   const { items, isOpen, setIsOpen, removeItem, updateQuantity, totalPrice, totalItems } = useCart();
+  const { setIsLoginOpen } = useAuthUI();
+
+  const handleCheckout = () => {
+    if (!auth.currentUser) {
+      setIsLoginOpen(true);
+      return;
+    }
+    // Proceed to checkout logic (e.g., Stripe)
+    console.log("Proceeding to checkout...");
+  };
 
   return (
     <AnimatePresence>
@@ -108,7 +121,10 @@ export default function CartModal() {
                   <span className="text-supporting-grey">Subtotal</span>
                   <span className="text-xl font-bold">${totalPrice}</span>
                 </div>
-                <button className="w-full btn bg-pink text-black py-4 rounded-full font-bold flex items-center justify-center group">
+                <button 
+                  onClick={handleCheckout}
+                  className="w-full btn bg-pink text-black py-4 rounded-full font-bold flex items-center justify-center group"
+                >
                   Checkout
                   <ChevronRight size={18} className="ml-2 group-hover:translate-x-1 transition-transform" />
                 </button>
