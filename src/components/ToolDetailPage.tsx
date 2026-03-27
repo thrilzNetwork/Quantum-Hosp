@@ -17,10 +17,6 @@ export default function ToolDetailPage() {
     const unsubscribe = onSnapshot(doc(db, 'tools', id), (docSnap) => {
       if (docSnap.exists()) {
         const toolData = { id: docSnap.id, ...docSnap.data() } as Tool;
-        if (toolData.productId) {
-          navigate(`/product/${toolData.productId}`, { replace: true });
-          return;
-        }
         setTool(toolData);
       }
       setLoading(false);

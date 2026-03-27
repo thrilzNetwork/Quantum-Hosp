@@ -1,22 +1,31 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { ChevronRight, X, CheckCircle2, Zap, ShoppingCart, Info, Mail } from 'lucide-react';
-import { collection, onSnapshot, query, orderBy } from 'firebase/firestore';
+import { ChevronRight, X, CheckCircle2, Zap, ShoppingCart, Info, Mail, Calendar, Eye } from 'lucide-react';
+import { collection, onSnapshot, query, orderBy, doc } from 'firebase/firestore';
 import { db, handleFirestoreError, OperationType } from '../firebase';
 import Modal from './Modal';
-import { Tool, Product } from '../types';
+import { Tool, Product, SiteSettings } from '../types';
 import { useCart } from '../context/CartContext';
 import { Link, useNavigate } from 'react-router-dom';
+import BookingModal from './BookingModal';
 
 export default function OperationsSection() {
   const navigate = useNavigate();
   const [selectedTool, setSelectedTool] = useState<Tool | null>(null);
   const [tools, setTools] = useState<Tool[]>([]);
   const [products, setProducts] = useState<Product[]>([]);
+  const [settings, setSettings] = useState<SiteSettings | null>(null);
   const [loading, setLoading] = useState(true);
+  const [isBookingOpen, setIsBookingOpen] = useState(false);
   const { addItem } = useCart();
 
   useEffect(() => {
+    const unsubSettings = onSnapshot(doc(db, 'settings', 'site_config'), (snapshot) => {
+      if (snapshot.exists()) {
+        setSettings(snapshot.data() as SiteSettings);
+      }
+    });
+
     const qTools = query(collection(db, 'tools'), orderBy('name'));
     const unsubTools = onSnapshot(qTools, (snapshot) => {
       setTools(snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as Tool)));
@@ -31,10 +40,20 @@ export default function OperationsSection() {
     });
 
     return () => {
+      unsubSettings();
       unsubTools();
       unsubProducts();
     };
   }, []);
+
+  const handleBookCall = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (settings?.googleCalendarBookingLink) {
+      window.open(settings.googleCalendarBookingLink, '_blank');
+    } else {
+      setIsBookingOpen(true);
+    }
+  };
 
   const handleBuyNow = (e: React.MouseEvent, productId?: string) => {
     e.stopPropagation();
@@ -99,30 +118,40 @@ export default function OperationsSection() {
                 </div>
               </div>
 
-              <div className="mt-12 flex flex-col sm:flex-row items-center gap-4 relative z-10">
-                {tool.productId ? (
-                  <button 
-                    onClick={(e) => handleBuyNow(e, tool.productId)}
-                    className="w-full sm:w-auto flex items-center justify-center gap-2 px-8 py-4 bg-pink text-black rounded-xl text-xs font-black uppercase tracking-widest hover:scale-105 transition-transform shadow-lg shadow-pink/20"
-                  >
-                    <ShoppingCart size={14} /> Buy Now
-                  </button>
-                ) : (
-                  <a 
-                    href={`mailto:alejandro@quantumhospitalitysolutions.com?subject=Inquiry about ${tool.name}`}
-                    onClick={(e) => e.stopPropagation()}
-                    className="w-full sm:w-auto flex items-center justify-center gap-2 px-8 py-4 bg-pink text-black rounded-xl text-xs font-black uppercase tracking-widest hover:scale-105 transition-transform shadow-lg shadow-pink/20"
-                  >
-                    <Mail size={14} /> Contact Us
-                  </a>
-                )}
-                <Link 
-                  to={`/tool/${tool.id}`}
-                  onClick={(e) => e.stopPropagation()}
-                  className="w-full sm:w-auto flex items-center justify-center gap-2 px-8 py-4 bg-white/5 border border-white/10 rounded-xl text-xs font-black uppercase tracking-widest hover:bg-white/10 transition-all"
+              <div className="mt-12 flex flex-col gap-4 relative z-10">
+                <button 
+                  onClick={handleBookCall}
+                  className="w-full flex items-center justify-center gap-2 px-8 py-4 bg-pink text-black rounded-xl text-xs font-black uppercase tracking-widest hover:scale-105 transition-transform shadow-lg shadow-pink/20"
                 >
-                  <Info size={14} /> Learn More
-                </Link>
+                  <Calendar size={14} /> Book a Call
+                </button>
+                
+                <div className="grid grid-cols-2 gap-4 w-full">
+                  <Link 
+                    to={`/tool/${tool.id}`}
+                    onClick={(e) => e.stopPropagation()}
+                    className="flex items-center justify-center gap-2 px-6 py-4 bg-white/5 border border-white/10 rounded-xl text-[10px] font-black uppercase tracking-widest hover:bg-white/10 transition-all"
+                  >
+                    <Eye size={14} /> Preview
+                  </Link>
+                  {tool.productId ? (
+                    <Link 
+                      to={`/product/${tool.productId}`}
+                      onClick={(e) => e.stopPropagation()}
+                      className="flex items-center justify-center gap-2 px-6 py-4 bg-white/5 border border-white/10 rounded-xl text-[10px] font-black uppercase tracking-widest hover:bg-white/10 transition-all"
+                    >
+                      <Info size={14} /> Learn More
+                    </Link>
+                  ) : (
+                    <Link 
+                      to={`/tool/${tool.id}`}
+                      onClick={(e) => e.stopPropagation()}
+                      className="flex items-center justify-center gap-2 px-6 py-4 bg-white/5 border border-white/10 rounded-xl text-[10px] font-black uppercase tracking-widest hover:bg-white/10 transition-all"
+                    >
+                      <Info size={14} /> Details
+                    </Link>
+                  )}
+                </div>
               </div>
 
               {/* Decorative background seed */}
@@ -184,6 +213,7 @@ export default function OperationsSection() {
           </div>
         )}
       </Modal>
+      <BookingModal isOpen={isBookingOpen} onClose={() => setIsBookingOpen(false)} />
     </section>
   );
 }

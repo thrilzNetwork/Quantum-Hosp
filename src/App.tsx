@@ -198,6 +198,7 @@ export default function App() {
                   <>
                     <Hero />
                     <HowItWorks />
+                    <ImpactSection />
                     <StoreSection />
                     <BookSection />
                     <AboutFounder />

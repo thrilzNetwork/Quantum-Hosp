@@ -60,38 +60,49 @@ export default function Hero() {
   };
 
   return (
-    <section className="bg-black py-4 md:py-8">
-      <div className="container flex justify-center">
-        <div className="bg-black text-white rounded-3xl p-8 md:p-16 lg:p-20 flex flex-col justify-center relative overflow-hidden border border-white/5 max-w-4xl w-full">
-          {/* Decorative element */}
-          <div className="absolute top-1/2 -left-10 w-9 h-9 text-pink/20 -translate-y-1/2">
-             <svg viewBox="0 0 23 25" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M21.5023 14.2275C22.3563 14.115 23 13.389 23 12.5277C23 11.6734 22.3661 10.9507 21.52 10.8322C8.56301 9.01687 2.2622 7.3115 0 0.5V24.5C2.34095 18.2157 7.6187 16.0568 21.5023 14.2275Z" fill="currentColor"></path>
-             </svg>
-          </div>
-
+    <section className="bg-black min-h-screen flex items-center relative overflow-hidden pt-20">
+      {/* Background decorative elements */}
+      <div className="absolute top-0 right-0 w-[800px] h-[800px] bg-pink/5 blur-[150px] rounded-full -translate-y-1/2 translate-x-1/2 pointer-events-none" />
+      <div className="absolute bottom-0 left-0 w-[600px] h-[600px] bg-pink/5 blur-[150px] rounded-full translate-y-1/2 -translate-x-1/2 pointer-events-none" />
+      
+      <div className="container relative z-10">
+        <div className="max-w-5xl mx-auto text-center">
           <motion.div 
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            className="space-y-8 relative z-10 text-center flex flex-col items-center"
+            transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
+            className="space-y-12"
           >
-            <h1 className="text-[2.5rem] sm:text-[3rem] md:text-h3-caps leading-[0.95] md:leading-[0.85]">
-              {settings?.heroTitle ? (
-                <span dangerouslySetInnerHTML={{ __html: settings.heroTitle }} />
-              ) : (
-                <>Tools Built by <br className="hidden md:block" /> <span className="text-pink">Operators</span> for <br className="hidden md:block" /> Operators</>
-              )}
-            </h1>
+            <div className="space-y-6">
+              <div className="reveal-text inline-block">
+                <span className="text-caps-s text-pink px-4 py-1.5 rounded-full bg-pink/10 border border-pink/20">Quantum Hospitality Solutions</span>
+              </div>
+              <h1 className="text-[4.5rem] md:text-[8rem] lg:text-[10rem] font-black uppercase leading-[0.8] tracking-tighter text-white">
+                <div className="reveal-text">
+                  <span style={{ animationDelay: '0.1s' }}>Operational</span>
+                </div>
+                <div className="reveal-text">
+                  <span className="text-pink" style={{ animationDelay: '0.2s' }}>Excellence</span>
+                </div>
+                <div className="reveal-text">
+                  <span style={{ animationDelay: '0.3s' }}>Redefined.</span>
+                </div>
+              </h1>
+            </div>
             
-            <p className="text-body-m opacity-70 max-w-md font-medium">
-              {settings?.heroSubtitle || 'AI-powered operational tools built by a hotel general manager to solve real hospitality problems. Improve operations, increase guest satisfaction, and deploy tools instantly.'}
-            </p>
+            <motion.p 
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 0.6 }}
+              transition={{ delay: 0.8, duration: 1 }}
+              className="text-body-l max-w-2xl mx-auto font-medium leading-relaxed"
+            >
+              {settings?.heroSubtitle || 'AI-powered operational tools built by hospitality operators to solve real hospitality problems. Improve operations, increase guest satisfaction, and deploy tools instantly.'}
+            </motion.p>
 
-            <div className="flex flex-wrap justify-center gap-4 pt-4">
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-6 pt-8">
               <button 
                 onClick={handleScrollToTools}
-                className="btn px-10 py-5 bg-white text-black rounded-2xl font-black uppercase tracking-tighter hover:bg-pink transition-all shadow-xl shadow-white/5"
+                className="w-full sm:w-auto px-12 py-6 bg-pink text-black rounded-2xl font-black uppercase tracking-tighter hover:bg-white transition-all shadow-2xl shadow-pink/20"
               >
                 Explore Tools
               </button>
@@ -100,7 +111,7 @@ export default function Hero() {
                   href={settings.bookUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="btn px-10 py-5 bg-pink text-black rounded-2xl font-black uppercase tracking-tighter hover:bg-white transition-all shadow-xl shadow-pink/10"
+                  className="w-full sm:w-auto px-12 py-6 bg-white/5 border border-white/10 text-white rounded-2xl font-black uppercase tracking-tighter hover:bg-white/10 transition-all"
                 >
                   Buy the Book
                 </a>

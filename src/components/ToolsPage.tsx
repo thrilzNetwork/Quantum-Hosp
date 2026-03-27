@@ -1,20 +1,29 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { ShoppingCart, Info, Search, Filter, ChevronRight, Mail } from 'lucide-react';
-import { collection, onSnapshot, query, orderBy } from 'firebase/firestore';
+import { ShoppingCart, Info, Search, Filter, ChevronRight, Mail, Calendar, Eye } from 'lucide-react';
+import { collection, onSnapshot, query, orderBy, doc } from 'firebase/firestore';
 import { db, handleFirestoreError, OperationType } from '../firebase';
-import { Tool, Product } from '../types';
+import { Tool, Product, SiteSettings } from '../types';
 import { useCart } from '../context/CartContext';
 import { Link } from 'react-router-dom';
+import BookingModal from './BookingModal';
 
 export default function ToolsPage() {
   const [tools, setTools] = useState<Tool[]>([]);
   const [products, setProducts] = useState<Product[]>([]);
+  const [settings, setSettings] = useState<SiteSettings | null>(null);
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
+  const [isBookingOpen, setIsBookingOpen] = useState(false);
   const { addItem } = useCart();
 
   useEffect(() => {
+    const unsubSettings = onSnapshot(doc(db, 'settings', 'site_config'), (snapshot) => {
+      if (snapshot.exists()) {
+        setSettings(snapshot.data() as SiteSettings);
+      }
+    });
+
     const qTools = query(collection(db, 'tools'), orderBy('name'));
     const unsubTools = onSnapshot(qTools, (snapshot) => {
       setTools(snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as Tool)));
@@ -29,10 +38,20 @@ export default function ToolsPage() {
     });
 
     return () => {
+      unsubSettings();
       unsubTools();
       unsubProducts();
     };
   }, []);
+
+  const handleBookCall = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (settings?.googleCalendarBookingLink) {
+      window.open(settings.googleCalendarBookingLink, '_blank');
+    } else {
+      setIsBookingOpen(true);
+    }
+  };
 
   const handleBuyNow = (e: React.MouseEvent, productId?: string) => {
     e.stopPropagation();
@@ -128,28 +147,37 @@ export default function ToolsPage() {
                     ))}
                   </div>
 
-                  <div className="relative z-10 flex flex-col gap-4">
-                    {tool.productId ? (
-                      <button 
-                        onClick={(e) => handleBuyNow(e, tool.productId)}
-                        className="w-full flex items-center justify-center gap-3 px-8 py-5 bg-black text-white rounded-2xl text-[11px] font-black uppercase tracking-widest hover:bg-white hover:text-black transition-all shadow-2xl"
-                      >
-                        <ShoppingCart size={18} /> Buy Now
-                      </button>
-                    ) : (
-                      <a 
-                        href={`mailto:alejandro@quantumhospitalitysolutions.com?subject=Inquiry about ${tool.name}`}
-                        className="w-full flex items-center justify-center gap-3 px-8 py-5 bg-black text-white rounded-2xl text-[11px] font-black uppercase tracking-widest hover:bg-white hover:text-black transition-all shadow-2xl"
-                      >
-                        <Mail size={18} /> Contact Us
-                      </a>
-                    )}
-                    <Link 
-                      to={`/tool/${tool.id}`}
-                      className="w-full flex items-center justify-center gap-3 px-8 py-5 bg-white/10 backdrop-blur-md rounded-2xl text-[11px] font-black uppercase tracking-widest hover:bg-white/20 transition-all border border-white/10"
+                  <div className="relative z-10 flex flex-col gap-3">
+                    <button 
+                      onClick={handleBookCall}
+                      className="w-full flex items-center justify-center gap-3 px-8 py-5 bg-black text-white rounded-2xl text-[11px] font-black uppercase tracking-widest hover:bg-white hover:text-black transition-all shadow-2xl"
                     >
-                      <Info size={18} /> Learn More
-                    </Link>
+                      <Calendar size={18} /> Book a Call
+                    </button>
+                    
+                    <div className="grid grid-cols-2 gap-3">
+                      <Link 
+                        to={`/tool/${tool.id}`}
+                        className="flex items-center justify-center gap-2 px-4 py-4 bg-white/10 backdrop-blur-md rounded-2xl text-[10px] font-black uppercase tracking-widest hover:bg-white/20 transition-all border border-white/10"
+                      >
+                        <Eye size={16} /> Preview
+                      </Link>
+                      {tool.productId ? (
+                        <Link 
+                          to={`/product/${tool.productId}`}
+                          className="flex items-center justify-center gap-2 px-4 py-4 bg-white/10 backdrop-blur-md rounded-2xl text-[10px] font-black uppercase tracking-widest hover:bg-white/20 transition-all border border-white/10"
+                        >
+                          <Info size={16} /> Learn More
+                        </Link>
+                      ) : (
+                        <Link 
+                          to={`/tool/${tool.id}`}
+                          className="flex items-center justify-center gap-2 px-4 py-4 bg-white/10 backdrop-blur-md rounded-2xl text-[10px] font-black uppercase tracking-widest hover:bg-white/20 transition-all border border-white/10"
+                        >
+                          <Info size={16} /> Details
+                        </Link>
+                      )}
+                    </div>
                   </div>
                 </div>
               </motion.div>
@@ -163,6 +191,7 @@ export default function ToolsPage() {
           </div>
         )}
       </div>
+      <BookingModal isOpen={isBookingOpen} onClose={() => setIsBookingOpen(false)} />
     </div>
   );
 }
