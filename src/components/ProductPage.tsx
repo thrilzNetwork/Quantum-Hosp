@@ -102,7 +102,7 @@ export default function ProductPage() {
                 {product.headline}
               </p>
             )}
-            <p className="text-body-l font-medium opacity-60 mb-12 leading-relaxed text-white max-w-xl">
+            <p className="text-body-l font-medium opacity-100 text-white/90 mb-12 leading-relaxed max-w-xl">
               {product.description}
             </p>
 
@@ -131,7 +131,7 @@ export default function ProductPage() {
               <div className="space-y-12">
                 <div className="flex flex-col gap-6">
                   <a 
-                    href={`mailto:${product.supportEmail || 'alejandro@quantumhospitalitysolutions.com'}?subject=Inquiry about ${product.name}`}
+                    href={`mailto:alejandrosoria@me.com?subject=Inquiry about ${product.name}`}
                     className="flex-1 min-w-[240px] py-6 rounded-2xl font-black uppercase tracking-[0.15em] text-xs transition-all shadow-2xl hover:scale-[1.02] active:scale-[0.98] bg-pink text-black hover:bg-white flex items-center justify-center gap-3"
                   >
                     <Mail size={18} /> Contact Alejandro
@@ -156,12 +156,10 @@ export default function ProductPage() {
                 <div className="text-[3.5rem] font-black text-white tracking-tighter leading-none">${product.price}</div>
                 <div className="flex flex-wrap gap-6">
                   <button 
-                    onClick={handleAddToCart}
-                    className={`flex-1 min-w-[240px] py-6 rounded-2xl font-black uppercase tracking-[0.15em] text-xs transition-all shadow-2xl hover:scale-[1.02] active:scale-[0.98] ${
-                      added ? 'bg-emerald-500 text-white' : 'bg-pink text-black hover:bg-white'
-                    }`}
+                    onClick={() => window.location.href = `mailto:alejandrosoria@me.com?subject=Inquiry about ${product.name}`}
+                    className="flex-1 min-w-[240px] py-6 rounded-2xl font-black uppercase tracking-[0.15em] text-xs transition-all shadow-2xl hover:scale-[1.02] active:scale-[0.98] bg-pink text-black hover:bg-white flex items-center justify-center gap-3"
                   >
-                    {added ? 'Added to Cart!' : 'Buy Now'}
+                    <Mail size={18} /> Contact Alejandro
                   </button>
                   <button className="px-10 py-6 rounded-2xl border border-white/20 text-white font-black uppercase tracking-widest text-xs hover:bg-white hover:text-black transition-all">
                     Share
@@ -258,7 +256,7 @@ export default function ProductPage() {
         {product.isComingSoon && product.whatToExpect && (
           <section className="py-32 border-t border-white/5 text-center max-w-4xl mx-auto">
             <h2 className="text-[2.5rem] md:text-h2-caps font-black uppercase tracking-tighter leading-none text-white mb-10">What to <span className="text-pink">expect</span>.</h2>
-            <p className="text-body-l font-medium opacity-60 leading-relaxed text-white">
+            <p className="text-body-l font-medium opacity-100 text-white/90 leading-relaxed text-white">
               {product.whatToExpect}
             </p>
           </section>
@@ -270,7 +268,7 @@ export default function ProductPage() {
             <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(circle_at_50%_50%,rgba(255,105,180,0.05),transparent_70%)]"></div>
             <div className="relative z-10">
               <h2 className="text-[3rem] md:text-h1-caps font-black uppercase tracking-tighter leading-none text-white mb-10">Ready to <span className="text-pink">level up</span>?</h2>
-              <p className="text-body-l font-medium opacity-60 mb-16 max-w-2xl mx-auto">
+              <p className="text-body-l font-medium opacity-100 text-white/90 mb-16 max-w-2xl mx-auto">
                 Get instant access to {product.name} and start improving your operations today.
               </p>
               <div className="flex flex-col md:flex-row items-center justify-center gap-8">
@@ -280,17 +278,20 @@ export default function ProductPage() {
                   </button>
                 ) : product.contactOnly ? (
                   <a 
-                    href={`mailto:${product.supportEmail || 'alejandro@quantumhospitalitysolutions.com'}?subject=Inquiry about ${product.name}`}
+                    href={`mailto:alejandrosoria@me.com?subject=Inquiry about ${product.name}`}
                     className="px-16 py-6 bg-pink text-black rounded-2xl font-black uppercase tracking-widest text-xs shadow-2xl hover:bg-white transition-all flex items-center gap-3"
                   >
                     <Mail size={18} /> Contact Alejandro
                   </a>
                 ) : (
-                  <button onClick={handleAddToCart} className="px-16 py-6 bg-pink text-black rounded-2xl font-black uppercase tracking-widest text-xs shadow-2xl hover:bg-white transition-all">
-                    Get Started Now
+                  <button 
+                    onClick={() => window.location.href = `mailto:alejandrosoria@me.com?subject=Inquiry about ${product.name}`}
+                    className="px-16 py-6 bg-pink text-black rounded-2xl font-black uppercase tracking-widest text-xs shadow-2xl hover:bg-white transition-all flex items-center gap-3"
+                  >
+                    <Mail size={18} /> Contact Alejandro
                   </button>
                 )}
-                <a href={`mailto:${product.supportEmail || 'alejandro@quantumhospitality.com'}`} className="flex items-center gap-3 text-white/40 hover:text-pink transition-all font-black uppercase tracking-widest text-[10px]">
+                <a href="mailto:alejandrosoria@me.com" className="flex items-center gap-3 text-white/40 hover:text-pink transition-all font-black uppercase tracking-widest text-[10px]">
                   <div className="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center">
                     <Mail size={18} />
                   </div>

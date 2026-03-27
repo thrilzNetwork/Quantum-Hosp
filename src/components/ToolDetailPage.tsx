@@ -91,7 +91,7 @@ export default function ToolDetailPage() {
             <div className="space-y-12">
               <div>
                 <h2 className="text-[10px] font-black uppercase tracking-[0.3em] text-pink mb-6">Overview</h2>
-                <p className="text-body-l font-medium opacity-60 leading-relaxed text-white max-w-xl">
+                <p className="text-body-l font-medium opacity-100 leading-relaxed text-white/90 max-w-xl">
                   {tool.description}
                 </p>
               </div>
@@ -128,12 +128,12 @@ export default function ToolDetailPage() {
             <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(circle_at_50%_50%,rgba(255,105,180,0.05),transparent_70%)]"></div>
             <div className="relative z-10">
               <h2 className="text-[3rem] md:text-h1-caps font-black uppercase tracking-tighter leading-none text-white mb-10">Ready to <span className="text-pink">get started</span>?</h2>
-              <p className="text-body-l font-medium opacity-80 mb-16 max-w-2xl mx-auto text-white">
+              <p className="text-body-l font-medium opacity-100 text-white/90 mb-16 max-w-2xl mx-auto text-white">
                 {tool.useCase}
               </p>
               <div className="flex flex-col md:flex-row items-center justify-center gap-8">
                 <a 
-                  href={`mailto:alejandro@quantumhospitalitysolutions.com?subject=Inquiry about ${tool.name}`}
+                  href={`mailto:alejandrosoria@me.com?subject=Inquiry about ${tool.name}`}
                   className="px-16 py-6 bg-pink text-black rounded-2xl font-black uppercase tracking-widest text-xs shadow-2xl hover:bg-white transition-all flex items-center gap-3"
                 >
                   <Mail size={18} /> Contact Alejandro

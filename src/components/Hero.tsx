@@ -61,29 +61,43 @@ export default function Hero() {
 
   return (
     <section className="bg-black min-h-screen flex items-center relative overflow-hidden pt-20">
-      {/* Background decorative elements */}
-      <div className="absolute top-0 right-0 w-[800px] h-[800px] bg-pink/5 blur-[150px] rounded-full -translate-y-1/2 translate-x-1/2 pointer-events-none" />
-      <div className="absolute bottom-0 left-0 w-[600px] h-[600px] bg-pink/5 blur-[150px] rounded-full translate-y-1/2 -translate-x-1/2 pointer-events-none" />
+      {/* Immersive high-tech background */}
+      <div className="absolute inset-0 pointer-events-none">
+        <div className="absolute top-0 right-0 w-[1000px] h-[1000px] bg-pink/10 blur-[180px] rounded-full -translate-y-1/2 translate-x-1/2 animate-glow" />
+        <div className="absolute bottom-0 left-0 w-[800px] h-[800px] bg-pink/5 blur-[150px] rounded-full translate-y-1/2 -translate-x-1/2" />
+        
+        {/* Grid pattern */}
+        <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff05_1px,transparent_1px),linear-gradient(to_bottom,#ffffff05_1px,transparent_1px)] bg-[size:64px_64px] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)]" />
+      </div>
       
       <div className="container relative z-10">
-        <div className="max-w-5xl mx-auto text-center">
+        <div className="max-w-6xl mx-auto">
           <motion.div 
-            initial={{ opacity: 0, y: 30 }}
+            initial={{ opacity: 0, y: 40 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
-            className="space-y-12"
+            transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
+            className="space-y-16 text-center"
           >
-            <div className="space-y-6">
-              <div className="reveal-text inline-block">
-                <span className="text-caps-s text-pink px-4 py-1.5 rounded-full bg-pink/10 border border-pink/20">Quantum Hospitality Solutions</span>
-              </div>
-              <h1 className="text-[4.5rem] md:text-[8rem] lg:text-[10rem] font-black uppercase leading-[0.8] tracking-tighter text-white">
+            <div className="space-y-8">
+              <motion.div 
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ delay: 0.2, duration: 0.8 }}
+                className="inline-flex items-center gap-3 px-6 py-2 rounded-full glass border-pink/20 text-pink"
+              >
+                <div className="w-2 h-2 rounded-full bg-pink animate-pulse" />
+                <span className="text-caps-s">Quantum Hospitality Solutions</span>
+              </motion.div>
+
+              <h1 className="text-h1-caps text-white">
                 <div className="reveal-text">
                   <span style={{ animationDelay: '0.1s' }}>Operational</span>
                 </div>
+                <br />
                 <div className="reveal-text">
                   <span className="text-pink" style={{ animationDelay: '0.2s' }}>Excellence</span>
                 </div>
+                <br />
                 <div className="reveal-text">
                   <span style={{ animationDelay: '0.3s' }}>Redefined.</span>
                 </div>
@@ -92,9 +106,9 @@ export default function Hero() {
             
             <motion.p 
               initial={{ opacity: 0 }}
-              animate={{ opacity: 0.6 }}
+              animate={{ opacity: 0.8 }}
               transition={{ delay: 0.8, duration: 1 }}
-              className="text-body-l max-w-2xl mx-auto font-medium leading-relaxed"
+              className="text-body-l max-w-3xl mx-auto font-medium leading-tight text-white/80"
             >
               {settings?.heroSubtitle || 'AI-powered operational tools built by hospitality operators to solve real hospitality problems. Improve operations, increase guest satisfaction, and deploy tools instantly.'}
             </motion.p>
@@ -102,7 +116,7 @@ export default function Hero() {
             <div className="flex flex-col sm:flex-row items-center justify-center gap-6 pt-8">
               <button 
                 onClick={handleScrollToTools}
-                className="w-full sm:w-auto px-12 py-6 bg-pink text-black rounded-2xl font-black uppercase tracking-tighter hover:bg-white transition-all shadow-2xl shadow-pink/20"
+                className="btn-primary w-full sm:w-auto text-sm"
               >
                 Explore Tools
               </button>
@@ -111,7 +125,7 @@ export default function Hero() {
                   href={settings.bookUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-full sm:w-auto px-12 py-6 bg-white/5 border border-white/10 text-white rounded-2xl font-black uppercase tracking-tighter hover:bg-white/10 transition-all"
+                  className="btn-secondary w-full sm:w-auto text-sm"
                 >
                   Buy the Book
                 </a>

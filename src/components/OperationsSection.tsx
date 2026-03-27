@@ -48,11 +48,7 @@ export default function OperationsSection() {
 
   const handleBookCall = (e: React.MouseEvent) => {
     e.stopPropagation();
-    if (settings?.googleCalendarBookingLink) {
-      window.open(settings.googleCalendarBookingLink, '_blank');
-    } else {
-      setIsBookingOpen(true);
-    }
+    window.location.href = 'mailto:alejandrosoria@me.com';
   };
 
   const handleBuyNow = (e: React.MouseEvent, productId?: string) => {
@@ -65,99 +61,53 @@ export default function OperationsSection() {
   };
 
   return (
-    <section id="tools" className="py-20 md:py-32 bg-black text-white border-b border-white/10 relative overflow-hidden">
+    <section id="tools" className="section-padding bg-black text-white border-b border-white/10 relative overflow-hidden">
       {/* Decorative background elements */}
-      <div className="absolute top-1/4 left-0 w-96 h-96 bg-pink/5 blur-[120px] rounded-full -translate-x-1/2" />
-      <div className="absolute bottom-1/4 right-0 w-96 h-96 bg-pink/5 blur-[120px] rounded-full translate-x-1/2" />
+      <div className="absolute top-1/4 left-0 w-[600px] h-[600px] bg-pink/5 blur-[150px] rounded-full -translate-x-1/2 animate-glow" />
+      <div className="absolute bottom-1/4 right-0 w-[600px] h-[600px] bg-pink/5 blur-[150px] rounded-full translate-x-1/2" />
 
       <div className="container relative z-10">
-        <div className="max-w-xl mb-16 space-y-4">
-          <span className="text-caps-s text-pink">Featured Tools</span>
-          <h2 className="text-h3 font-black uppercase tracking-tight">Operational Excellence</h2>
-          <p className="text-body-m opacity-60">
+        <div className="max-w-3xl mb-20 md:mb-32 space-y-8">
+          <motion.div 
+            initial={{ opacity: 0, x: -20 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            className="inline-flex items-center gap-3 px-4 py-1 rounded-full glass border-pink/20 text-pink"
+          >
+            <Zap size={14} className="animate-pulse" />
+            <span className="text-caps-s">Featured Tools</span>
+          </motion.div>
+          <h2 className="text-h2-caps font-black uppercase tracking-tight">Operational <span className="text-pink">Excellence</span></h2>
+          <p className="text-body-l opacity-100 text-white/90 max-w-2xl">
             Simple, product-first solutions for every department. No fluff, just operational efficiency.
           </p>
         </div>
         
-        <div className="grid gap-6 md:grid-cols-6">
-          {tools.map((tool) => (
-            <motion.div 
-              key={tool.id}
-              initial={{ opacity: 0, scale: 0.95 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              viewport={{ once: true }}
-              onClick={() => navigate(`/tool/${tool.id}`)}
-              className={`${tool.span} group cursor-pointer relative flex flex-col justify-between overflow-hidden rounded-3xl bg-zinc-900 border border-white/10 hover:border-pink/30 transition-all p-8 md:p-12 min-h-[350px] md:min-h-[450px]`}
-            >
-              <div className="relative z-10">
-                <div className="flex items-center gap-x-3 mb-6">
-                  <span className="text-caps-s font-bold text-pink">{tool.name}</span>
-                  <span className="w-1 h-1 rounded-full bg-white/20"></span>
-                  <span className="text-[0.625rem] font-black uppercase tracking-widest text-white/40">{tool.tag}</span>
-                </div>
-                <h3 className="text-h4 font-black uppercase tracking-tight mb-4">{tool.headline || tool.name}</h3>
-                <p className="text-body-m opacity-60 max-w-lg mb-8 leading-relaxed">
-                  {tool.description}
-                </p>
-                
-                <div className="space-y-4 mb-8">
-                  <div className="text-[0.625rem] font-black uppercase tracking-widest text-white/40">Key Features:</div>
-                  <ul className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                    {tool.features?.map(feature => (
-                      <li key={feature} className="flex items-center gap-3 text-sm font-bold text-white/80">
-                        <div className="w-1.5 h-1.5 rounded-full bg-pink"></div>
-                        {feature}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-
-                <div className="p-6 rounded-2xl bg-black/40 border border-white/5 backdrop-blur-sm">
-                  <div className="text-[0.625rem] font-black uppercase tracking-widest text-white/40 mb-2">Use Case:</div>
-                  <p className="text-sm font-bold text-white/90 leading-relaxed">{tool.useCase}</p>
-                </div>
-              </div>
-
-              <div className="mt-12 flex flex-col gap-4 relative z-10">
-                <button 
-                  onClick={handleBookCall}
-                  className="w-full flex items-center justify-center gap-2 px-8 py-4 bg-pink text-black rounded-xl text-xs font-black uppercase tracking-widest hover:scale-105 transition-transform shadow-lg shadow-pink/20"
-                >
-                  <Calendar size={14} /> Book a Call
-                </button>
-                
-                <div className="grid grid-cols-2 gap-4 w-full">
-                  <Link 
-                    to={`/tool/${tool.id}`}
-                    onClick={(e) => e.stopPropagation()}
-                    className="flex items-center justify-center gap-2 px-6 py-4 bg-white/5 border border-white/10 rounded-xl text-[10px] font-black uppercase tracking-widest hover:bg-white/10 transition-all"
-                  >
-                    <Eye size={14} /> Preview
-                  </Link>
-                  {tool.productId ? (
-                    <Link 
-                      to={`/product/${tool.productId}`}
-                      onClick={(e) => e.stopPropagation()}
-                      className="flex items-center justify-center gap-2 px-6 py-4 bg-white/5 border border-white/10 rounded-xl text-[10px] font-black uppercase tracking-widest hover:bg-white/10 transition-all"
-                    >
-                      <Info size={14} /> Learn More
-                    </Link>
-                  ) : (
-                    <Link 
-                      to={`/tool/${tool.id}`}
-                      onClick={(e) => e.stopPropagation()}
-                      className="flex items-center justify-center gap-2 px-6 py-4 bg-white/5 border border-white/10 rounded-xl text-[10px] font-black uppercase tracking-widest hover:bg-white/10 transition-all"
-                    >
-                      <Info size={14} /> Details
-                    </Link>
-                  )}
-                </div>
-              </div>
-
-              {/* Decorative background seed */}
-              <div className="absolute -bottom-20 -right-20 w-64 h-64 opacity-20 pointer-events-none blur-3xl bg-pink/10 rounded-full group-hover:bg-pink/20 transition-colors"></div>
-            </motion.div>
-          ))}
+        <div className="py-40 text-center glass rounded-[3rem] mb-32 relative overflow-hidden group">
+          <div className="absolute inset-0 bg-pink/5 opacity-0 group-hover:opacity-100 transition-opacity duration-700 blur-3xl" />
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="relative z-10 space-y-6"
+          >
+            <div className="inline-flex items-center gap-3 px-4 py-1.5 rounded-full glass border-pink/20 text-pink mb-4">
+              <Zap size={14} className="animate-pulse" />
+              <span className="text-caps-s">Coming Soon</span>
+            </div>
+            <h3 className="text-h3-caps text-white/20">Operational Tools <br /> <span className="text-white/5">In Development</span></h3>
+            <p className="text-body-m text-white/40 max-w-md mx-auto">
+              We're building the next generation of hospitality tools. Get early access to our beta release.
+            </p>
+            <div className="pt-10">
+              <button 
+                onClick={() => window.location.href = 'mailto:alejandrosoria@me.com?subject=Tools Beta Access'}
+                className="btn-secondary px-12"
+              >
+                Request Beta Access
+              </button>
+            </div>
+          </motion.div>
         </div>
       </div>
 
@@ -171,7 +121,7 @@ export default function OperationsSection() {
             <div className={`p-10 rounded-3xl bg-zinc-900 border border-white/10`}>
               <div className="text-caps-s text-pink mb-2">{selectedTool.tag}</div>
               <h4 className="text-h4 font-black uppercase tracking-tight mb-4">{selectedTool.name}</h4>
-              <p className="text-body-m opacity-60 leading-relaxed">{selectedTool.description}</p>
+              <p className="text-body-m opacity-100 text-white/90 leading-relaxed">{selectedTool.description}</p>
             </div>
 
             <div className="space-y-6">
@@ -195,10 +145,10 @@ export default function OperationsSection() {
               <p className="text-sm font-bold text-white/60 leading-relaxed relative z-10">This tool can be activated for your hotel in less than 5 minutes. No integration required.</p>
               <div className="flex flex-col sm:flex-row gap-4 relative z-10">
                 <button 
-                  onClick={(e) => handleBuyNow(e, selectedTool.productId)}
+                  onClick={() => window.location.href = 'mailto:alejandrosoria@me.com'}
                   className="flex-1 bg-pink text-black py-4 rounded-xl font-black uppercase tracking-widest text-xs hover:scale-[1.02] transition-transform flex items-center justify-center gap-2 shadow-lg shadow-pink/20"
                 >
-                  <ShoppingCart size={18} /> Buy Now
+                  <Mail size={18} /> Contact Alejandro
                 </button>
                 {selectedTool.productId && (
                   <Link 

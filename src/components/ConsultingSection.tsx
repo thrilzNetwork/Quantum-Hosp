@@ -20,11 +20,7 @@ export default function ConsultingSection() {
   }, []);
 
   const handleBooking = () => {
-    if (settings?.googleCalendarBookingLink) {
-      window.open(settings.googleCalendarBookingLink, '_blank');
-    } else {
-      setIsBookingOpen(true);
-    }
+    window.location.href = 'mailto:alejandrosoria@me.com';
   };
 
   return (
@@ -62,7 +58,7 @@ export default function ConsultingSection() {
               <ChevronRight size={20} className="group-hover:translate-x-1 transition-transform" />
             </button>
             <a 
-              href="#contact"
+              href="mailto:alejandrosoria@me.com"
               className="w-full sm:w-auto px-12 py-6 bg-white/5 border border-white/10 text-white rounded-2xl font-black uppercase tracking-tighter hover:bg-white/10 transition-all flex items-center justify-center"
             >
               Send a Message

@@ -52,152 +52,94 @@ export default function StoreSection() {
   };
 
   return (
-    <section id="store" className="bg-black py-16 md:py-32">
+    <section id="store" className="section-padding bg-black">
       <div className="container">
-        <div className="max-w-3xl mb-12 md:mb-24">
-          <div className="flex items-center gap-3 mb-6">
-            <span className="w-12 h-[2px] bg-pink"></span>
+        <div className="max-w-4xl mb-20 md:mb-32">
+          <motion.div 
+            initial={{ opacity: 0, x: -20 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            className="flex items-center gap-4 mb-8"
+          >
+            <div className="w-12 h-px bg-pink" />
             <span className="text-caps-s text-pink font-black">Marketplace</span>
-          </div>
-          <h2 className="text-[3.5rem] md:text-h3-caps font-black uppercase leading-[0.85] tracking-tighter text-white mb-8">
+          </motion.div>
+          <h2 className="text-h2-caps font-black uppercase leading-[0.85] tracking-tighter text-white mb-10">
             The <span className="text-pink">Quantum</span> Store
           </h2>
-          <p className="text-body-m opacity-70 text-white max-w-2xl mb-12 font-medium">
+          <p className="text-body-l opacity-100 text-white/90 max-w-3xl mb-16 font-medium">
             Curated hospitality essentials. From iconic enamel pins to powerful operational frameworks, every item is designed to help you master the art of service.
           </p>
 
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 border-t border-white/5 pt-10">
-            <div className="flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-white/40">
-              <Zap size={14} className="text-pink" />
-              <span>Instant Access</span>
-            </div>
-            <div className="flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-white/40">
-              <ShieldCheck size={14} className="text-pink" />
-              <span>Secure Checkout</span>
-            </div>
-            <div className="flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-white/40">
-              <Package size={14} className="text-pink" />
-              <span>Global Shipping</span>
-            </div>
-            <div className="flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-white/40">
-              <Globe size={14} className="text-pink" />
-              <span>Operator Built</span>
-            </div>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 border-t border-white/5 pt-12">
+            {[
+              { icon: Zap, label: 'Instant Access' },
+              { icon: ShieldCheck, label: 'Secure Checkout' },
+              { icon: Package, label: 'Global Shipping' },
+              { icon: Globe, label: 'Operator Built' }
+            ].map((item, i) => (
+              <motion.div 
+                key={item.label}
+                initial={{ opacity: 0, y: 10 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.1 }}
+                className="flex items-center gap-3 text-[0.65rem] font-black uppercase tracking-[0.2em] text-white/40"
+              >
+                <item.icon size={16} className="text-pink" />
+                <span>{item.label}</span>
+              </motion.div>
+            ))}
           </div>
         </div>
 
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-8 mb-16 border-b border-white/5 pb-10">
-          <div className="flex flex-wrap gap-3">
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-10 mb-20 border-b border-white/5 pb-12">
+          <div className="flex flex-wrap gap-4">
             {categories.map((cat) => (
               <button
                 key={cat.value}
                 onClick={() => setActiveCategory(cat.value)}
-                className={`px-8 py-3 rounded-full text-[10px] font-black uppercase tracking-widest transition-all ${
+                className={`px-10 py-4 rounded-2xl text-[10px] font-black uppercase tracking-widest transition-all duration-500 ${
                   activeCategory === cat.value 
-                    ? 'bg-pink text-black' 
-                    : 'bg-white/5 text-white/60 hover:bg-white/10 hover:text-white'
+                    ? 'bg-pink text-black shadow-lg shadow-pink/20' 
+                    : 'glass text-white/60 hover:bg-white/10 hover:text-white'
                 }`}
               >
                 {cat.label}
               </button>
             ))}
           </div>
-          <div className="text-[10px] font-black uppercase tracking-widest text-white/40">
+          <div className="text-[10px] font-black uppercase tracking-widest text-white/30">
             Showing {filteredProducts.length} {filteredProducts.length === 1 ? 'Product' : 'Products'}
           </div>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-x-8 gap-y-16 mb-24">
-          <AnimatePresence mode="popLayout">
-            {filteredProducts.map((product) => (
-              <motion.div
-                layout
-                key={product.id}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, scale: 0.95 }}
-                className="group flex flex-col"
+        <div className="py-40 text-center glass rounded-[3rem] mb-32 relative overflow-hidden group">
+          <div className="absolute inset-0 bg-pink/5 opacity-0 group-hover:opacity-100 transition-opacity duration-700 blur-3xl" />
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="relative z-10 space-y-6"
+          >
+            <div className="inline-flex items-center gap-3 px-4 py-1.5 rounded-full glass border-pink/20 text-pink mb-4">
+              <Zap size={14} className="animate-pulse" />
+              <span className="text-caps-s">Coming Soon</span>
+            </div>
+            <h3 className="text-h3-caps text-white/20">Marketplace <br /> <span className="text-white/5">Under Construction</span></h3>
+            <p className="text-body-m text-white/40 max-w-md mx-auto">
+              We're curating the ultimate collection of hospitality essentials. Sign up to be notified when we launch.
+            </p>
+            <div className="pt-10">
+              <button 
+                onClick={() => window.location.href = 'mailto:alejandrosoria@me.com?subject=Marketplace Waitlist'}
+                className="btn-secondary px-12"
               >
-                <div className="relative aspect-[4/5] rounded-2xl overflow-hidden bg-black mb-6 border border-white/5">
-                  <Link to={`/product/${product.id}`} className="block w-full h-full">
-                    <img 
-                      src={product.image} 
-                      alt={product.name}
-                      className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-                      referrerPolicy="no-referrer"
-                    />
-                    <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-center justify-center">
-                      <span className="px-8 py-4 bg-white text-black text-[10px] font-black uppercase tracking-widest rounded-full transform translate-y-8 group-hover:translate-y-0 transition-transform duration-500">
-                        Quick View
-                      </span>
-                    </div>
-                  </Link>
-                  {product.badge && (
-                    <div className="absolute top-6 left-6 bg-white text-black px-4 py-1.5 rounded-sm text-[9px] font-black uppercase tracking-tighter">
-                      {product.badge}
-                    </div>
-                  )}
-                  {product.contactOnly ? (
-                    <a
-                      href={`mailto:${product.supportEmail || 'alejandro@quantumhospitalitysolutions.com'}?subject=Inquiry about ${product.name}`}
-                      onClick={(e) => e.stopPropagation()}
-                      className="absolute bottom-6 right-6 w-12 h-12 bg-pink text-black rounded-full flex items-center justify-center transform translate-y-20 group-hover:translate-y-0 transition-transform duration-500 shadow-2xl"
-                    >
-                      <Mail size={20} />
-                    </a>
-                  ) : (
-                    <button
-                      onClick={() => handleAddToCart(product)}
-                      className="absolute bottom-6 right-6 w-12 h-12 bg-pink text-black rounded-full flex items-center justify-center transform translate-y-20 group-hover:translate-y-0 transition-transform duration-500 shadow-2xl"
-                    >
-                      {addedItems[product.id] ? <Check size={20} /> : <ShoppingCart size={20} />}
-                    </button>
-                  )}
-                </div>
-
-                <div className="flex-1 space-y-3">
-                  <div className="flex justify-between items-start gap-4">
-                    <div>
-                      <p className="text-[10px] font-black text-pink uppercase tracking-[0.2em] mb-2">
-                        {getSubcategoryLabel(product)}
-                      </p>
-                      <Link to={`/product/${product.id}`} className="block">
-                        <h3 className="text-base font-black text-white group-hover:text-pink transition-colors leading-tight uppercase tracking-tight">
-                          {product.name}
-                        </h3>
-                      </Link>
-                    </div>
-                    <span className="text-base font-black text-white/90 tracking-tighter">${product.price}</span>
-                  </div>
-                  
-                  <p className="text-sm text-white/50 line-clamp-2 leading-relaxed font-medium">
-                    {product.description}
-                  </p>
-
-                  <div className="pt-4 flex items-center justify-between">
-                    <Link 
-                      to={`/product/${product.id}`}
-                      className="inline-flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-white/60 hover:text-pink transition-colors group/link"
-                    >
-                      View Details
-                      <ArrowRight size={14} className="transform group-hover/link:translate-x-1 transition-transform" />
-                    </Link>
-                    <div className="text-[9px] font-black text-white/20 uppercase tracking-tighter italic">
-                      Operator Approved
-                    </div>
-                  </div>
-                </div>
-              </motion.div>
-            ))}
-          </AnimatePresence>
+                Join the Waitlist
+              </button>
+            </div>
+          </motion.div>
         </div>
-
-        {filteredProducts.length === 0 && (
-          <div className="py-32 text-center border border-white/5 rounded-[2rem] mb-24 bg-white/2">
-            <p className="text-white/40 font-bold uppercase tracking-widest text-xs">No products found in this category.</p>
-          </div>
-        )}
-
       </div>
     </section>
   );

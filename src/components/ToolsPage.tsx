@@ -46,11 +46,7 @@ export default function ToolsPage() {
 
   const handleBookCall = (e: React.MouseEvent) => {
     e.stopPropagation();
-    if (settings?.googleCalendarBookingLink) {
-      window.open(settings.googleCalendarBookingLink, '_blank');
-    } else {
-      setIsBookingOpen(true);
-    }
+    window.location.href = 'mailto:alejandrosoria@me.com';
   };
 
   const handleBuyNow = (e: React.MouseEvent, productId?: string) => {
@@ -134,7 +130,7 @@ export default function ToolsPage() {
                       {tool.headline}
                     </p>
                   )}
-                  <p className="relative z-10 text-sm font-medium opacity-80 mb-10 flex-1 leading-relaxed">
+                  <p className="relative z-10 text-sm font-medium opacity-100 text-white/90 mb-10 flex-1 leading-relaxed">
                     {tool.description}
                   </p>
 

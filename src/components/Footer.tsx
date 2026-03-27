@@ -52,7 +52,7 @@ export default function Footer() {
   const handleLinkClick = (e: React.MouseEvent, href: string) => {
     if (href === 'contact') {
       e.preventDefault();
-      setIsContactOpen(true);
+      window.location.href = 'mailto:alejandrosoria@me.com';
     } else if (href.includes('#')) {
       const [path, hash] = href.split('#');
       const isHomePage = window.location.pathname === '/' || window.location.pathname === path;
@@ -77,26 +77,26 @@ export default function Footer() {
   };
 
   return (
-    <footer className="bg-black text-white pt-24 md:pt-32 pb-12 md:pb-16 border-t border-white/5 relative overflow-hidden">
+    <footer className="bg-black text-white pt-32 md:pt-48 pb-16 md:pb-24 border-t border-white/5 relative overflow-hidden">
       {/* Decorative background elements */}
-      <div className="absolute bottom-0 right-0 w-[600px] h-[600px] bg-pink/5 blur-[150px] rounded-full translate-y-1/2 translate-x-1/2"></div>
+      <div className="absolute bottom-0 right-0 w-[800px] h-[800px] bg-pink/5 blur-[200px] rounded-full translate-y-1/2 translate-x-1/2 pointer-events-none animate-glow" />
 
       <div className="container relative z-10">
-        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-16 md:gap-24 mb-24">
-          <div className="space-y-10 text-center md:text-left">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-20 lg:gap-32 mb-32">
+          <div className="lg:col-span-4 space-y-12 text-center md:text-left">
             <Link 
               to="/" 
               onClick={(e) => { e.preventDefault(); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
-              className="text-white font-black text-3xl tracking-tighter uppercase block group"
+              className="text-white font-black text-4xl tracking-tighter uppercase block group"
             >
-              {settings?.siteName || 'QUANTUM'}<span className="text-pink group-hover:text-white transition-colors">.</span>
+              {settings?.siteName || 'QUANTUM'}<span className="text-pink group-hover:text-white transition-colors duration-500">.</span>
             </Link>
             
-            <p className="text-sm font-medium text-white/40 leading-relaxed max-w-xs mx-auto md:mx-0">
+            <p className="text-body-m font-medium text-white/40 leading-relaxed max-w-sm mx-auto md:mx-0">
               {settings?.siteDescription || 'AI-powered operational tools built by hospitality operators for hospitality operators.'}
             </p>
             
-            <div className="flex justify-center md:justify-start gap-4">
+            <div className="flex justify-center md:justify-start gap-5">
               {[
                 { Icon: Twitter, href: settings?.socialLinks?.twitter },
                 { Icon: Linkedin, href: settings?.socialLinks?.linkedin },
@@ -110,20 +110,20 @@ export default function Footer() {
                     href={href} 
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="w-12 h-12 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center text-white/40 hover:text-pink hover:border-pink/30 transition-all"
+                    className="w-14 h-14 rounded-2xl glass border-white/10 flex items-center justify-center text-white/40 hover:text-pink hover:border-pink/30 transition-all duration-500 hover:scale-110"
                   >
-                    <Icon size={20} />
+                    <Icon size={24} />
                   </a>
                 )
               ))}
             </div>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-12 md:gap-8 xl:col-span-3">
+          <div className="lg:col-span-8 grid grid-cols-1 sm:grid-cols-3 gap-16 md:gap-12">
             {footerLinks.map((section) => (
-              <div key={section.title} className="space-y-8 text-center sm:text-left">
-                <h4 className="text-[10px] font-black uppercase tracking-[0.2em] text-white/20">{section.title}</h4>
-                <ul className="space-y-4">
+              <div key={section.title} className="space-y-10 text-center sm:text-left">
+                <h4 className="text-[10px] font-black uppercase tracking-[0.3em] text-white/20">{section.title}</h4>
+                <ul className="space-y-6">
                   {section.links.map((link) => (
                     <li key={link.name}>
                       {link.href.startsWith('http') ? (
@@ -131,7 +131,7 @@ export default function Footer() {
                           href={link.href}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="text-[11px] font-black uppercase tracking-widest text-white/60 hover:text-pink transition-colors block py-1"
+                          className="text-[11px] font-black uppercase tracking-widest text-white/50 hover:text-pink transition-all duration-300 block py-1 hover:translate-x-2"
                         >
                           {link.name}
                         </a>
@@ -139,7 +139,7 @@ export default function Footer() {
                         <Link 
                           to={link.href} 
                           onClick={(e) => handleLinkClick(e, link.href)}
-                          className="text-[11px] font-black uppercase tracking-widest text-white/60 hover:text-pink transition-colors block py-1"
+                          className="text-[11px] font-black uppercase tracking-widest text-white/50 hover:text-pink transition-all duration-300 block py-1 hover:translate-x-2"
                         >
                           {link.name}
                         </Link>
@@ -152,14 +152,14 @@ export default function Footer() {
           </div>
         </div>
 
-        <div className="pt-12 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-8">
-          <div className="text-[10px] font-black uppercase tracking-[0.2em] text-white/20">
+        <div className="pt-16 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-10">
+          <div className="text-[10px] font-black uppercase tracking-[0.25em] text-white/10">
             {settings?.footerText || `© ${new Date().getFullYear()} Quantum Hospitality Solutions. All rights reserved.`}
           </div>
-          <div className="flex flex-wrap justify-center gap-x-8 gap-y-4 text-[10px] font-black uppercase tracking-[0.2em] text-white/20">
-            <a href="#" className="hover:text-white transition-colors">Privacy Policy</a>
-            <a href="#" className="hover:text-white transition-colors">Terms of Service</a>
-            <a href="#" className="hover:text-white transition-colors">Cookie Policy</a>
+          <div className="flex flex-wrap justify-center gap-x-10 gap-y-6 text-[10px] font-black uppercase tracking-[0.25em] text-white/10">
+            <a href="#" className="hover:text-white transition-colors duration-300">Privacy Policy</a>
+            <a href="#" className="hover:text-white transition-colors duration-300">Terms of Service</a>
+            <a href="#" className="hover:text-white transition-colors duration-300">Cookie Policy</a>
           </div>
         </div>
       </div>

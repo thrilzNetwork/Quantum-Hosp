@@ -141,148 +141,187 @@ export default function Header() {
             <Search size={12} />
             <span>Search Tools</span>
           </button>
-          <button onClick={() => setIsContactOpen(true)} className="hover:text-pink transition-colors">Contact</button>
+          <button onClick={() => window.location.href = 'mailto:alejandrosoria@me.com'} className="hover:text-pink transition-colors">Contact</button>
         </div>
       </nav>
 
       <header 
-        className={`sticky top-0 z-50 transition-all duration-300 border-b ${
-          isScrolled ? 'bg-black/90 backdrop-blur-md border-white/10 py-3' : 'bg-black border-transparent py-4 md:py-6'
+        className={`sticky top-0 z-50 transition-all duration-500 border-b ${
+          isScrolled ? 'glass-dark py-3 border-white/10' : 'bg-black/0 border-transparent py-6 md:py-8'
         }`}
       >
-        <div className="container flex items-center justify-between">
-          <div className="flex items-center gap-x-8 lg:gap-x-12">
-            <Link to="/" className="text-white font-black text-2xl tracking-tighter uppercase">
-              {settings?.siteName || 'QUANTUM'}
+        <div className="container flex items-center justify-between relative">
+          {/* Subtle glow behind logo */}
+          <div className="absolute -left-10 top-1/2 -translate-y-1/2 w-40 h-40 bg-pink/10 blur-[60px] rounded-full pointer-events-none" />
+          
+          <div className="flex items-center gap-x-12 lg:gap-x-16 relative z-10">
+            <Link to="/" className="text-white font-black text-2xl md:text-3xl tracking-tighter uppercase group flex items-center gap-2">
+              <div className="w-8 h-8 bg-pink rounded-lg flex items-center justify-center group-hover:rotate-12 transition-transform duration-500">
+                <div className="w-4 h-4 bg-black rounded-sm" />
+              </div>
+              <span className="hidden sm:inline-block">{settings?.siteName || 'QUANTUM'}</span>
             </Link>
-            <nav className="hidden lg:flex items-center gap-x-8">
+            <nav className="hidden lg:flex items-center gap-x-10">
               {navItems.map((item) => (
                 item.isRoute ? (
                   <Link 
                     key={item.name} 
                     to={item.href}
-                    className="text-[11px] font-bold uppercase tracking-widest hover:text-pink transition-colors"
+                    className="text-[10px] font-black uppercase tracking-[0.2em] hover:text-pink transition-all duration-300 relative group"
                   >
                     {item.name}
+                    <span className="absolute -bottom-1 left-0 w-0 h-px bg-pink transition-all duration-300 group-hover:w-full" />
                   </Link>
                 ) : (
                   <a 
                     key={item.name} 
                     href={item.href} 
                     onClick={(e) => handleNavClick(e, item.href)}
-                    className="text-[11px] font-bold uppercase tracking-widest hover:text-pink transition-colors"
+                    className="text-[10px] font-black uppercase tracking-[0.2em] hover:text-pink transition-all duration-300 relative group"
                   >
                     {item.name}
+                    <span className="absolute -bottom-1 left-0 w-0 h-px bg-pink transition-all duration-300 group-hover:w-full" />
                   </a>
                 )
               ))}
             </nav>
           </div>
 
-          <div className="flex items-center gap-x-2 md:gap-x-4">
+          <div className="flex items-center gap-x-3 md:gap-x-6 relative z-10">
             <button 
               onClick={() => setIsCartOpen(true)}
-              className="relative p-2 hover:bg-white/5 rounded-full transition-colors group"
+              className="relative p-3 hover:bg-white/5 rounded-2xl transition-all duration-300 group border border-transparent hover:border-white/10"
               aria-label="Open Cart"
             >
-              <ShoppingBag size={20} className="group-hover:text-pink transition-colors" />
+              <ShoppingBag size={22} className="group-hover:text-pink transition-colors" />
               {totalItems > 0 && (
-                <span className="absolute top-0 right-0 bg-pink text-black text-[0.625rem] font-black w-4 h-4 rounded-full flex items-center justify-center">
+                <span className="absolute -top-1 -right-1 bg-pink text-black text-[0.6rem] font-black w-5 h-5 rounded-full flex items-center justify-center shadow-lg shadow-pink/20">
                   {totalItems}
                 </span>
               )}
             </button>
 
             {isAuthLoading ? (
-              <div className="w-10 h-10 rounded-full bg-white/10 animate-pulse" />
+              <div className="w-10 h-10 rounded-2xl bg-white/10 animate-pulse" />
             ) : user ? (
-              <div className="flex items-center gap-x-2">
+              <div className="flex items-center gap-x-3">
                 {isAdmin && (
                   <Link 
                     to="/admin" 
-                    className="p-2 hover:bg-white/10 rounded-full transition-colors text-white"
+                    className="p-3 hover:bg-white/5 rounded-2xl transition-all duration-300 text-white border border-transparent hover:border-white/10"
                     title="Admin Dashboard"
                   >
-                    <Settings size={20} />
+                    <Settings size={22} />
                   </Link>
                 )}
                 <Link 
                   to="/user" 
-                  className="p-2 hover:bg-white/10 rounded-full transition-colors text-white"
+                  className="p-3 hover:bg-white/5 rounded-2xl transition-all duration-300 text-white border border-transparent hover:border-white/10"
                   title="User Profile"
                 >
-                  <UserIcon size={20} />
+                  <UserIcon size={22} />
                 </Link>
                 <button 
                   onClick={handleLogout}
-                  className="p-2 hover:bg-white/10 rounded-full transition-colors text-white"
+                  className="p-3 hover:bg-white/5 rounded-2xl transition-all duration-300 text-white border border-transparent hover:border-white/10"
                   title="Logout"
                 >
-                  <LogOut size={20} />
+                  <LogOut size={22} />
                 </button>
               </div>
             ) : (
               <button 
                 onClick={() => setIsLoginOpen(true)}
-                className="p-2 hover:bg-white/10 rounded-full transition-colors text-white"
+                className="p-3 hover:bg-white/5 rounded-2xl transition-all duration-300 text-white border border-transparent hover:border-white/10"
                 title="Login"
               >
-                <UserIcon size={20} />
+                <UserIcon size={22} />
               </button>
             )}
 
             <button 
-              className="lg:hidden p-2 min-w-[44px] min-h-[44px] flex items-center justify-center"
+              className="lg:hidden p-3 min-w-[48px] min-h-[48px] flex items-center justify-center rounded-2xl hover:bg-white/5 transition-all duration-300 border border-transparent hover:border-white/10"
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
               aria-label="Toggle Menu"
             >
-              {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+              {isMobileMenuOpen ? <X size={26} /> : <Menu size={26} />}
             </button>
           </div>
         </div>
 
-        {/* Mobile Menu */}
+        {/* Mobile Menu - Immersive Full Screen */}
         <AnimatePresence>
           {isMobileMenuOpen && (
             <motion.div
-              initial={{ opacity: 0, height: 0 }}
-              animate={{ opacity: 1, height: 'auto' }}
-              exit={{ opacity: 0, height: 0 }}
-              className="absolute top-full left-0 w-full bg-black border-b border-white/10 lg:hidden overflow-hidden"
+              initial={{ opacity: 0, x: '100%' }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: '100%' }}
+              transition={{ type: 'spring', damping: 25, stiffness: 200 }}
+              className="fixed inset-0 z-[60] bg-black lg:hidden flex flex-col"
             >
-              <div className="container py-8 flex flex-col">
-                {navItems.map((item, i) => (
-                  item.isRoute ? (
-                    <Link 
-                      key={item.name} 
-                      to={item.href}
-                      onClick={() => setIsMobileMenuOpen(false)}
-                      className="mobile-nav-item border-white/10 text-white"
+              <div className="container py-8 flex items-center justify-between border-b border-white/5">
+                <Link to="/" onClick={() => setIsMobileMenuOpen(false)} className="text-white font-black text-2xl tracking-tighter uppercase">
+                  {settings?.siteName || 'QUANTUM'}
+                </Link>
+                <button 
+                  className="p-3 rounded-2xl bg-white/5 border border-white/10"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                >
+                  <X size={26} />
+                </button>
+              </div>
+
+              <div className="flex-1 overflow-y-auto py-12 px-6">
+                <div className="flex flex-col gap-y-2">
+                  {navItems.map((item, i) => (
+                    <motion.div
+                      key={item.name}
+                      initial={{ opacity: 0, x: 20 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ delay: i * 0.05 }}
                     >
-                      {item.name}
-                      <ChevronRight size={18} className="text-white/20" />
-                    </Link>
-                  ) : (
-                    <a 
-                      key={item.name} 
-                      href={item.href} 
-                      onClick={(e) => handleNavClick(e, item.href)}
-                      className="mobile-nav-item border-white/10 text-white"
-                    >
-                      {item.name}
-                      <ChevronRight size={18} className="text-white/20" />
-                    </a>
-                  )
-                ))}
-                <div className="mt-8 grid grid-cols-1 gap-4">
+                      {item.isRoute ? (
+                        <Link 
+                          to={item.href}
+                          onClick={() => setIsMobileMenuOpen(false)}
+                          className="flex items-center justify-between py-6 text-4xl font-black uppercase tracking-tighter group"
+                        >
+                          <span className="group-hover:text-pink transition-colors">{item.name}</span>
+                          <ChevronRight size={32} className="text-white/10 group-hover:text-pink transition-all" />
+                        </Link>
+                      ) : (
+                        <a 
+                          href={item.href} 
+                          onClick={(e) => handleNavClick(e, item.href)}
+                          className="flex items-center justify-between py-6 text-4xl font-black uppercase tracking-tighter group"
+                        >
+                          <span className="group-hover:text-pink transition-colors">{item.name}</span>
+                          <ChevronRight size={32} className="text-white/10 group-hover:text-pink transition-all" />
+                        </a>
+                      )}
+                    </motion.div>
+                  ))}
+                </div>
+
+                <div className="mt-12 pt-12 border-t border-white/5 grid grid-cols-1 gap-4">
                   <button 
-                    onClick={() => { setIsContactOpen(true); setIsMobileMenuOpen(false); }}
-                    className="btn bg-pink text-black py-4 rounded-xl text-sm font-bold"
+                    onClick={() => { window.location.href = 'mailto:alejandrosoria@me.com'; setIsMobileMenuOpen(false); }}
+                    className="btn-primary py-6 text-sm"
                   >
-                    Contact
+                    Contact Alejandro
+                  </button>
+                  <button 
+                    onClick={() => setIsSearchOpen(true)}
+                    className="btn-secondary py-6 text-sm flex items-center justify-center gap-3"
+                  >
+                    <Search size={18} />
+                    Search Tools
                   </button>
                 </div>
               </div>
+              
+              {/* Decorative glow in mobile menu */}
+              <div className="absolute bottom-0 right-0 w-full h-1/2 bg-gradient-to-t from-pink/10 to-transparent pointer-events-none" />
             </motion.div>
           )}
         </AnimatePresence>
