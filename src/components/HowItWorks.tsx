@@ -20,16 +20,16 @@ const steps = [
 
 export default function HowItWorks() {
   return (
-    <section id="how-it-works" className="py-16 md:py-32 bg-black text-white border-b border-white/10">
+    <section id="how-it-works" className="py-16 md:py-32 bg-black text-white border-b border-white/5">
       <div className="container">
         <div className="max-w-xl mb-10 md:mb-20">
-          <h2 className="text-[2rem] md:text-h3 leading-tight mb-4 md:mb-6">How it works</h2>
-          <p className="text-body-m opacity-90">
+          <h2 className="text-[2.5rem] md:text-h3-caps leading-[0.9] mb-4 md:mb-8">How it works</h2>
+          <p className="text-body-m opacity-70 font-medium">
             No complicated integrations. No long implementation cycles. Just simple, effective tools ready to work for you.
           </p>
         </div>
 
-        <div className="grid md:grid-cols-3 gap-10 md:gap-12">
+        <div className="grid md:grid-cols-3 gap-10 md:gap-16">
           {steps.map((step, i) => (
             <motion.div 
               key={step.num}
@@ -37,11 +37,11 @@ export default function HowItWorks() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: i * 0.1 }}
-              className="space-y-6"
+              className="space-y-6 group"
             >
-              <div className="text-[4rem] font-black text-pink/40 leading-none">{step.num}</div>
-              <h3 className="text-h6">{step.title}</h3>
-              <p className="text-body-m opacity-90">{step.description}</p>
+              <div className="text-[5rem] font-black text-pink/20 leading-none group-hover:text-pink/40 transition-colors duration-500">{step.num}</div>
+              <h3 className="text-h6 uppercase tracking-tight">{step.title}</h3>
+              <p className="text-body-m opacity-70 leading-relaxed">{step.description}</p>
             </motion.div>
           ))}
         </div>

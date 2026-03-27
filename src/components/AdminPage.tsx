@@ -153,11 +153,12 @@ I am not a tech founder who studied hotels. I am an operator who studied technol
           title: 'New Blog Post',
           excerpt: 'Short summary of the post.',
           content: 'Full content goes here...',
-          author: 'Admin',
+          author: siteSettings?.founderName || 'Alejandro Soria',
           date: new Date().toISOString(),
           image: 'https://picsum.photos/seed/blog/800/450',
-          category: 'Operations',
-          slug: 'new-blog-post',
+          category: 'Medium',
+          slug: '',
+          mediumLink: '',
           metaDescription: 'SEO meta description here...',
           tags: ['Operations']
         });
@@ -561,6 +562,63 @@ I am not a tech founder who studied hotels. I am an operator who studied technol
               <div key={post.id} className="bg-zinc-900 p-6 rounded-3xl border border-white/10 shadow-sm">
                 {isEditing === post.id ? (
                   <div className="space-y-4">
+                    <div className="bg-white/5 p-4 rounded-xl space-y-4">
+                      <label className="block text-xs font-bold uppercase tracking-widest text-white/40">Medium Integration</label>
+                      <div className="flex gap-2">
+                        <input 
+                          className="flex-1 px-4 py-2 bg-black border border-white/10 rounded-xl text-white focus:border-pink outline-none transition-all"
+                          value={editData.mediumLink || ''}
+                          onChange={e => setEditData({...editData, mediumLink: e.target.value})}
+                          placeholder="Paste Medium Article Link"
+                        />
+                        <button 
+                          onClick={async () => {
+                            if (!editData.mediumLink) return;
+                            try {
+                              // Extract username from link: https://medium.com/@username/slug
+                              const match = editData.mediumLink.match(/medium\.com\/(@[^\/]+)/);
+                              if (match) {
+                                const username = match[1];
+                                const response = await fetch(`https://api.rss2json.com/v1/api.json?rss_url=https://medium.com/feed/${username}`);
+                                const data = await response.json();
+                                if (data.status === 'ok' && data.items) {
+                                  const post = data.items.find((item: any) => item.link.includes(editData.mediumLink) || editData.mediumLink.includes(item.link));
+                                  if (post) {
+                                    let image = post.thumbnail;
+                                    if (!image && post.description) {
+                                      const imgMatch = post.description.match(/<img[^>]+src="([^">]+)"/);
+                                      if (imgMatch) image = imgMatch[1];
+                                    }
+                                    setEditData({
+                                      ...editData,
+                                      title: post.title,
+                                      excerpt: post.description.replace(/<[^>]*>?/gm, '').substring(0, 150) + '...',
+                                      content: post.content,
+                                      image: image || editData.image,
+                                      date: post.pubDate,
+                                      author: post.author || editData.author,
+                                      slug: post.link
+                                    });
+                                    alert('Metadata fetched successfully!');
+                                  } else {
+                                    alert('Could not find this specific post in the user feed. Please ensure the link is correct.');
+                                  }
+                                }
+                              } else {
+                                alert('Invalid Medium link format. Use: https://medium.com/@username/slug');
+                              }
+                            } catch (e) {
+                              console.error(e);
+                              alert('Error fetching metadata. You may need to fill fields manually.');
+                            }
+                          }}
+                          className="px-4 py-2 bg-white/10 text-white rounded-xl font-bold hover:bg-white/20 transition-all text-xs"
+                        >
+                          Fetch Metadata
+                        </button>
+                      </div>
+                    </div>
+
                     <div className="grid grid-cols-2 gap-4">
                       <input 
                         className="w-full px-4 py-2 bg-black border border-white/10 rounded-xl text-white focus:border-pink outline-none transition-all"
@@ -572,7 +630,7 @@ I am not a tech founder who studied hotels. I am an operator who studied technol
                         className="w-full px-4 py-2 bg-black border border-white/10 rounded-xl text-white focus:border-pink outline-none transition-all"
                         value={editData.slug}
                         onChange={e => setEditData({...editData, slug: e.target.value})}
-                        placeholder="URL Slug (e.g. future-of-hotels)"
+                        placeholder="Article URL (Medium Link)"
                       />
                     </div>
                     <input 
@@ -588,23 +646,6 @@ I am not a tech founder who studied hotels. I am an operator who studied technol
                       placeholder="Excerpt (SEO summary)"
                       rows={2}
                     />
-                    <textarea 
-                      className="w-full px-4 py-2 bg-black border border-white/10 rounded-xl text-white focus:border-pink outline-none transition-all"
-                      value={editData.metaDescription}
-                      onChange={e => setEditData({...editData, metaDescription: e.target.value})}
-                      placeholder="Meta Description (SEO)"
-                      rows={2}
-                    />
-                    <div className="bg-white/5 p-4 rounded-xl">
-                      <label className="block text-xs font-bold uppercase tracking-widest mb-2 text-white/40">Content (Markdown supported)</label>
-                      <textarea 
-                        className="w-full px-4 py-2 bg-black border border-white/10 rounded-xl text-white focus:border-pink outline-none transition-all font-mono text-sm"
-                        value={editData.content}
-                        onChange={e => setEditData({...editData, content: e.target.value})}
-                        placeholder="Write your story here..."
-                        rows={10}
-                      />
-                    </div>
                     <div className="flex justify-end gap-2">
                       <button onClick={() => setIsEditing(null)} className="px-4 py-2 text-white/40 font-bold hover:text-white transition-colors">Cancel</button>
                       <button onClick={() => handleUpdate(post.id)} className="px-6 py-2 bg-pink text-black rounded-xl font-bold hover:scale-105 transition-all">Save</button>
@@ -616,7 +657,7 @@ I am not a tech founder who studied hotels. I am an operator who studied technol
                       <img src={post.image} className="w-12 h-12 rounded-lg object-cover" referrerPolicy="no-referrer" />
                       <div>
                         <h3 className="font-bold text-white">{post.title}</h3>
-                        <p className="text-xs text-white/40">{post.category} • {post.author} • /{post.slug}</p>
+                        <p className="text-xs text-white/40">{post.category} • {post.author} • {post.mediumLink ? 'Medium Link' : 'Local Post'}</p>
                       </div>
                     </div>
                     <div className="flex gap-2">

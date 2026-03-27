@@ -63,6 +63,7 @@ export interface BlogPost {
   image: string;
   category: string;
   slug?: string;
+  mediumLink?: string;
   metaDescription?: string;
   tags?: string[];
 }

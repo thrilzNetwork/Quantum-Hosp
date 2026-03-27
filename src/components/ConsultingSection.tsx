@@ -28,41 +28,46 @@ export default function ConsultingSection() {
   };
 
   return (
-    <section id="consulting" className="relative py-16 md:py-32 text-center text-white overflow-hidden">
-      <div 
-        className="absolute inset-0 bg-black z-0"
-        style={{ clipPath: 'inset(0% 0% 0% 0% round 0px)' }}
-      >
-        <div 
-          className="absolute inset-0 bg-black hidden md:block"
-          style={{ clipPath: 'inset(0% 5% 0% 5% round 60px)' }}
-        ></div>
-      </div>
+    <section id="consulting" className="relative py-24 md:py-32 text-center text-white overflow-hidden bg-black border-b border-white/5">
+      {/* Decorative background elements */}
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full bg-pink/5 blur-[150px] rounded-full"></div>
       
       <div className="container relative z-10">
         <motion.div
-          initial={{ opacity: 0, scale: 0.9 }}
-          whileInView={{ opacity: 1, scale: 1 }}
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.6, ease: 'easeOut' }}
-          className="max-w-3xl mx-auto"
+          transition={{ duration: 0.8 }}
+          className="max-w-4xl mx-auto space-y-12"
         >
-          <h2 className="text-[2rem] sm:text-[3rem] md:text-[5rem] font-black uppercase leading-[1.1] md:leading-none tracking-tighter mb-8">
-            Expert <br /> Consultation
-          </h2>
-          
-          <p className="text-xl opacity-70 mb-12">
-            Book a one-on-one session with our automation experts to audit your current operations and design a custom roadmap for your property.
-          </p>
+          <div className="space-y-6">
+            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-pink/10 border border-pink/20 text-[10px] font-black text-pink uppercase tracking-widest">
+              Expert Guidance
+            </div>
+            <h2 className="text-[3rem] md:text-h2-caps font-black uppercase leading-[0.85] tracking-tighter text-white">
+              Need a <span className="text-pink">Custom</span> Solution?
+            </h2>
+            <p className="text-body-l text-white/60 max-w-2xl mx-auto font-medium leading-relaxed">
+              Beyond the marketplace, I provide direct consulting for complex operational challenges, technology implementation, and leadership development.
+            </p>
+          </div>
 
-          <button 
-            onClick={handleBooking}
-            className="btn bg-pink text-black px-10 py-5 rounded-full text-caps-s font-bold hover:bg-pink-light transition-colors group inline-flex items-center"
-          >
-            <Calendar size={20} className="mr-2" />
-            Book a consultation
-            <ChevronRight size={20} className="ml-2 group-hover:translate-x-1 transition-transform" />
-          </button>
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-6">
+            <button 
+              onClick={handleBooking}
+              className="w-full sm:w-auto px-12 py-6 bg-pink text-black rounded-2xl font-black uppercase tracking-tighter hover:bg-white transition-all shadow-2xl shadow-pink/20 flex items-center justify-center gap-3"
+            >
+              <Calendar size={20} />
+              Book a Consultation
+              <ChevronRight size={20} className="group-hover:translate-x-1 transition-transform" />
+            </button>
+            <a 
+              href="#contact"
+              className="w-full sm:w-auto px-12 py-6 bg-white/5 border border-white/10 text-white rounded-2xl font-black uppercase tracking-tighter hover:bg-white/10 transition-all flex items-center justify-center"
+            >
+              Send a Message
+            </a>
+          </div>
         </motion.div>
       </div>
 

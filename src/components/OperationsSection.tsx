@@ -45,11 +45,21 @@ export default function OperationsSection() {
   };
 
   return (
-    <section id="tools" className="py-16 md:py-32 bg-black text-white border-b border-white/10">
-      <div className="container">
-        <h2 className="text-[2rem] md:text-h3 mb-8 md:mb-16">Featured Tools</h2>
+    <section id="tools" className="py-20 md:py-32 bg-black text-white border-b border-white/10 relative overflow-hidden">
+      {/* Decorative background elements */}
+      <div className="absolute top-1/4 left-0 w-96 h-96 bg-pink/5 blur-[120px] rounded-full -translate-x-1/2" />
+      <div className="absolute bottom-1/4 right-0 w-96 h-96 bg-pink/5 blur-[120px] rounded-full translate-x-1/2" />
+
+      <div className="container relative z-10">
+        <div className="max-w-xl mb-16 space-y-4">
+          <span className="text-caps-s text-pink">Featured Tools</span>
+          <h2 className="text-h3 font-black uppercase tracking-tight">Operational Excellence</h2>
+          <p className="text-body-m opacity-60">
+            Simple, product-first solutions for every department. No fluff, just operational efficiency.
+          </p>
+        </div>
         
-        <div className="grid gap-4 md:gap-6 md:grid-cols-6">
+        <div className="grid gap-6 md:grid-cols-6">
           {tools.map((tool) => (
             <motion.div 
               key={tool.id}
@@ -57,41 +67,41 @@ export default function OperationsSection() {
               whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true }}
               onClick={() => setSelectedTool(tool)}
-              className={`${tool.span} group cursor-pointer relative flex flex-col justify-between overflow-hidden rounded-2xl ${tool.color} ${tool.textColor || 'text-black'} p-6 md:p-12 min-h-[350px] md:min-h-[450px]`}
+              className={`${tool.span} group cursor-pointer relative flex flex-col justify-between overflow-hidden rounded-3xl bg-zinc-900 border border-white/10 hover:border-pink/30 transition-all p-8 md:p-12 min-h-[350px] md:min-h-[450px]`}
             >
               <div className="relative z-10">
                 <div className="flex items-center gap-x-3 mb-6">
-                  <span className="text-caps-s font-bold">{tool.name}</span>
-                  <span className="w-1 h-1 rounded-full bg-current opacity-30"></span>
-                  <span className="text-[0.6875rem] opacity-70">{tool.tag}</span>
+                  <span className="text-caps-s font-bold text-pink">{tool.name}</span>
+                  <span className="w-1 h-1 rounded-full bg-white/20"></span>
+                  <span className="text-[0.625rem] font-black uppercase tracking-widest text-white/40">{tool.tag}</span>
                 </div>
-                <h3 className="text-h4 mb-4">{tool.name}</h3>
-                <p className="text-body-m opacity-80 max-w-lg mb-8">
+                <h3 className="text-h4 font-black uppercase tracking-tight mb-4">{tool.name}</h3>
+                <p className="text-body-m opacity-60 max-w-lg mb-8 leading-relaxed">
                   {tool.description}
                 </p>
                 
                 <div className="space-y-4 mb-8">
-                  <div className="text-caps-s opacity-60">Features:</div>
-                  <ul className="grid grid-cols-2 gap-2">
+                  <div className="text-[0.625rem] font-black uppercase tracking-widest text-white/40">Key Features:</div>
+                  <ul className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                     {tool.features?.map(feature => (
-                      <li key={feature} className="flex items-center gap-2 text-sm">
-                        <div className="w-1 h-1 rounded-full bg-current"></div>
+                      <li key={feature} className="flex items-center gap-3 text-sm font-bold text-white/80">
+                        <div className="w-1.5 h-1.5 rounded-full bg-pink"></div>
                         {feature}
                       </li>
                     ))}
                   </ul>
                 </div>
 
-                <div className="p-4 rounded-xl bg-black/5 border border-black/5">
-                  <div className="text-caps-s opacity-60 mb-1">Use Case:</div>
-                  <p className="text-sm font-medium">{tool.useCase}</p>
+                <div className="p-6 rounded-2xl bg-black/40 border border-white/5 backdrop-blur-sm">
+                  <div className="text-[0.625rem] font-black uppercase tracking-widest text-white/40 mb-2">Use Case:</div>
+                  <p className="text-sm font-bold text-white/90 leading-relaxed">{tool.useCase}</p>
                 </div>
               </div>
 
-              <div className="mt-8 flex flex-col sm:flex-row items-center gap-3 relative z-10">
+              <div className="mt-12 flex flex-col sm:flex-row items-center gap-4 relative z-10">
                 <button 
                   onClick={(e) => handleBuyNow(e, tool.productId)}
-                  className="w-full sm:w-auto flex items-center justify-center gap-2 px-6 py-3 bg-black text-white rounded-xl text-xs font-bold hover:scale-105 transition-transform"
+                  className="w-full sm:w-auto flex items-center justify-center gap-2 px-8 py-4 bg-pink text-black rounded-xl text-xs font-black uppercase tracking-widest hover:scale-105 transition-transform shadow-lg shadow-pink/20"
                 >
                   <ShoppingCart size={14} /> Buy Now
                 </button>
@@ -99,12 +109,12 @@ export default function OperationsSection() {
                   <Link 
                     to={`/product/${tool.productId}`}
                     onClick={(e) => e.stopPropagation()}
-                    className="w-full sm:w-auto flex items-center justify-center gap-2 px-6 py-3 bg-white/20 backdrop-blur-sm rounded-xl text-xs font-bold hover:bg-white/30 transition-all"
+                    className="w-full sm:w-auto flex items-center justify-center gap-2 px-8 py-4 bg-white/5 border border-white/10 rounded-xl text-xs font-black uppercase tracking-widest hover:bg-white/10 transition-all"
                   >
                     <Info size={14} /> Learn More
                   </Link>
                 ) : (
-                  <div className="flex items-center gap-x-2 text-caps-s font-bold">
+                  <div className="flex items-center gap-x-2 text-[0.625rem] font-black uppercase tracking-widest text-white/60 group-hover:text-pink transition-colors">
                     <span>Deploy instantly</span>
                     <ChevronRight size={14} className="group-hover:translate-x-1 transition-transform" />
                   </div>
@@ -112,7 +122,7 @@ export default function OperationsSection() {
               </div>
 
               {/* Decorative background seed */}
-              <div className="absolute -bottom-20 -right-20 w-64 h-64 opacity-10 pointer-events-none blur-3xl bg-current rounded-full"></div>
+              <div className="absolute -bottom-20 -right-20 w-64 h-64 opacity-20 pointer-events-none blur-3xl bg-pink/10 rounded-full group-hover:bg-pink/20 transition-colors"></div>
             </motion.div>
           ))}
         </div>
@@ -125,41 +135,42 @@ export default function OperationsSection() {
       >
         {selectedTool && (
           <div className="space-y-8">
-            <div className={`p-8 rounded-2xl ${selectedTool.color} ${selectedTool.textColor || 'text-black'}`}>
-              <div className="text-caps-s font-bold mb-2">{selectedTool.tag}</div>
-              <h4 className="text-h4 mb-4">{selectedTool.name}</h4>
-              <p className="opacity-80">{selectedTool.description}</p>
+            <div className={`p-10 rounded-3xl bg-zinc-900 border border-white/10`}>
+              <div className="text-caps-s text-pink mb-2">{selectedTool.tag}</div>
+              <h4 className="text-h4 font-black uppercase tracking-tight mb-4">{selectedTool.name}</h4>
+              <p className="text-body-m opacity-60 leading-relaxed">{selectedTool.description}</p>
             </div>
 
-            <div className="space-y-4">
-              <h5 className="text-sm font-bold uppercase tracking-widest opacity-40">Key Features</h5>
+            <div className="space-y-6">
+              <h5 className="text-[0.625rem] font-black uppercase tracking-widest text-white/40">Key Features</h5>
               <div className="grid gap-3">
                 {selectedTool.features?.map((feature: string) => (
-                  <div key={feature} className="flex items-center gap-3 p-4 rounded-xl bg-black/5">
-                    <CheckCircle2 size={18} className="text-emerald-500" />
-                    <span className="text-sm font-medium">{feature}</span>
+                  <div key={feature} className="flex items-center gap-4 p-5 rounded-2xl bg-white/5 border border-white/5 hover:border-pink/20 transition-colors">
+                    <CheckCircle2 size={18} className="text-pink" />
+                    <span className="text-sm font-bold text-white/90">{feature}</span>
                   </div>
                 ))}
               </div>
             </div>
 
-            <div className="p-6 rounded-2xl bg-black text-white space-y-4">
-              <div className="flex items-center gap-2 text-pink">
+            <div className="p-8 rounded-3xl bg-black border border-white/10 space-y-6 relative overflow-hidden">
+              <div className="absolute top-0 right-0 w-32 h-32 bg-pink/5 blur-3xl rounded-full" />
+              <div className="flex items-center gap-3 text-pink relative z-10">
                 <Zap size={18} fill="currentColor" />
-                <span className="text-xs font-bold uppercase tracking-widest">Instant Deployment</span>
+                <span className="text-[0.625rem] font-black uppercase tracking-widest">Instant Deployment</span>
               </div>
-              <p className="text-sm opacity-70">This tool can be activated for your hotel in less than 5 minutes. No integration required.</p>
-              <div className="flex flex-col sm:flex-row gap-3">
+              <p className="text-sm font-bold text-white/60 leading-relaxed relative z-10">This tool can be activated for your hotel in less than 5 minutes. No integration required.</p>
+              <div className="flex flex-col sm:flex-row gap-4 relative z-10">
                 <button 
                   onClick={(e) => handleBuyNow(e, selectedTool.productId)}
-                  className="flex-1 bg-pink text-black py-4 rounded-xl font-bold hover:bg-pink-light transition-colors flex items-center justify-center gap-2"
+                  className="flex-1 bg-pink text-black py-4 rounded-xl font-black uppercase tracking-widest text-xs hover:scale-[1.02] transition-transform flex items-center justify-center gap-2 shadow-lg shadow-pink/20"
                 >
                   <ShoppingCart size={18} /> Buy Now
                 </button>
                 {selectedTool.productId && (
                   <Link 
                     to={`/product/${selectedTool.productId}`}
-                    className="flex-1 bg-white/10 text-white py-4 rounded-xl font-bold hover:bg-white/20 transition-colors flex items-center justify-center gap-2"
+                    className="flex-1 bg-white/5 text-white py-4 rounded-xl font-black uppercase tracking-widest text-xs hover:bg-white/10 transition-colors flex items-center justify-center gap-2 border border-white/10"
                   >
                     <Info size={18} /> Learn More
                   </Link>

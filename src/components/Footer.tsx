@@ -78,23 +78,26 @@ export default function Footer() {
   };
 
   return (
-    <footer className="bg-black text-white pt-16 md:pt-24 pb-10 md:pb-16">
-      <div className="container">
-        <div className="flex flex-col xl:flex-row justify-between gap-12 mb-12 md:mb-24">
-          <div className="xl:w-1/4 space-y-8 text-center xl:text-left">
-            <a 
-              href="/" 
+    <footer className="bg-black text-white pt-24 md:pt-32 pb-12 md:pb-16 border-t border-white/5 relative overflow-hidden">
+      {/* Decorative background elements */}
+      <div className="absolute bottom-0 right-0 w-[600px] h-[600px] bg-pink/5 blur-[150px] rounded-full translate-y-1/2 translate-x-1/2"></div>
+
+      <div className="container relative z-10">
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-16 md:gap-24 mb-24">
+          <div className="space-y-10 text-center md:text-left">
+            <Link 
+              to="/" 
               onClick={(e) => { e.preventDefault(); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
-              className="text-white font-bold text-2xl tracking-tighter block"
+              className="text-white font-black text-3xl tracking-tighter uppercase block group"
             >
-              {settings?.siteName || 'QUANTUM'}
-            </a>
+              {settings?.siteName || 'QUANTUM'}<span className="text-pink group-hover:text-white transition-colors">.</span>
+            </Link>
             
-            <p className="text-body-s opacity-60 max-w-xs mx-auto xl:mx-0">
+            <p className="text-sm font-medium text-white/40 leading-relaxed max-w-xs mx-auto md:mx-0">
               {settings?.siteDescription || 'AI-powered operational tools built by hospitality operators for hospitality operators.'}
             </p>
             
-            <div className="flex justify-center xl:justify-start gap-3">
+            <div className="flex justify-center md:justify-start gap-4">
               {[
                 { Icon: Twitter, href: settings?.socialLinks?.twitter },
                 { Icon: Linkedin, href: settings?.socialLinks?.linkedin },
@@ -102,17 +105,25 @@ export default function Footer() {
                 { Icon: Youtube, href: settings?.socialLinks?.youtube },
                 { Icon: Instagram, href: settings?.socialLinks?.instagram }
               ].map(({ Icon, href }, i) => (
-                <a key={i} href={href || '#'} className="w-11 h-11 rounded-full bg-white/10 flex items-center justify-center hover:bg-white/20 transition-colors">
-                  <Icon size={20} />
-                </a>
+                href && (
+                  <a 
+                    key={i} 
+                    href={href} 
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-12 h-12 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center text-white/40 hover:text-pink hover:border-pink/30 transition-all"
+                  >
+                    <Icon size={20} />
+                  </a>
+                )
               ))}
             </div>
           </div>
 
-          <div className="flex-1 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-10 md:gap-8">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-12 md:gap-8 xl:col-span-3">
             {footerLinks.map((section) => (
-              <div key={section.title} className="space-y-6 text-center sm:text-left">
-                <h4 className="text-caps-s text-white/60">{section.title}</h4>
+              <div key={section.title} className="space-y-8 text-center sm:text-left">
+                <h4 className="text-[10px] font-black uppercase tracking-[0.2em] text-white/20">{section.title}</h4>
                 <ul className="space-y-4">
                   {section.links.map((link) => (
                     <li key={link.name}>
@@ -121,7 +132,7 @@ export default function Footer() {
                           href={link.href}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="text-[0.9375rem] md:text-[0.875rem] hover:text-white/60 transition-colors block py-1"
+                          className="text-[11px] font-black uppercase tracking-widest text-white/60 hover:text-pink transition-colors block py-1"
                         >
                           {link.name}
                         </a>
@@ -129,7 +140,7 @@ export default function Footer() {
                         <Link 
                           to={link.href} 
                           onClick={(e) => handleLinkClick(e, link.href)}
-                          className="text-[0.9375rem] md:text-[0.875rem] hover:text-white/60 transition-colors block py-1"
+                          className="text-[11px] font-black uppercase tracking-widest text-white/60 hover:text-pink transition-colors block py-1"
                         >
                           {link.name}
                         </Link>
@@ -142,14 +153,14 @@ export default function Footer() {
           </div>
         </div>
 
-        <div className="pt-8 border-t border-white/10 flex flex-col md:flex-row justify-between items-center gap-6">
-          <div className="text-[0.75rem] text-white/60">
-            {settings?.footerText || '© 2026 Quantum Hospitality Solutions. All rights reserved.'}
+        <div className="pt-12 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-8">
+          <div className="text-[10px] font-black uppercase tracking-[0.2em] text-white/20">
+            {settings?.footerText || `© ${new Date().getFullYear()} Quantum Hospitality Solutions. All rights reserved.`}
           </div>
-          <div className="flex flex-wrap justify-center gap-x-6 gap-y-2 text-[0.75rem] text-white/60">
-            <a href="#" className="underline hover:text-white transition-colors">Privacy Policy</a>
-            <a href="#" className="underline hover:text-white transition-colors">Terms of Service</a>
-            <a href="#" className="underline hover:text-white transition-colors">Cookie Policy</a>
+          <div className="flex flex-wrap justify-center gap-x-8 gap-y-4 text-[10px] font-black uppercase tracking-[0.2em] text-white/20">
+            <a href="#" className="hover:text-white transition-colors">Privacy Policy</a>
+            <a href="#" className="hover:text-white transition-colors">Terms of Service</a>
+            <a href="#" className="hover:text-white transition-colors">Cookie Policy</a>
           </div>
         </div>
       </div>

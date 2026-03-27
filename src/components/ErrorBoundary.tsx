@@ -41,15 +41,22 @@ class ErrorBoundary extends React.Component<Props, State> {
       }
 
       return (
-        <div className="min-h-screen flex items-center justify-center bg-white p-4">
-          <div className="text-center max-w-2xl">
-            <h1 className="text-4xl font-bold text-black mb-4">Something went wrong</h1>
-            <div className="bg-red-50 border border-red-100 p-6 rounded-2xl mb-8">
-              <p className="text-red-600 font-mono text-sm break-all">{errorMessage}</p>
+        <div className="min-h-screen flex items-center justify-center bg-black p-8 relative overflow-hidden">
+          {/* Decorative background elements */}
+          <div className="absolute top-0 left-0 w-96 h-96 bg-pink/5 blur-[120px] rounded-full -translate-x-1/2 -translate-y-1/2" />
+          <div className="absolute bottom-0 right-0 w-96 h-96 bg-pink/5 blur-[120px] rounded-full translate-x-1/2 translate-y-1/2" />
+
+          <div className="text-center max-w-2xl relative z-10">
+            <div className="inline-flex items-center justify-center w-20 h-20 bg-pink/10 border border-pink/20 rounded-3xl mb-8">
+              <div className="w-10 h-10 bg-pink rounded-xl flex items-center justify-center text-black font-black text-2xl">!</div>
+            </div>
+            <h1 className="text-h3 font-black uppercase tracking-tight text-white mb-6">Something went wrong</h1>
+            <div className="bg-zinc-900 border border-white/10 p-8 rounded-3xl mb-10 shadow-2xl">
+              <p className="text-pink font-mono text-sm break-all leading-relaxed">{errorMessage}</p>
             </div>
             <button 
               onClick={() => window.location.reload()}
-              className="btn bg-black text-white px-8 py-4 rounded-full font-bold"
+              className="px-10 py-5 bg-pink text-black rounded-2xl font-black uppercase tracking-widest text-xs hover:scale-105 transition-transform shadow-lg shadow-pink/20"
             >
               Refresh Page
             </button>

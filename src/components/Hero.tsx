@@ -62,9 +62,9 @@ export default function Hero() {
   return (
     <section className="bg-black py-4 md:py-8">
       <div className="container grid lg:grid-cols-2 gap-4 md:gap-6">
-        <div className="bg-black text-white rounded-2xl p-8 md:p-16 lg:p-20 flex flex-col justify-center relative overflow-hidden">
+        <div className="bg-black text-white rounded-3xl p-8 md:p-16 lg:p-20 flex flex-col justify-center relative overflow-hidden border border-white/5">
           {/* Decorative element */}
-          <div className="absolute top-1/2 -left-10 w-9 h-9 text-supporting-grey -translate-y-1/2">
+          <div className="absolute top-1/2 -left-10 w-9 h-9 text-pink/20 -translate-y-1/2">
              <svg viewBox="0 0 23 25" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M21.5023 14.2275C22.3563 14.115 23 13.389 23 12.5277C23 11.6734 22.3661 10.9507 21.52 10.8322C8.56301 9.01687 2.2622 7.3115 0 0.5V24.5C2.34095 18.2157 7.6187 16.0568 21.5023 14.2275Z" fill="currentColor"></path>
              </svg>
@@ -76,7 +76,7 @@ export default function Hero() {
             transition={{ duration: 0.6 }}
             className="space-y-8 relative z-10"
           >
-            <h1 className="text-[2rem] sm:text-[2.5rem] md:text-h3-caps leading-[1.1] md:leading-[0.9]">
+            <h1 className="text-[2.5rem] sm:text-[3rem] md:text-h3-caps leading-[0.95] md:leading-[0.85]">
               {settings?.heroTitle ? (
                 <span dangerouslySetInnerHTML={{ __html: settings.heroTitle }} />
               ) : (
@@ -84,14 +84,14 @@ export default function Hero() {
               )}
             </h1>
             
-            <p className="text-body-m opacity-80 max-w-md">
+            <p className="text-body-m opacity-70 max-w-md font-medium">
               {settings?.heroSubtitle || 'AI-powered operational tools built by a hotel general manager to solve real hospitality problems. Improve operations, increase guest satisfaction, and deploy tools instantly.'}
             </p>
 
             <div className="flex flex-wrap gap-4 pt-4">
               <button 
                 onClick={handleScrollToTools}
-                className="px-8 py-4 bg-white text-black rounded-2xl font-black uppercase tracking-tight hover:scale-105 transition-all shadow-lg shadow-white/10"
+                className="btn px-10 py-5 bg-white text-black rounded-2xl font-black uppercase tracking-tighter hover:bg-pink transition-all shadow-xl shadow-white/5"
               >
                 Explore Tools
               </button>
@@ -100,7 +100,7 @@ export default function Hero() {
                   href={settings.bookUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="px-8 py-4 bg-pink text-black rounded-2xl font-black uppercase tracking-tight hover:scale-105 transition-all shadow-lg shadow-pink/20"
+                  className="btn px-10 py-5 bg-pink text-black rounded-2xl font-black uppercase tracking-tighter hover:bg-white transition-all shadow-xl shadow-pink/10"
                 >
                   Buy the Book
                 </a>
@@ -109,7 +109,7 @@ export default function Hero() {
           </motion.div>
         </div>
 
-        <div className="bg-neutral-900 rounded-2xl overflow-hidden relative aspect-square lg:aspect-auto">
+        <div className="bg-black rounded-3xl overflow-hidden relative aspect-square lg:aspect-auto border border-white/5">
           <AnimatePresence mode="wait">
             {slides.length > 0 ? (
               <motion.div

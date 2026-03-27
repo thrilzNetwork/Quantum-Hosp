@@ -133,27 +133,27 @@ export default function Header() {
   return (
     <>
       {/* Top Bar - Hidden on Mobile for cleaner look */}
-      <nav className="hidden md:block relative z-51 border-b py-2 transition-colors border-white/10 bg-black text-white text-xs">
+      <nav className="hidden md:block relative z-51 border-b py-2 transition-colors border-white/10 bg-black text-white text-[10px] font-bold uppercase tracking-widest">
         <div className="container flex justify-end items-center gap-x-6">
           <button 
             onClick={() => setIsSearchOpen(true)}
-            className="flex items-center gap-x-2 hover:opacity-65 transition-opacity"
+            className="flex items-center gap-x-2 hover:text-pink transition-colors"
           >
-            <Search size={14} />
+            <Search size={12} />
             <span>Search Tools</span>
           </button>
-          <button onClick={() => setIsContactOpen(true)} className="hover:opacity-65 transition-opacity">Contact</button>
+          <button onClick={() => setIsContactOpen(true)} className="hover:text-pink transition-colors">Contact</button>
         </div>
       </nav>
 
       <header 
         className={`sticky top-0 z-50 transition-all duration-300 border-b ${
-          isScrolled ? 'bg-black/80 backdrop-blur-md border-white/10 py-3' : 'bg-black border-transparent py-4 md:py-5'
+          isScrolled ? 'bg-black/90 backdrop-blur-md border-white/10 py-3' : 'bg-black border-transparent py-4 md:py-6'
         }`}
       >
         <div className="container flex items-center justify-between">
           <div className="flex items-center gap-x-8 lg:gap-x-12">
-            <Link to="/" className="text-white font-bold text-xl tracking-tighter">
+            <Link to="/" className="text-white font-black text-2xl tracking-tighter uppercase">
               {settings?.siteName || 'QUANTUM'}
             </Link>
             <nav className="hidden lg:flex items-center gap-x-8">
@@ -162,7 +162,7 @@ export default function Header() {
                   <Link 
                     key={item.name} 
                     to={item.href}
-                    className="text-sm font-medium hover:opacity-65 transition-opacity"
+                    className="text-[11px] font-bold uppercase tracking-widest hover:text-pink transition-colors"
                   >
                     {item.name}
                   </Link>
@@ -171,7 +171,7 @@ export default function Header() {
                     key={item.name} 
                     href={item.href} 
                     onClick={(e) => handleNavClick(e, item.href)}
-                    className="text-sm font-medium hover:opacity-65 transition-opacity"
+                    className="text-[11px] font-bold uppercase tracking-widest hover:text-pink transition-colors"
                   >
                     {item.name}
                   </a>
@@ -183,12 +183,12 @@ export default function Header() {
           <div className="flex items-center gap-x-2 md:gap-x-4">
             <button 
               onClick={() => setIsCartOpen(true)}
-              className="relative p-2 hover:bg-white/10 rounded-full transition-colors"
+              className="relative p-2 hover:bg-white/5 rounded-full transition-colors group"
               aria-label="Open Cart"
             >
-              <ShoppingBag size={20} />
+              <ShoppingBag size={20} className="group-hover:text-pink transition-colors" />
               {totalItems > 0 && (
-                <span className="absolute top-0 right-0 bg-pink text-black text-[0.625rem] font-bold w-4 h-4 rounded-full flex items-center justify-center">
+                <span className="absolute top-0 right-0 bg-pink text-black text-[0.625rem] font-black w-4 h-4 rounded-full flex items-center justify-center">
                   {totalItems}
                 </span>
               )}
