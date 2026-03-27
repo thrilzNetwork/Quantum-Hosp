@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { ChevronRight, X, CheckCircle2, Zap, ShoppingCart, Info } from 'lucide-react';
+import { ChevronRight, X, CheckCircle2, Zap, ShoppingCart, Info, Mail } from 'lucide-react';
 import { collection, onSnapshot, query, orderBy } from 'firebase/firestore';
 import { db, handleFirestoreError, OperationType } from '../firebase';
 import Modal from './Modal';
@@ -100,12 +100,22 @@ export default function OperationsSection() {
               </div>
 
               <div className="mt-12 flex flex-col sm:flex-row items-center gap-4 relative z-10">
-                <button 
-                  onClick={(e) => handleBuyNow(e, tool.productId)}
-                  className="w-full sm:w-auto flex items-center justify-center gap-2 px-8 py-4 bg-pink text-black rounded-xl text-xs font-black uppercase tracking-widest hover:scale-105 transition-transform shadow-lg shadow-pink/20"
-                >
-                  <ShoppingCart size={14} /> Buy Now
-                </button>
+                {tool.productId ? (
+                  <button 
+                    onClick={(e) => handleBuyNow(e, tool.productId)}
+                    className="w-full sm:w-auto flex items-center justify-center gap-2 px-8 py-4 bg-pink text-black rounded-xl text-xs font-black uppercase tracking-widest hover:scale-105 transition-transform shadow-lg shadow-pink/20"
+                  >
+                    <ShoppingCart size={14} /> Buy Now
+                  </button>
+                ) : (
+                  <a 
+                    href={`mailto:alejandro@quantumhospitalitysolutions.com?subject=Inquiry about ${tool.name}`}
+                    onClick={(e) => e.stopPropagation()}
+                    className="w-full sm:w-auto flex items-center justify-center gap-2 px-8 py-4 bg-pink text-black rounded-xl text-xs font-black uppercase tracking-widest hover:scale-105 transition-transform shadow-lg shadow-pink/20"
+                  >
+                    <Mail size={14} /> Contact Us
+                  </a>
+                )}
                 <Link 
                   to={`/tool/${tool.id}`}
                   onClick={(e) => e.stopPropagation()}

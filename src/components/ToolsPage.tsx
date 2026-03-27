@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { ShoppingCart, Info, Search, Filter, ChevronRight } from 'lucide-react';
+import { ShoppingCart, Info, Search, Filter, ChevronRight, Mail } from 'lucide-react';
 import { collection, onSnapshot, query, orderBy } from 'firebase/firestore';
 import { db, handleFirestoreError, OperationType } from '../firebase';
 import { Tool, Product } from '../types';
@@ -124,12 +124,21 @@ export default function ToolsPage() {
                   </div>
 
                   <div className="relative z-10 flex flex-col gap-4">
-                    <button 
-                      onClick={(e) => handleBuyNow(e, tool.productId)}
-                      className="w-full flex items-center justify-center gap-3 px-8 py-5 bg-black text-white rounded-2xl text-[11px] font-black uppercase tracking-widest hover:bg-white hover:text-black transition-all shadow-2xl"
-                    >
-                      <ShoppingCart size={18} /> Buy Now
-                    </button>
+                    {tool.productId ? (
+                      <button 
+                        onClick={(e) => handleBuyNow(e, tool.productId)}
+                        className="w-full flex items-center justify-center gap-3 px-8 py-5 bg-black text-white rounded-2xl text-[11px] font-black uppercase tracking-widest hover:bg-white hover:text-black transition-all shadow-2xl"
+                      >
+                        <ShoppingCart size={18} /> Buy Now
+                      </button>
+                    ) : (
+                      <a 
+                        href={`mailto:alejandro@quantumhospitalitysolutions.com?subject=Inquiry about ${tool.name}`}
+                        className="w-full flex items-center justify-center gap-3 px-8 py-5 bg-black text-white rounded-2xl text-[11px] font-black uppercase tracking-widest hover:bg-white hover:text-black transition-all shadow-2xl"
+                      >
+                        <Mail size={18} /> Contact Us
+                      </a>
+                    )}
                     <Link 
                       to={`/tool/${tool.id}`}
                       className="w-full flex items-center justify-center gap-3 px-8 py-5 bg-white/10 backdrop-blur-md rounded-2xl text-[11px] font-black uppercase tracking-widest hover:bg-white/20 transition-all border border-white/10"

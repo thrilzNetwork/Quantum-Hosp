@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { ShoppingCart, Check, ChevronRight, ArrowRight, Zap, ShieldCheck, Globe, Package } from 'lucide-react';
+import { ShoppingCart, Check, ChevronRight, ArrowRight, Zap, ShieldCheck, Globe, Package, Mail } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { collection, onSnapshot, query, orderBy } from 'firebase/firestore';
 import { db, handleFirestoreError, OperationType } from '../firebase';
@@ -137,12 +137,22 @@ export default function StoreSection() {
                       {product.badge}
                     </div>
                   )}
-                  <button
-                    onClick={() => handleAddToCart(product)}
-                    className="absolute bottom-6 right-6 w-12 h-12 bg-pink text-black rounded-full flex items-center justify-center transform translate-y-20 group-hover:translate-y-0 transition-transform duration-500 shadow-2xl"
-                  >
-                    {addedItems[product.id] ? <Check size={20} /> : <ShoppingCart size={20} />}
-                  </button>
+                  {product.contactOnly ? (
+                    <a
+                      href={`mailto:${product.supportEmail || 'alejandro@quantumhospitalitysolutions.com'}?subject=Inquiry about ${product.name}`}
+                      onClick={(e) => e.stopPropagation()}
+                      className="absolute bottom-6 right-6 w-12 h-12 bg-pink text-black rounded-full flex items-center justify-center transform translate-y-20 group-hover:translate-y-0 transition-transform duration-500 shadow-2xl"
+                    >
+                      <Mail size={20} />
+                    </a>
+                  ) : (
+                    <button
+                      onClick={() => handleAddToCart(product)}
+                      className="absolute bottom-6 right-6 w-12 h-12 bg-pink text-black rounded-full flex items-center justify-center transform translate-y-20 group-hover:translate-y-0 transition-transform duration-500 shadow-2xl"
+                    >
+                      {addedItems[product.id] ? <Check size={20} /> : <ShoppingCart size={20} />}
+                    </button>
+                  )}
                 </div>
 
                 <div className="flex-1 space-y-3">

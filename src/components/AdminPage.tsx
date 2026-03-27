@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { collection, onSnapshot, addDoc, updateDoc, deleteDoc, doc, query, orderBy } from 'firebase/firestore';
+import { collection, onSnapshot, addDoc, updateDoc, deleteDoc, doc, query, orderBy, setDoc } from 'firebase/firestore';
 import { db, auth, handleFirestoreError, OperationType, logout } from '../firebase';
 import { Product, Tool, Tutorial, BlogPost, Sale, PromoSlide, SiteSettings } from '../types';
 import { Plus, Trash2, Edit2, Save, X, Layout, Package, BookOpen, Users, BarChart3, Newspaper, Image as ImageIcon, LogOut, Globe, Settings as SettingsIcon } from 'lucide-react';
@@ -233,10 +233,10 @@ I am not a tech founder who studied hotels. I am an operator who studied technol
     if (!siteSettings) return;
     try {
       const { id, ...settingsData } = siteSettings;
-      await updateDoc(doc(db, 'settings', 'site_config'), settingsData);
+      await setDoc(doc(db, 'settings', 'site_config'), settingsData);
       alert('Settings updated successfully!');
     } catch (error) {
-      handleFirestoreError(error, OperationType.UPDATE, 'settings/site_config');
+      handleFirestoreError(error, OperationType.WRITE, 'settings/site_config');
     }
   };
 
@@ -373,30 +373,93 @@ I am not a tech founder who studied hotels. I am an operator who studied technol
                   onClick={async () => {
                     if (window.confirm("Seed initial products?")) {
                       const initialProducts = [
-                        { 
-                          name: 'ReviewFlow', 
-                          description: 'Automate your guest review responses with AI that sounds like your brand.', 
-                          price: 29, 
-                          image: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&q=80&w=800', 
+                        {
+                          name: 'ATTENDA',
+                          headline: 'Turn Every Room Into a Revenue Channel',
+                          description: "Attenda is Quantum's in-room digital directory — a single interface where guests can browse and order everything the hotel has to offer. Food and beverage, amenities, services, upsells, local experiences — anything the property wants to monetize, Attenda puts it in front of the guest at the right moment. No more missed revenue. No more guests who didn't know the option existed. Attenda turns every room into a revenue channel.",
+                          price: 0,
+                          image: 'https://picsum.photos/seed/attenda/800/800',
                           category: 'tool',
-                          badge: 'Popular',
-                          heroBenefits: ['Save 10+ hours/week', 'Improve response rate by 100%', 'Consistent brand voice'],
-                          features: ['AI Response Generation', 'Sentiment Analysis', 'Multi-platform support'],
-                          supportEmail: 'alejandro@quantumhospitality.com'
+                          badge: 'Service',
+                          contactOnly: true,
+                          heroBenefits: [
+                            'Turn every room into a revenue channel',
+                            'No more missed revenue opportunities',
+                            'Guests can browse and order everything easily'
+                          ],
+                          features: [
+                            'In-room digital directory',
+                            'Food and beverage ordering',
+                            'Amenities and services booking',
+                            'Upsells and local experiences'
+                          ]
                         },
-                        { 
-                          name: 'SignatureFlow', 
-                          description: 'Digital check-in and signature capture for the modern operator.', 
-                          price: 49, 
-                          image: 'https://images.unsplash.com/photo-1563986768609-322da13575f3?auto=format&fit=crop&q=80&w=800', 
+                        {
+                          name: 'REVIEWFLOW',
+                          headline: 'Protect Your Reputation. Capture Problems Before They Go Online.',
+                          description: "ReviewFlow is Quantum's smart guest sentiment tool. Guests scan a QR code and rate their stay — 3 stars or below sends a private alert directly to management, keeping negative feedback internal and actionable. 4 stars and above prompts the guest to share their experience publicly on the platform of their choice. Stop bleeding reputation online. Start intercepting problems at the source and letting your best guests do the marketing.",
+                          price: 0,
+                          image: 'https://picsum.photos/seed/reviewflow/800/800',
                           category: 'tool',
-                          badge: 'New',
-                          heroBenefits: ['Paperless operations', 'Instant sync', 'Legal compliance'],
-                          features: ['Digital Signatures', 'ID Verification', 'Automated Archiving'],
-                          supportEmail: 'alejandro@quantumhospitality.com'
+                          badge: 'Service',
+                          contactOnly: true,
+                          heroBenefits: [
+                            'Protect your reputation',
+                            'Capture problems before they go online',
+                            'Intercept problems at the source'
+                          ],
+                          features: [
+                            'QR code sentiment capture',
+                            'Private management alerts',
+                            'Public review prompts',
+                            'Reputation interception'
+                          ]
+                        },
+                        {
+                          name: 'EVENTFLOW',
+                          headline: 'Every Stakeholder Aligned. Zero Confusion.',
+                          description: "EventFlow is Quantum's group and event management platform. The hotel inputs all BEO details — schedules, inclusions, parking, contacts, special notes — and two things happen simultaneously. Your team gets a live operational view with everything they need to execute flawlessly. Your group members and meeting planners get a branded client-facing landing page with real-time updates, admin messages, and the ability to interact, make requests, and order directly. One tool. Every stakeholder on the same page. Every time.",
+                          price: 0,
+                          image: 'https://picsum.photos/seed/eventflow/800/800',
+                          category: 'tool',
+                          badge: 'Service',
+                          contactOnly: true,
+                          heroBenefits: [
+                            'Every stakeholder aligned',
+                            'Zero confusion for groups and events',
+                            'Live operational view for your team'
+                          ],
+                          features: [
+                            'BEO details management',
+                            'Live operational view',
+                            'Branded client landing page',
+                            'Real-time updates and interaction'
+                          ]
+                        },
+                        {
+                          name: 'SIGNATUREFLOW',
+                          headline: 'Culture Is in Every Touchpoint — Including Your Email Signature.',
+                          description: "SignatureFlow lives in our Culture category because we believe small details reveal big standards. When your entire team sends emails with the same polished, professional signature — that's not branding. That's culture made visible. SignatureFlow generates beautiful, consistent email signatures for every member of your hotel team so that every message sent, at every level, reflects the same standard of excellence. Culture isn't a poster on the wall. It's in every touchpoint.",
+                          price: 0,
+                          image: 'https://picsum.photos/seed/signatureflow/800/800',
+                          category: 'tool',
+                          badge: 'Service',
+                          contactOnly: true,
+                          heroBenefits: [
+                            'Culture visible in every email',
+                            'Standard of excellence at every level',
+                            'Consistent professional signatures'
+                          ],
+                          features: [
+                            'Automated signature generation',
+                            'Consistent team-wide formatting',
+                            'Beautiful, professional designs',
+                            'Easy implementation'
+                          ]
                         },
                         { 
                           name: 'Somehow I Managed', 
+                          headline: 'The Definitive Guide to Modern Hospitality Leadership',
                           description: 'The definitive guide to modern hospitality leadership.', 
                           price: 19.99, 
                           image: 'https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?auto=format&fit=crop&q=80&w=800', 
@@ -533,6 +596,12 @@ I am not a tech founder who studied hotels. I am an operator who studied technol
                       onChange={e => setEditData({...editData, name: e.target.value})}
                       placeholder="Name"
                     />
+                    <input 
+                      className="w-full px-4 py-2 bg-black border border-white/10 rounded-xl text-white focus:border-pink outline-none transition-all"
+                      value={editData.headline || ''}
+                      onChange={e => setEditData({...editData, headline: e.target.value})}
+                      placeholder="Headline"
+                    />
                     <textarea 
                       className="w-full px-4 py-2 bg-black border border-white/10 rounded-xl text-white focus:border-pink outline-none transition-all"
                       value={editData.description}
@@ -540,6 +609,17 @@ I am not a tech founder who studied hotels. I am an operator who studied technol
                       placeholder="Description"
                       rows={3}
                     />
+                    <div className="flex items-center gap-4">
+                      <label className="flex items-center gap-2 text-sm font-bold cursor-pointer text-white/60">
+                        <input 
+                          type="checkbox"
+                          checked={editData.contactOnly || false}
+                          onChange={e => setEditData({...editData, contactOnly: e.target.checked})}
+                          className="accent-pink"
+                        />
+                        Contact Only (Service)
+                      </label>
+                    </div>
                     <div className="flex justify-end gap-2">
                       <button onClick={() => setIsEditing(null)} className="px-4 py-2 text-white/40 font-bold hover:text-white transition-colors">Cancel</button>
                       <button onClick={() => handleUpdate(product.id)} className="px-6 py-2 bg-pink text-black rounded-xl font-bold hover:scale-105 transition-all">Save</button>

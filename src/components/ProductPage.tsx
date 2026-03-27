@@ -97,6 +97,11 @@ export default function ProductPage() {
             <h1 className="text-[4rem] md:text-h1-caps font-black uppercase leading-[0.85] tracking-tighter text-white mb-10">
               {product.name}.
             </h1>
+            {product.headline && (
+              <p className="text-2xl md:text-3xl font-black uppercase tracking-tight text-pink mb-8 leading-tight max-w-xl">
+                {product.headline}
+              </p>
+            )}
             <p className="text-body-l font-medium opacity-60 mb-12 leading-relaxed text-white max-w-xl">
               {product.description}
             </p>
@@ -119,6 +124,30 @@ export default function ProductPage() {
                     <button className="bg-white text-black px-10 py-5 rounded-2xl font-black uppercase tracking-widest text-xs hover:bg-pink transition-all shadow-xl">
                       Join Waitlist
                     </button>
+                  </div>
+                </div>
+              </div>
+            ) : product.contactOnly ? (
+              <div className="space-y-12">
+                <div className="flex flex-col gap-6">
+                  <a 
+                    href={`mailto:${product.supportEmail || 'alejandro@quantumhospitalitysolutions.com'}?subject=Inquiry about ${product.name}`}
+                    className="flex-1 min-w-[240px] py-6 rounded-2xl font-black uppercase tracking-[0.15em] text-xs transition-all shadow-2xl hover:scale-[1.02] active:scale-[0.98] bg-pink text-black hover:bg-white flex items-center justify-center gap-3"
+                  >
+                    <Mail size={18} /> Contact Alejandro
+                  </a>
+                  <p className="text-sm font-bold text-white/40 italic">
+                    This is a service-based solution. Contact us for a custom quote and implementation plan.
+                  </p>
+                </div>
+                <div className="flex flex-wrap items-center gap-10 text-[10px] font-black uppercase tracking-widest text-white/40">
+                  <div className="flex items-center gap-3">
+                    <Zap size={18} className="text-pink" />
+                    Custom Implementation
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <Mail size={18} className="text-pink" />
+                    Direct Support
                   </div>
                 </div>
               </div>
@@ -249,6 +278,13 @@ export default function ProductPage() {
                   <button className="px-16 py-6 bg-pink text-black rounded-2xl font-black uppercase tracking-widest text-xs shadow-2xl hover:bg-white transition-all">
                     Join the Waitlist
                   </button>
+                ) : product.contactOnly ? (
+                  <a 
+                    href={`mailto:${product.supportEmail || 'alejandro@quantumhospitalitysolutions.com'}?subject=Inquiry about ${product.name}`}
+                    className="px-16 py-6 bg-pink text-black rounded-2xl font-black uppercase tracking-widest text-xs shadow-2xl hover:bg-white transition-all flex items-center gap-3"
+                  >
+                    <Mail size={18} /> Contact Alejandro
+                  </a>
                 ) : (
                   <button onClick={handleAddToCart} className="px-16 py-6 bg-pink text-black rounded-2xl font-black uppercase tracking-widest text-xs shadow-2xl hover:bg-white transition-all">
                     Get Started Now

@@ -89,6 +89,7 @@ export interface User {
 export interface Product {
   id: string;
   name: string;
+  headline?: string;
   description: string;
   price: number;
   image: string;
@@ -96,6 +97,7 @@ export interface Product {
   pinSubcategory?: PinSubcategory;
   badge?: string;
   downloadable?: boolean;
+  contactOnly?: boolean;
   // New fields for product pages
   isComingSoon?: boolean;
   releaseDate?: string;

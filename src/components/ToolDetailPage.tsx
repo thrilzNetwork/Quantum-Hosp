@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useNavigate, useParams, Link } from 'react-router-dom';
 import { doc, onSnapshot } from 'firebase/firestore';
 import { db, handleFirestoreError, OperationType } from '../firebase';
 import { Tool } from '../types';
@@ -8,6 +8,7 @@ import { ChevronLeft, Mail, Zap, CheckCircle2, ArrowRight } from 'lucide-react';
 
 export default function ToolDetailPage() {
   const { id } = useParams<{ id: string }>();
+  const navigate = useNavigate();
   const [tool, setTool] = useState<Tool | null>(null);
   const [loading, setLoading] = useState(true);
 
@@ -15,7 +16,12 @@ export default function ToolDetailPage() {
     if (!id) return;
     const unsubscribe = onSnapshot(doc(db, 'tools', id), (docSnap) => {
       if (docSnap.exists()) {
-        setTool({ id: docSnap.id, ...docSnap.data() } as Tool);
+        const toolData = { id: docSnap.id, ...docSnap.data() } as Tool;
+        if (toolData.productId) {
+          navigate(`/product/${toolData.productId}`, { replace: true });
+          return;
+        }
+        setTool(toolData);
       }
       setLoading(false);
     }, (error) => {
@@ -23,7 +29,7 @@ export default function ToolDetailPage() {
       setLoading(false);
     });
     return () => unsubscribe();
-  }, [id]);
+  }, [id, navigate]);
 
   if (loading) {
     return (
