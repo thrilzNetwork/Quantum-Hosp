@@ -109,7 +109,12 @@ export default function ToolsPage() {
                     )}
                   </div>
                   
-                  <h3 className="relative z-10 text-3xl font-black mb-6 uppercase tracking-tight leading-none">{tool.name}</h3>
+                  <h3 className="relative z-10 text-3xl font-black mb-2 uppercase tracking-tight leading-none">{tool.name}</h3>
+                  {tool.headline && (
+                    <p className="relative z-10 text-[10px] font-black uppercase tracking-widest opacity-60 mb-4">
+                      {tool.headline}
+                    </p>
+                  )}
                   <p className="relative z-10 text-sm font-medium opacity-80 mb-10 flex-1 leading-relaxed">
                     {tool.description}
                   </p>

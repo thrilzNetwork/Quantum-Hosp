@@ -61,8 +61,8 @@ export default function Hero() {
 
   return (
     <section className="bg-black py-4 md:py-8">
-      <div className="container grid lg:grid-cols-2 gap-4 md:gap-6">
-        <div className="bg-black text-white rounded-3xl p-8 md:p-16 lg:p-20 flex flex-col justify-center relative overflow-hidden border border-white/5">
+      <div className="container flex justify-center">
+        <div className="bg-black text-white rounded-3xl p-8 md:p-16 lg:p-20 flex flex-col justify-center relative overflow-hidden border border-white/5 max-w-4xl w-full">
           {/* Decorative element */}
           <div className="absolute top-1/2 -left-10 w-9 h-9 text-pink/20 -translate-y-1/2">
              <svg viewBox="0 0 23 25" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -74,7 +74,7 @@ export default function Hero() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
-            className="space-y-8 relative z-10"
+            className="space-y-8 relative z-10 text-center flex flex-col items-center"
           >
             <h1 className="text-[2.5rem] sm:text-[3rem] md:text-h3-caps leading-[0.95] md:leading-[0.85]">
               {settings?.heroTitle ? (
@@ -88,7 +88,7 @@ export default function Hero() {
               {settings?.heroSubtitle || 'AI-powered operational tools built by a hotel general manager to solve real hospitality problems. Improve operations, increase guest satisfaction, and deploy tools instantly.'}
             </p>
 
-            <div className="flex flex-wrap gap-4 pt-4">
+            <div className="flex flex-wrap justify-center gap-4 pt-4">
               <button 
                 onClick={handleScrollToTools}
                 className="btn px-10 py-5 bg-white text-black rounded-2xl font-black uppercase tracking-tighter hover:bg-pink transition-all shadow-xl shadow-white/5"
@@ -108,37 +108,7 @@ export default function Hero() {
             </div>
           </motion.div>
         </div>
-
-        <div className="bg-black rounded-3xl overflow-hidden relative aspect-square lg:aspect-auto border border-white/5">
-          <AnimatePresence mode="wait">
-            {slides.length > 0 ? (
-              <motion.div
-                key={slides[currentSlide].id}
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.5 }}
-                className="absolute inset-0"
-              >
-                <img 
-                  src={slides[currentSlide].image} 
-                  alt={slides[currentSlide].title} 
-                  className="w-full h-full object-cover"
-                  referrerPolicy="no-referrer"
-                />
-              </motion.div>
-            ) : (
-              <img 
-                src="https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&q=80&w=1200&h=1200" 
-                alt="Luxury hotel lobby" 
-                className="w-full h-full object-cover"
-                referrerPolicy="no-referrer"
-              />
-            )}
-          </AnimatePresence>
-        </div>
       </div>
-
     </section>
   );
 }

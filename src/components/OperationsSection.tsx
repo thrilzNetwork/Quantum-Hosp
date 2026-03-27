@@ -76,7 +76,7 @@ export default function OperationsSection() {
                   <span className="w-1 h-1 rounded-full bg-white/20"></span>
                   <span className="text-[0.625rem] font-black uppercase tracking-widest text-white/40">{tool.tag}</span>
                 </div>
-                <h3 className="text-h4 font-black uppercase tracking-tight mb-4">{tool.name}</h3>
+                <h3 className="text-h4 font-black uppercase tracking-tight mb-4">{tool.headline || tool.name}</h3>
                 <p className="text-body-m opacity-60 max-w-lg mb-8 leading-relaxed">
                   {tool.description}
                 </p>
