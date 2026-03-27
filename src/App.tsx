@@ -20,7 +20,7 @@ import UserPage from './components/UserPage';
 import ProtectedRoute from './components/ProtectedRoute';
 import ProductPage from './components/ProductPage';
 import ToolsPage from './components/ToolsPage';
-import BlogPage from './BlogPage';
+import ToolDetailPage from './components/ToolDetailPage';
 import MainLayout from './components/MainLayout';
 
 import { db } from './firebase';
@@ -98,7 +98,7 @@ export default function App() {
                   </ProtectedRoute>
                 } />
                 <Route path="/tools" element={<ToolsPage />} />
-                <Route path="/blog" element={<BlogPage />} />
+                <Route path="/tool/:id" element={<ToolDetailPage />} />
                 <Route path="/product/:id" element={<ProductPage />} />
               </Route>
               <Route path="/admin" element={

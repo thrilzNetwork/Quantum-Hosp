@@ -130,14 +130,12 @@ export default function ToolsPage() {
                     >
                       <ShoppingCart size={18} /> Buy Now
                     </button>
-                    {tool.productId && (
-                      <Link 
-                        to={`/product/${tool.productId}`}
-                        className="w-full flex items-center justify-center gap-3 px-8 py-5 bg-white/10 backdrop-blur-md rounded-2xl text-[11px] font-black uppercase tracking-widest hover:bg-white/20 transition-all border border-white/10"
-                      >
-                        <Info size={18} /> Learn More
-                      </Link>
-                    )}
+                    <Link 
+                      to={`/tool/${tool.id}`}
+                      className="w-full flex items-center justify-center gap-3 px-8 py-5 bg-white/10 backdrop-blur-md rounded-2xl text-[11px] font-black uppercase tracking-widest hover:bg-white/20 transition-all border border-white/10"
+                    >
+                      <Info size={18} /> Learn More
+                    </Link>
                   </div>
                 </div>
               </motion.div>

@@ -125,7 +125,6 @@ export default function Header() {
     { name: 'Store', href: '/#store', isRoute: false },
     { name: 'How it Works', href: '/#how-it-works', isRoute: false },
     { name: 'About', href: '/#about', isRoute: false },
-    { name: 'Blog', href: '/blog', isRoute: true },
     { name: 'Resources', href: '/#resources', isRoute: false },
     { name: 'Consulting', href: '/#consulting', isRoute: false },
   ];

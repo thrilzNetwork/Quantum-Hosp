@@ -417,6 +417,66 @@ I am not a tech founder who studied hotels. I am an operator who studied technol
                   Seed Products
                 </button>
               )}
+              {activeTab === 'tools' && (
+                <button 
+                  onClick={async () => {
+                    if (window.confirm("Seed initial tools?")) {
+                      const initialTools = [
+                        {
+                          name: 'ATTENDA',
+                          tag: 'REVENUE',
+                          headline: 'Turn Every Room Into a Revenue Channel',
+                          description: "Attenda is Quantum's in-room digital directory — a single interface where guests can browse and order everything the hotel has to offer. Food and beverage, amenities, services, upsells, local experiences — anything the property wants to monetize, Attenda puts it in front of the guest at the right moment. No more missed revenue. No more guests who didn't know the option existed. Attenda turns every room into a revenue channel.",
+                          features: ['Food & Beverage Ordering', 'Amenities & Services', 'Upsells & Local Experiences', 'Instant Guest Access'],
+                          useCase: 'Ready to monetize every touchpoint in your property? 📩 Contact Alejandro: alejandro@quantumhospitalitysolutions.com',
+                          color: 'bg-pink',
+                          span: 'md:col-span-3',
+                          productId: ''
+                        },
+                        {
+                          name: 'REVIEWFLOW',
+                          tag: 'REPUTATION',
+                          headline: 'Protect Your Reputation. Capture Problems Before They Go Online.',
+                          description: "ReviewFlow is Quantum's smart guest sentiment tool. Guests scan a QR code and rate their stay — 3 stars or below sends a private alert directly to management, keeping negative feedback internal and actionable. 4 stars and above prompts the guest to share their experience publicly on the platform of their choice. Stop bleeding reputation online. Start intercepting problems at the source and letting your best guests do the marketing.",
+                          features: ['QR Code Sentiment Capture', 'Private Management Alerts', 'Public Review Prompts', 'Reputation Interception'],
+                          useCase: 'Want to control your review narrative? 📩 Contact Alejandro: alejandro@quantumhospitalitysolutions.com',
+                          color: 'bg-pink',
+                          span: 'md:col-span-3',
+                          productId: ''
+                        },
+                        {
+                          name: 'EVENTFLOW',
+                          tag: 'EVENTS',
+                          headline: 'Every Stakeholder Aligned. Zero Confusion.',
+                          description: "EventFlow is Quantum's group and event management platform. The hotel inputs all BEO details — schedules, inclusions, parking, contacts, special notes — and two things happen simultaneously. Your team gets a live operational view with everything they need to execute flawlessly. Your group members and meeting planners get a branded client-facing landing page with real-time updates, admin messages, and the ability to interact, make requests, and order directly. One tool. Every stakeholder on the same page. Every time.",
+                          features: ['Live Operational View', 'Branded Client Landing Page', 'Real-time Updates', 'Direct Interaction & Ordering'],
+                          useCase: 'Running groups and events at your property? 📩 Contact Alejandro: alejandro@quantumhospitalitysolutions.com',
+                          color: 'bg-pink',
+                          span: 'md:col-span-3',
+                          productId: ''
+                        },
+                        {
+                          name: 'SIGNATUREFLOW',
+                          tag: 'CULTURE',
+                          headline: 'Culture Is in Every Touchpoint — Including Your Email Signature.',
+                          description: "SignatureFlow lives in our Culture category because we believe small details reveal big standards. When your entire team sends emails with the same polished, professional signature — that's not branding. That's culture made visible. SignatureFlow generates beautiful, consistent email signatures for every member of your hotel team so that every message sent, at every level, reflects the same standard of excellence. Culture isn't a poster on the wall. It's in every touchpoint.",
+                          features: ['Team-wide Consistency', 'Professional Branding', 'Instant Generation', 'Culture Visibility'],
+                          useCase: 'Want your team to look as good on email as they do in person? 📩 Contact Alejandro: alejandro@quantumhospitalitysolutions.com',
+                          color: 'bg-pink',
+                          span: 'md:col-span-3',
+                          productId: ''
+                        }
+                      ];
+                      for (const tool of initialTools) {
+                        await addDoc(collection(db, 'tools'), tool);
+                      }
+                    }
+                  }}
+                  className="btn bg-zinc-900 border border-white/10 text-white px-6 py-3 rounded-xl font-bold hover:bg-zinc-800 transition-all"
+                >
+                  Seed Tools
+                </button>
+              )}
             </div>
           </div>
 

@@ -2,6 +2,7 @@ export interface Tool {
   id: string;
   name: string;
   tag: string;
+  headline?: string;
   description: string;
   features: string[];
   useCase: string;

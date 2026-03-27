@@ -152,7 +152,7 @@ service cloud.firestore {
 
     function isValidBlogPost(data) {
       return hasRequiredFields(['title', 'excerpt', 'content', 'author', 'date', 'image', 'category']) &&
-             hasOnlyAllowedFields(['title', 'excerpt', 'content', 'author', 'date', 'image', 'category', 'slug', 'metaDescription', 'tags']) &&
+             hasOnlyAllowedFields(['title', 'excerpt', 'content', 'author', 'date', 'image', 'category', 'slug', 'mediumLink', 'metaDescription', 'tags']) &&
              data.title is string && data.title.size() > 0 && data.title.size() < 200 &&
              data.excerpt is string && data.excerpt.size() < 1000 &&
              data.content is string && data.content.size() < 50000 &&
@@ -161,6 +161,7 @@ service cloud.firestore {
              data.image is string &&
              data.category is string &&
              (!('slug' in data) || (data.slug is string && data.slug.size() < 200)) &&
+             (!('mediumLink' in data) || (data.mediumLink is string && data.mediumLink.size() < 500)) &&
              (!('metaDescription' in data) || (data.metaDescription is string && data.metaDescription.size() < 500)) &&
              (!('tags' in data) || (data.tags is list && data.tags.size() < 20));
     }
@@ -189,19 +190,26 @@ service cloud.firestore {
 
     function isValidSiteSettings(data) {
       return hasRequiredFields(['siteName', 'siteDescription', 'heroTitle', 'heroSubtitle', 'heroImage', 'contactEmail']) &&
-             hasOnlyAllowedFields(['siteName', 'siteDescription', 'heroTitle', 'heroSubtitle', 'heroImage', 'contactEmail', 'stripePublicKey', 'stripeSecretKey', 'mcpConfig', 'apiKeys', 'footerText', 'socialLinks']) &&
+             hasOnlyAllowedFields(['siteName', 'siteDescription', 'heroTitle', 'heroSubtitle', 'heroImage', 'contactEmail', 'googleCalendarBookingLink', 'stripePublicKey', 'stripeSecretKey', 'mcpConfig', 'apiKeys', 'footerText', 'socialLinks', 'founderName', 'founderRole', 'founderBio', 'founderImage', 'mediumUsername', 'bookUrl']) &&
              data.siteName is string && data.siteName.size() < 100 &&
              data.siteDescription is string && data.siteDescription.size() < 1000 &&
              data.heroTitle is string && data.heroTitle.size() < 500 &&
              data.heroSubtitle is string && data.heroSubtitle.size() < 1000 &&
              data.heroImage is string && data.heroImage.size() < 500 &&
              data.contactEmail is string && isValidEmail(data.contactEmail) &&
+             (!('googleCalendarBookingLink' in data) || (data.googleCalendarBookingLink is string && data.googleCalendarBookingLink.size() < 500)) &&
              (!('stripePublicKey' in data) || (data.stripePublicKey is string && data.stripePublicKey.size() < 200)) &&
              (!('stripeSecretKey' in data) || (data.stripeSecretKey is string && data.stripeSecretKey.size() < 200)) &&
              (!('mcpConfig' in data) || (data.mcpConfig is string && data.mcpConfig.size() < 5000)) &&
              (!('apiKeys' in data) || data.apiKeys is map) &&
              (!('footerText' in data) || (data.footerText is string && data.footerText.size() < 500)) &&
-             (!('socialLinks' in data) || data.socialLinks is map);
+             (!('socialLinks' in data) || data.socialLinks is map) &&
+             (!('founderName' in data) || (data.founderName is string && data.founderName.size() < 100)) &&
+             (!('founderRole' in data) || (data.founderRole is string && data.founderRole.size() < 100)) &&
+             (!('founderBio' in data) || (data.founderBio is string && data.founderBio.size() < 2000)) &&
+             (!('founderImage' in data) || (data.founderImage is string && data.founderImage.size() < 500)) &&
+             (!('mediumUsername' in data) || (data.mediumUsername is string && data.mediumUsername.size() < 100)) &&
+             (!('bookUrl' in data) || (data.bookUrl is string && data.bookUrl.size() < 500));
     }
 
     // ===============================================================

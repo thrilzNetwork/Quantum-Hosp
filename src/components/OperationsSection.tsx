@@ -6,9 +6,10 @@ import { db, handleFirestoreError, OperationType } from '../firebase';
 import Modal from './Modal';
 import { Tool, Product } from '../types';
 import { useCart } from '../context/CartContext';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 export default function OperationsSection() {
+  const navigate = useNavigate();
   const [selectedTool, setSelectedTool] = useState<Tool | null>(null);
   const [tools, setTools] = useState<Tool[]>([]);
   const [products, setProducts] = useState<Product[]>([]);
@@ -66,7 +67,7 @@ export default function OperationsSection() {
               initial={{ opacity: 0, scale: 0.95 }}
               whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true }}
-              onClick={() => setSelectedTool(tool)}
+              onClick={() => navigate(`/tool/${tool.id}`)}
               className={`${tool.span} group cursor-pointer relative flex flex-col justify-between overflow-hidden rounded-3xl bg-zinc-900 border border-white/10 hover:border-pink/30 transition-all p-8 md:p-12 min-h-[350px] md:min-h-[450px]`}
             >
               <div className="relative z-10">
@@ -105,20 +106,13 @@ export default function OperationsSection() {
                 >
                   <ShoppingCart size={14} /> Buy Now
                 </button>
-                {tool.productId ? (
-                  <Link 
-                    to={`/product/${tool.productId}`}
-                    onClick={(e) => e.stopPropagation()}
-                    className="w-full sm:w-auto flex items-center justify-center gap-2 px-8 py-4 bg-white/5 border border-white/10 rounded-xl text-xs font-black uppercase tracking-widest hover:bg-white/10 transition-all"
-                  >
-                    <Info size={14} /> Learn More
-                  </Link>
-                ) : (
-                  <div className="flex items-center gap-x-2 text-[0.625rem] font-black uppercase tracking-widest text-white/60 group-hover:text-pink transition-colors">
-                    <span>Deploy instantly</span>
-                    <ChevronRight size={14} className="group-hover:translate-x-1 transition-transform" />
-                  </div>
-                )}
+                <Link 
+                  to={`/tool/${tool.id}`}
+                  onClick={(e) => e.stopPropagation()}
+                  className="w-full sm:w-auto flex items-center justify-center gap-2 px-8 py-4 bg-white/5 border border-white/10 rounded-xl text-xs font-black uppercase tracking-widest hover:bg-white/10 transition-all"
+                >
+                  <Info size={14} /> Learn More
+                </Link>
               </div>
 
               {/* Decorative background seed */}

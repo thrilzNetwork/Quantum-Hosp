@@ -33,7 +33,6 @@ export default function Footer() {
     {
       title: 'Resources',
       links: [
-        { name: 'Blog', href: '/blog' },
         { name: 'Tutorials', href: '/#how-it-works' },
         { name: 'Consulting', href: '/#consulting' },
         { name: 'Contact', href: 'contact' },
