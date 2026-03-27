@@ -1,10 +1,31 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'motion/react';
 import { ChevronRight, Calendar } from 'lucide-react';
 import BookingModal from './BookingModal';
+import { doc, onSnapshot } from 'firebase/firestore';
+import { db } from '../firebase';
+import { SiteSettings } from '../types';
 
 export default function ConsultingSection() {
   const [isBookingOpen, setIsBookingOpen] = useState(false);
+  const [settings, setSettings] = useState<SiteSettings | null>(null);
+
+  useEffect(() => {
+    const unsub = onSnapshot(doc(db, 'settings', 'site_config'), (snapshot) => {
+      if (snapshot.exists()) {
+        setSettings(snapshot.data() as SiteSettings);
+      }
+    });
+    return unsub;
+  }, []);
+
+  const handleBooking = () => {
+    if (settings?.googleCalendarBookingLink) {
+      window.open(settings.googleCalendarBookingLink, '_blank');
+    } else {
+      setIsBookingOpen(true);
+    }
+  };
 
   return (
     <section id="consulting" className="relative py-16 md:py-32 text-center text-white overflow-hidden">
@@ -35,7 +56,7 @@ export default function ConsultingSection() {
           </p>
 
           <button 
-            onClick={() => setIsBookingOpen(true)}
+            onClick={handleBooking}
             className="btn bg-pink text-black px-10 py-5 rounded-full text-caps-s font-bold hover:bg-pink-light transition-colors group inline-flex items-center"
           >
             <Calendar size={20} className="mr-2" />

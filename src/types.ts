@@ -147,4 +147,6 @@ export interface SiteSettings {
   founderRole?: string;
   founderBio?: string;
   founderImage?: string;
+  mediumUsername?: string;
+  bookUrl?: string;
 }

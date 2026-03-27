@@ -7,39 +7,39 @@ import { collection, onSnapshot, query, where, orderBy, doc } from 'firebase/fir
 import { db } from '../firebase';
 import { SiteSettings } from '../types';
 
-const footerLinks = [
-  {
-    title: 'Tools',
-    links: [
-      { name: 'Browse All Tools', href: '/tools' },
-      { name: 'Attenda', href: '/#tools' },
-      { name: 'ReviewFlow', href: '/#tools' },
-      { name: 'EventFlow', href: '/#tools' },
-    ],
-  },
-  {
-    title: 'Store',
-    links: [
-      { name: 'Marketplace', href: '/#store' },
-      { name: 'Pins', href: '/#store' },
-      { name: 'Digital Tools', href: '/#store' },
-      { name: 'Books', href: '/#store' },
-    ],
-  },
-  {
-    title: 'Resources',
-    links: [
-      { name: 'Blog', href: '/blog' },
-      { name: 'Tutorials', href: '/#how-it-works' },
-      { name: 'Consulting', href: '/#consulting' },
-      { name: 'Contact', href: 'contact' },
-    ],
-  },
-];
-
 export default function Footer() {
   const [isContactOpen, setIsContactOpen] = useState(false);
   const [settings, setSettings] = useState<SiteSettings | null>(null);
+
+  const footerLinks = [
+    {
+      title: 'Tools',
+      links: [
+        { name: 'Browse All Tools', href: '/tools' },
+        { name: 'Attenda', href: '/#tools' },
+        { name: 'ReviewFlow', href: '/#tools' },
+        { name: 'EventFlow', href: '/#tools' },
+      ],
+    },
+    {
+      title: 'Store',
+      links: [
+        { name: 'Marketplace', href: '/#store' },
+        { name: 'Pins', href: '/#store' },
+        { name: 'Digital Tools', href: '/#store' },
+        { name: 'Somehow I Managed (Book)', href: settings?.bookUrl || 'https://somehowimanaged.netlify.app/' },
+      ],
+    },
+    {
+      title: 'Resources',
+      links: [
+        { name: 'Blog', href: '/blog' },
+        { name: 'Tutorials', href: '/#how-it-works' },
+        { name: 'Consulting', href: '/#consulting' },
+        { name: 'Contact', href: 'contact' },
+      ],
+    },
+  ];
 
   useEffect(() => {
     const unsubSettings = onSnapshot(doc(db, 'settings', 'site_config'), (snapshot) => {
@@ -116,13 +116,24 @@ export default function Footer() {
                 <ul className="space-y-4">
                   {section.links.map((link) => (
                     <li key={link.name}>
-                      <Link 
-                        to={link.href} 
-                        onClick={(e) => handleLinkClick(e, link.href)}
-                        className="text-[0.9375rem] md:text-[0.875rem] hover:text-white/60 transition-colors block py-1"
-                      >
-                        {link.name}
-                      </Link>
+                      {link.href.startsWith('http') ? (
+                        <a 
+                          href={link.href}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-[0.9375rem] md:text-[0.875rem] hover:text-white/60 transition-colors block py-1"
+                        >
+                          {link.name}
+                        </a>
+                      ) : (
+                        <Link 
+                          to={link.href} 
+                          onClick={(e) => handleLinkClick(e, link.href)}
+                          className="text-[0.9375rem] md:text-[0.875rem] hover:text-white/60 transition-colors block py-1"
+                        >
+                          {link.name}
+                        </Link>
+                      )}
                     </li>
                   ))}
                 </ul>

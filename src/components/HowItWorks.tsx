@@ -24,7 +24,7 @@ export default function HowItWorks() {
       <div className="container">
         <div className="max-w-xl mb-10 md:mb-20">
           <h2 className="text-[2rem] md:text-h3 leading-tight mb-4 md:mb-6">How it works</h2>
-          <p className="text-body-m opacity-70">
+          <p className="text-body-m opacity-90">
             No complicated integrations. No long implementation cycles. Just simple, effective tools ready to work for you.
           </p>
         </div>
@@ -39,9 +39,9 @@ export default function HowItWorks() {
               transition={{ delay: i * 0.1 }}
               className="space-y-6"
             >
-              <div className="text-[4rem] font-black text-pink/20 leading-none">{step.num}</div>
+              <div className="text-[4rem] font-black text-pink/40 leading-none">{step.num}</div>
               <h3 className="text-h6">{step.title}</h3>
-              <p className="text-body-m opacity-70">{step.description}</p>
+              <p className="text-body-m opacity-90">{step.description}</p>
             </motion.div>
           ))}
         </div>

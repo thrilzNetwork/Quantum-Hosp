@@ -66,9 +66,24 @@ export default function AdminPage() {
           siteDescription: 'AI-powered operational tools built by hospitality operators for hospitality operators.',
           heroTitle: 'Tools Built by Operators for Operators',
           heroSubtitle: 'Quantum Hospitality Solutions',
-          heroImage: 'https://images.unsplash.com/photo-1540541338287-41700207dee6?auto=format&fit=crop&q=80&w=1200&h=1200',
-          contactEmail: 'support@quantum.com',
+          heroImage: 'https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&q=80&w=1200&h=1200',
+          contactEmail: 'alejandro@quantumhospitality.com',
           footerText: '© 2026 Quantum Hospitality Solutions. All rights reserved.',
+          founderName: 'Alejandro Soria',
+          founderRole: 'Founder & Hospitality Operator',
+          founderBio: `I came to this country with a dream that didn't work out, a language I was still learning, and a job cleaning offices I thought were something else. What I found instead was an industry I fell in love with — and I spent the next fifteen years learning every corner of it from the inside out.
+
+I started as a houseman. I became a night auditor, a front desk agent, a front office manager, an AGM, a GM. I opened hotels from scratch under pressure. I walked into broken properties and rebuilt them. I stayed through a hurricane on property. I survived COVID while running one of the best-performing hotels in the company. I sat across from ownership with numbers nobody wanted to see and delivered them anyway.
+
+What I never found — in any of those roles, at any of those properties — were tools built by someone who actually understood the job. The software was always designed by people who had studied hospitality, never by people who had lived it. I watched teams work around systems that were supposed to help them. I watched operators accept manual processes because nothing better existed. I got tired of waiting for someone else to build it.
+
+Quantum was not born in a boardroom. It was born from fifteen years of doing the work nobody sees — and finally having enough experience, enough clarity, and enough patience exhausted to build what this industry actually needs.
+
+I am not a tech founder who studied hotels. I am an operator who studied technology. That difference is everything.`,
+          founderImage: 'https://ais-dev-jfmomv2ukjrevu5lfqhfbr-208298624240.us-east1.run.app/api/attachments/f0e97923-40a9-45e0-86a7-eb7428025524/founder.png',
+          mediumUsername: '@AlejandroSoriaQuantum',
+          bookUrl: 'https://somehowimanaged.netlify.app/',
+          googleCalendarBookingLink: 'https://calendar.app.google/qpAdrEbntEimg74D7',
           socialLinks: {
             twitter: '#',
             linkedin: '#',
@@ -112,7 +127,7 @@ export default function AdminPage() {
           screenshots: ['https://picsum.photos/seed/s1/800/450', 'https://picsum.photos/seed/s2/800/450'],
           features: ['Feature 1', 'Feature 2', 'Feature 3'],
           onboardingSteps: ['Step 1', 'Step 2', 'Step 3'],
-          supportEmail: 'support@quantum.com',
+          supportEmail: 'alejandro@quantumhospitality.com',
           whatToExpect: 'Coming soon details...'
         });
       } else if (activeTab === 'tools') {
@@ -350,6 +365,55 @@ export default function AdminPage() {
                   className="btn bg-zinc-900 border border-white/10 text-white px-6 py-3 rounded-xl font-bold hover:bg-zinc-800 transition-all"
                 >
                   Seed Blog Posts
+                </button>
+              )}
+              {activeTab === 'products' && (
+                <button 
+                  onClick={async () => {
+                    if (window.confirm("Seed initial products?")) {
+                      const initialProducts = [
+                        { 
+                          name: 'ReviewFlow', 
+                          description: 'Automate your guest review responses with AI that sounds like your brand.', 
+                          price: 29, 
+                          image: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&q=80&w=800', 
+                          category: 'tool',
+                          badge: 'Popular',
+                          heroBenefits: ['Save 10+ hours/week', 'Improve response rate by 100%', 'Consistent brand voice'],
+                          features: ['AI Response Generation', 'Sentiment Analysis', 'Multi-platform support'],
+                          supportEmail: 'alejandro@quantumhospitality.com'
+                        },
+                        { 
+                          name: 'SignatureFlow', 
+                          description: 'Digital check-in and signature capture for the modern operator.', 
+                          price: 49, 
+                          image: 'https://images.unsplash.com/photo-1563986768609-322da13575f3?auto=format&fit=crop&q=80&w=800', 
+                          category: 'tool',
+                          badge: 'New',
+                          heroBenefits: ['Paperless operations', 'Instant sync', 'Legal compliance'],
+                          features: ['Digital Signatures', 'ID Verification', 'Automated Archiving'],
+                          supportEmail: 'alejandro@quantumhospitality.com'
+                        },
+                        { 
+                          name: 'Somehow I Managed', 
+                          description: 'The definitive guide to modern hospitality leadership.', 
+                          price: 19.99, 
+                          image: 'https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?auto=format&fit=crop&q=80&w=800', 
+                          category: 'book',
+                          badge: 'Bestseller',
+                          heroBenefits: ['Leadership frameworks', 'Operational excellence', 'Team building'],
+                          features: ['15+ years of experience', 'Practical templates', 'Case studies'],
+                          supportEmail: 'alejandro@quantumhospitality.com'
+                        }
+                      ];
+                      for (const product of initialProducts) {
+                        await addDoc(collection(db, 'products'), product);
+                      }
+                    }
+                  }}
+                  className="btn bg-zinc-900 border border-white/10 text-white px-6 py-3 rounded-xl font-bold hover:bg-zinc-800 transition-all"
+                >
+                  Seed Products
                 </button>
               )}
             </div>
@@ -784,6 +848,24 @@ export default function AdminPage() {
                         value={siteSettings.stripeSecretKey || ''}
                         onChange={e => setSiteSettings({...siteSettings, stripeSecretKey: e.target.value})}
                         placeholder="sk_test_..."
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-xs font-bold mb-1 text-white/60">Medium Username (e.g. @username)</label>
+                      <input 
+                        className="w-full px-4 py-2 bg-black border border-white/10 rounded-xl text-white focus:border-pink outline-none transition-all"
+                        value={siteSettings.mediumUsername || ''}
+                        onChange={e => setSiteSettings({...siteSettings, mediumUsername: e.target.value})}
+                        placeholder="@AlejandroSoriaQuantum"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-xs font-bold mb-1 text-white/60">Book URL</label>
+                      <input 
+                        className="w-full px-4 py-2 bg-black border border-white/10 rounded-xl text-white focus:border-pink outline-none transition-all"
+                        value={siteSettings.bookUrl || ''}
+                        onChange={e => setSiteSettings({...siteSettings, bookUrl: e.target.value})}
+                        placeholder="https://somehowimanaged.netlify.app/"
                       />
                     </div>
                     <div>

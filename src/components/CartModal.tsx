@@ -38,74 +38,83 @@ export default function CartModal() {
             transition={{ type: 'spring', damping: 25, stiffness: 200 }}
             className="relative w-full max-w-md bg-zinc-900 text-white h-full shadow-2xl flex flex-col"
           >
-            <div className="p-6 border-b border-white/10 flex items-center justify-between">
+            <div className="p-6 border-b border-white/10 flex items-center justify-between bg-black">
               <div className="flex items-center gap-x-3">
-                <ShoppingBag size={24} className="text-pink" />
-                <h2 className="text-xl font-bold">Cart ({totalItems})</h2>
+                <ShoppingBag size={20} className="text-pink" />
+                <h2 className="text-sm font-bold uppercase tracking-widest">Your Bag ({totalItems})</h2>
               </div>
               <button 
                 onClick={() => setIsOpen(false)}
                 className="p-2 hover:bg-white/5 rounded-full transition-colors"
+                aria-label="Close"
               >
-                <X size={24} />
+                <X size={20} />
               </button>
             </div>
 
-            <div className="flex-1 overflow-y-auto p-6">
+            <div className="flex-1 overflow-y-auto p-6 bg-black">
               {items.length === 0 ? (
-                <div className="h-full flex flex-col items-center justify-center text-center space-y-4">
-                  <div className="w-16 h-16 bg-white/5 rounded-full flex items-center justify-center text-white/20">
-                    <ShoppingBag size={32} />
+                <div className="h-full flex flex-col items-center justify-center text-center space-y-6">
+                  <div className="w-20 h-20 bg-white/5 rounded-full flex items-center justify-center text-white/10">
+                    <ShoppingBag size={40} />
                   </div>
-                  <p className="text-supporting-grey">Your cart is empty</p>
+                  <div className="space-y-2">
+                    <p className="text-sm font-bold uppercase tracking-widest text-white/60">Your bag is empty</p>
+                    <p className="text-xs text-white/30 max-w-[200px] mx-auto">Looks like you haven't added any hospitality essentials yet.</p>
+                  </div>
                   <button 
                     onClick={() => setIsOpen(false)}
-                    className="text-pink font-bold hover:underline"
+                    className="text-[10px] font-bold uppercase tracking-widest text-pink hover:text-white transition-colors border-b border-pink/30 pb-1"
                   >
-                    Continue Shopping
+                    Start Shopping
                   </button>
                 </div>
               ) : (
-                <div className="space-y-6">
+                <div className="space-y-8">
                   {items.map((item) => (
-                    <div key={item.product.id} className="flex gap-x-4">
-                      <div className="w-20 h-20 rounded-xl overflow-hidden bg-white/5 flex-shrink-0">
+                    <div key={item.product.id} className="flex gap-x-5 group">
+                      <div className="w-24 h-24 rounded-lg overflow-hidden bg-[#111] flex-shrink-0 border border-white/5">
                         <img 
                           src={item.product.image} 
                           alt={item.product.name}
-                          className="w-full h-full object-cover"
+                          className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500"
                           referrerPolicy="no-referrer"
                         />
                       </div>
-                      <div className="flex-1 min-w-0">
-                        <div className="flex justify-between items-start mb-1">
-                          <h3 className="text-sm font-bold truncate pr-4">{item.product.name}</h3>
-                          <span className="text-sm font-bold">${item.product.price * item.quantity}</span>
+                      <div className="flex-1 min-w-0 flex flex-col justify-between py-1">
+                        <div>
+                          <div className="flex justify-between items-start mb-1">
+                            <h3 className="text-xs font-bold truncate pr-4 text-white uppercase tracking-wide">{item.product.name}</h3>
+                            <span className="text-xs font-bold text-white">${item.product.price * item.quantity}</span>
+                          </div>
+                          <p className="text-[9px] text-pink font-bold uppercase tracking-[0.15em] mb-4">
+                            {item.product.category}
+                          </p>
                         </div>
-                        <p className="text-[0.625rem] text-supporting-grey uppercase tracking-widest mb-3">
-                          {item.product.category}
-                        </p>
+                        
                         <div className="flex items-center justify-between">
-                          <div className="flex items-center border border-white/10 rounded-full px-2 py-1">
+                          <div className="flex items-center bg-white/5 rounded-md p-1 border border-white/10">
                             <button 
                               onClick={() => updateQuantity(item.product.id, item.quantity - 1)}
-                              className="p-1 hover:text-pink transition-colors"
+                              className="p-1 hover:text-pink transition-colors text-white/40"
+                              aria-label="Decrease quantity"
                             >
-                              <Minus size={14} />
+                              <Minus size={12} />
                             </button>
-                            <span className="w-8 text-center text-xs font-bold">{item.quantity}</span>
+                            <span className="w-8 text-center text-[10px] font-bold text-white">{item.quantity}</span>
                             <button 
                               onClick={() => updateQuantity(item.product.id, item.quantity + 1)}
-                              className="p-1 hover:text-pink transition-colors"
+                              className="p-1 hover:text-pink transition-colors text-white/40"
+                              aria-label="Increase quantity"
                             >
-                              <Plus size={14} />
+                              <Plus size={12} />
                             </button>
                           </div>
                           <button 
                             onClick={() => removeItem(item.product.id)}
-                            className="text-supporting-grey hover:text-red-500 transition-colors"
+                            className="text-[9px] font-bold uppercase tracking-widest text-white/20 hover:text-red-500 transition-colors"
                           >
-                            <Trash2 size={16} />
+                            Remove
                           </button>
                         </div>
                       </div>
@@ -116,21 +125,37 @@ export default function CartModal() {
             </div>
 
             {items.length > 0 && (
-              <div className="p-6 border-t border-white/10 bg-white/5 space-y-4">
-                <div className="flex justify-between items-center">
-                  <span className="text-supporting-grey">Subtotal</span>
-                  <span className="text-xl font-bold">${totalPrice}</span>
+              <div className="p-8 border-t border-white/10 bg-[#0a0a0a] space-y-6">
+                <div className="space-y-2">
+                  <div className="flex justify-between items-center text-[10px] font-bold uppercase tracking-widest text-white/40">
+                    <span>Subtotal</span>
+                    <span className="text-white">${totalPrice}</span>
+                  </div>
+                  <div className="flex justify-between items-center text-[10px] font-bold uppercase tracking-widest text-white/40">
+                    <span>Shipping</span>
+                    <span className="text-white">Calculated at checkout</span>
+                  </div>
+                  <div className="pt-4 flex justify-between items-center border-t border-white/5">
+                    <span className="text-xs font-bold uppercase tracking-widest text-white">Total</span>
+                    <span className="text-2xl font-black text-white">${totalPrice}</span>
+                  </div>
                 </div>
+                
                 <button 
                   onClick={handleCheckout}
-                  className="w-full btn bg-pink text-black py-4 rounded-full font-bold flex items-center justify-center group"
+                  className="w-full bg-pink text-black py-5 rounded-xl font-bold text-[10px] uppercase tracking-[0.2em] flex items-center justify-center group hover:bg-white transition-all shadow-2xl shadow-pink/10"
                 >
-                  Checkout
-                  <ChevronRight size={18} className="ml-2 group-hover:translate-x-1 transition-transform" />
+                  Complete Purchase
+                  <ChevronRight size={14} className="ml-2 group-hover:translate-x-1 transition-transform" />
                 </button>
-                <p className="text-[0.625rem] text-center text-supporting-grey uppercase tracking-widest">
-                  Secure checkout powered by Stripe
-                </p>
+                
+                <div className="flex items-center justify-center gap-4 pt-2">
+                  <div className="h-[1px] flex-1 bg-white/5"></div>
+                  <p className="text-[8px] font-bold text-white/20 uppercase tracking-widest">
+                    Secure Checkout
+                  </p>
+                  <div className="h-[1px] flex-1 bg-white/5"></div>
+                </div>
               </div>
             )}
           </motion.div>

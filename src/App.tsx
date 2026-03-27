@@ -4,13 +4,13 @@ import ErrorBoundary from './components/ErrorBoundary';
 import { CartProvider } from './context/CartContext';
 import Header from './components/Header';
 import Hero from './components/Hero';
-import OperationsSection from './components/OperationsSection';
 import StoreSection from './components/StoreSection';
 import HowItWorks from './components/HowItWorks';
 import ImpactSection from './components/ImpactSection';
 import FounderSection from './components/FounderSection';
 import AboutFounder from './components/AboutFounder';
 import BlogSection from './components/BlogSection';
+import BookSection from './components/BookSection';
 import FreeResource from './components/FreeResource';
 import ConsultingSection from './components/ConsultingSection';
 import Footer from './components/Footer';
@@ -84,8 +84,8 @@ export default function App() {
                   <>
                     <Hero />
                     <HowItWorks />
-                    <OperationsSection />
                     <StoreSection />
+                    <BookSection />
                     <AboutFounder />
                     <BlogSection />
                     <FreeResource />

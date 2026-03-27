@@ -1,23 +1,23 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'motion/react';
-import { Download, Check } from 'lucide-react';
+import { BookOpen, ArrowRight } from 'lucide-react';
+import { doc, onSnapshot } from 'firebase/firestore';
+import { db } from '../firebase';
+import { SiteSettings } from '../types';
 
 export default function FreeResource() {
-  const [isDownloaded, setIsDownloaded] = useState(false);
+  const [settings, setSettings] = useState<SiteSettings | null>(null);
 
-  const handleDownload = (e: React.MouseEvent) => {
-    e.preventDefault();
-    setIsDownloaded(true);
-    // Simulate download
-    const link = document.createElement('a');
-    link.href = '#';
-    link.setAttribute('download', 'somehow-i-managed.pdf');
-    document.body.appendChild(link);
-    // link.click(); // Commented out to avoid actual download in preview
-    document.body.removeChild(link);
-    
-    setTimeout(() => setIsDownloaded(false), 3000);
-  };
+  useEffect(() => {
+    const unsub = onSnapshot(doc(db, 'settings', 'site_config'), (snapshot) => {
+      if (snapshot.exists()) {
+        setSettings(snapshot.data() as SiteSettings);
+      }
+    });
+    return unsub;
+  }, []);
+
+  const bookUrl = settings?.bookUrl || 'https://somehowimanaged.netlify.app/';
 
   return (
     <section id="resources" className="py-16 md:py-32 bg-black">
@@ -25,32 +25,23 @@ export default function FreeResource() {
         <div className="bg-zinc-900 rounded-3xl p-8 md:p-16 lg:p-24 flex flex-col lg:flex-row gap-10 md:gap-16 items-center border border-white/5 shadow-2xl">
           <div className="flex-1 space-y-6 md:space-y-8 text-center lg:text-left">
             <div className="space-y-4">
-              <span className="text-caps-s text-pink">Free Resource</span>
+              <span className="text-caps-s text-pink">Featured Resource</span>
               <h2 className="text-[2rem] md:text-h3 leading-tight text-white">Somehow I Managed — Hospitality Edition</h2>
               <p className="text-body-m text-white/70 max-w-md mx-auto lg:mx-0">
                 A practical guide for hotel operators navigating the chaos of daily operations. Learn how experienced operators manage teams, guests, and systems in the real world.
               </p>
             </div>
 
-            <button 
-              onClick={handleDownload}
-              disabled={isDownloaded}
-              className={`btn px-8 py-4 rounded-full text-caps-s font-bold transition-all inline-flex items-center gap-2 w-full sm:w-fit ${
-                isDownloaded ? 'bg-emerald-500 text-white' : 'bg-pink text-black hover:bg-pink-light'
-              }`}
+            <a 
+              href={bookUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="btn bg-pink text-black px-8 py-4 rounded-full text-caps-s font-bold hover:bg-pink-light transition-all inline-flex items-center gap-2 w-full sm:w-fit"
             >
-              {isDownloaded ? (
-                <>
-                  <Check size={18} />
-                  Starting Download...
-                </>
-              ) : (
-                <>
-                  <Download size={18} />
-                  Download Now
-                </>
-              )}
-            </button>
+              <BookOpen size={18} />
+              Read the Book
+              <ArrowRight size={18} />
+            </a>
           </div>
 
           <motion.div 

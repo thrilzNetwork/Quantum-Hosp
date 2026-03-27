@@ -238,7 +238,7 @@ export default function ProductPage() {
                   Get Started Now
                 </button>
               )}
-              <a href={`mailto:${product.supportEmail || 'support@quantum.com'}`} className="flex items-center gap-2 text-white/60 hover:text-white transition-colors">
+              <a href={`mailto:${product.supportEmail || 'alejandro@quantumhospitality.com'}`} className="flex items-center gap-2 text-white/60 hover:text-white transition-colors">
                 <Mail size={20} />
                 Contact Support
               </a>
