@@ -67,7 +67,7 @@ export default function OperationsSection() {
       <div className="absolute bottom-1/4 right-0 w-[600px] h-[600px] bg-pink/5 blur-[150px] rounded-full translate-x-1/2" />
 
       <div className="container relative z-10">
-        <div className="max-w-3xl mb-20 md:mb-32 space-y-8">
+        <div className="max-w-3xl mb-12 md:mb-20 lg:mb-32 space-y-8">
           <motion.div 
             initial={{ opacity: 0, x: -20 }}
             whileInView={{ opacity: 1, x: 0 }}
@@ -83,7 +83,7 @@ export default function OperationsSection() {
           </p>
         </div>
         
-        <div className="py-40 text-center glass rounded-[3rem] mb-32 relative overflow-hidden group">
+        <div className="py-24 md:py-40 text-center glass rounded-[2.5rem] md:rounded-[3rem] mb-16 md:mb-32 relative overflow-hidden group">
           <div className="absolute inset-0 bg-pink/5 opacity-0 group-hover:opacity-100 transition-opacity duration-700 blur-3xl" />
           <motion.div
             initial={{ opacity: 0, y: 20 }}

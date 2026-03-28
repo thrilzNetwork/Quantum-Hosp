@@ -54,7 +54,7 @@ export default function StoreSection() {
   return (
     <section id="store" className="section-padding bg-black">
       <div className="container">
-        <div className="max-w-4xl mb-20 md:mb-32">
+        <div className="max-w-4xl mb-12 md:mb-20 lg:mb-32">
           <motion.div 
             initial={{ opacity: 0, x: -20 }}
             whileInView={{ opacity: 1, x: 0 }}
@@ -67,11 +67,11 @@ export default function StoreSection() {
           <h2 className="text-h2-caps font-black uppercase leading-[0.85] tracking-tighter text-white mb-10">
             The <span className="text-pink">Quantum</span> Store
           </h2>
-          <p className="text-body-l opacity-100 text-white/90 max-w-3xl mb-16 font-medium">
+          <p className="text-body-l opacity-100 text-white/90 max-w-3xl mb-10 md:mb-16 font-medium">
             Curated hospitality essentials. From iconic enamel pins to powerful operational frameworks, every item is designed to help you master the art of service.
           </p>
 
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 border-t border-white/5 pt-12">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 border-t border-white/5 pt-8 md:pt-12">
             {[
               { icon: Zap, label: 'Instant Access' },
               { icon: ShieldCheck, label: 'Secure Checkout' },
@@ -93,7 +93,7 @@ export default function StoreSection() {
           </div>
         </div>
 
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-10 mb-20 border-b border-white/5 pb-12">
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-10 mb-12 md:mb-20 border-b border-white/5 pb-12">
           <div className="flex flex-wrap gap-4">
             {categories.map((cat) => (
               <button
@@ -114,7 +114,7 @@ export default function StoreSection() {
           </div>
         </div>
 
-        <div className="py-40 text-center glass rounded-[3rem] mb-32 relative overflow-hidden group">
+        <div className="py-24 md:py-40 text-center glass rounded-[2.5rem] md:rounded-[3rem] mb-16 md:mb-32 relative overflow-hidden group">
           <div className="absolute inset-0 bg-pink/5 opacity-0 group-hover:opacity-100 transition-opacity duration-700 blur-3xl" />
           <motion.div
             initial={{ opacity: 0, y: 20 }}

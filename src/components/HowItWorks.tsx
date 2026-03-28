@@ -25,7 +25,7 @@ export default function HowItWorks() {
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full bg-pink/5 blur-[180px] rounded-full pointer-events-none" />
 
       <div className="container relative z-10">
-        <div className="grid lg:grid-cols-2 gap-20 items-end mb-24 md:mb-40">
+        <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-end mb-16 md:mb-32 lg:mb-40">
           <div className="space-y-10">
             <motion.div 
               initial={{ opacity: 0, x: -20 }}

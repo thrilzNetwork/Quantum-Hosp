@@ -28,7 +28,7 @@ export default function FounderSection() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
-            className="space-y-12"
+            className="space-y-10 md:space-y-12"
           >
             <div className="space-y-6">
               <motion.div 
@@ -63,7 +63,7 @@ export default function FounderSection() {
               )}
             </div>
 
-            <div className="flex flex-wrap justify-center gap-8 md:gap-12 pt-10 border-t border-white/5">
+            <div className="flex flex-wrap justify-center gap-8 md:gap-12 pt-8 md:pt-10 border-t border-white/5">
               {['Practical', 'Simple', 'Deployable'].map((word, i) => (
                 <motion.div 
                   key={word}

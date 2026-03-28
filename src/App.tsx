@@ -6,7 +6,6 @@ import Header from './components/Header';
 import Hero from './components/Hero';
 import StoreSection from './components/StoreSection';
 import HowItWorks from './components/HowItWorks';
-import ImpactSection from './components/ImpactSection';
 import FounderSection from './components/FounderSection';
 import AboutFounder from './components/AboutFounder';
 import BlogSection from './components/BlogSection';
@@ -198,7 +197,6 @@ export default function App() {
                   <>
                     <Hero />
                     <HowItWorks />
-                    <ImpactSection />
                     <StoreSection />
                     <BookSection />
                     <AboutFounder />

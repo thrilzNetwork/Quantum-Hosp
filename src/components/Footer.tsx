@@ -77,13 +77,13 @@ export default function Footer() {
   };
 
   return (
-    <footer className="bg-black text-white pt-32 md:pt-48 pb-16 md:pb-24 border-t border-white/5 relative overflow-hidden">
+    <footer className="bg-black text-white pt-20 md:pt-32 lg:pt-48 pb-12 md:pb-24 border-t border-white/5 relative overflow-hidden">
       {/* Decorative background elements */}
       <div className="absolute bottom-0 right-0 w-[800px] h-[800px] bg-pink/5 blur-[200px] rounded-full translate-y-1/2 translate-x-1/2 pointer-events-none animate-glow" />
 
       <div className="container relative z-10">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-20 lg:gap-32 mb-32">
-          <div className="lg:col-span-4 space-y-12 text-center md:text-left">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 lg:gap-32 mb-16 md:mb-32">
+          <div className="lg:col-span-4 space-y-8 md:space-y-12 text-center md:text-left">
             <Link 
               to="/" 
               onClick={(e) => { e.preventDefault(); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
@@ -119,7 +119,7 @@ export default function Footer() {
             </div>
           </div>
 
-          <div className="lg:col-span-8 grid grid-cols-1 sm:grid-cols-3 gap-16 md:gap-12">
+          <div className="lg:col-span-8 grid grid-cols-1 sm:grid-cols-3 gap-12 md:gap-16">
             {footerLinks.map((section) => (
               <div key={section.title} className="space-y-10 text-center sm:text-left">
                 <h4 className="text-[10px] font-black uppercase tracking-[0.3em] text-white/20">{section.title}</h4>
@@ -152,7 +152,7 @@ export default function Footer() {
           </div>
         </div>
 
-        <div className="pt-16 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-10">
+        <div className="pt-10 md:pt-16 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-10">
           <div className="text-[10px] font-black uppercase tracking-[0.25em] text-white/10">
             {settings?.footerText || `© ${new Date().getFullYear()} Quantum Hospitality Solutions. All rights reserved.`}
           </div>
